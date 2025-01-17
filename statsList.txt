@@ -1,0 +1,125 @@
+1. Tekken 3 (1v1, arcade)
+	•	High Score
+	•	Wins/Losses
+	•	Perfect Rounds Won
+	•	Longest Win Streak
+	•	Fastest Victory Time
+	•	Most Played Character
+
+2. Tekken 8 (1v1, 2 controllers)
+	•	High Score
+	•	Wins/Losses
+	•	Perfect Rounds Won
+	•	Longest Win Streak
+	•	Combo Execution Accuracy
+	•	Fastest Victory Time
+	•	Most Played Character
+
+3. WWE (2v2, 4 controllers, 4-min match)
+	•	Wins/Losses (Team)
+	•	Pins/Submissions Executed
+	•	Reversals Success Rate
+	•	Damage Dealt
+	•	Special Moves Executed
+
+4. Brawlhalla (2/4 controllers)
+	•	Wins/Losses
+	•	Damage Dealt
+	•	KO Count
+	•	Matches Played
+	•	Recovery Success Rate
+
+5. Mini Militia (4 phones)
+	•	Kills/Deaths Ratio (K/D)
+	•	Wins/Losses
+	•	Accuracy (Shots Fired vs Hits)
+	•	Power-Ups Collected
+	•	Longest Survival Time
+
+6. Clash Royale (2v2, 4 tablets)
+	•	Trophies Earned
+	•	Wins/Losses
+	•	Crown Count (Per Game)
+	•	Average Elixir Usage
+	•	Favorite Deck
+
+7. Forza Horizon (race, 2 laptops)
+	•	Races Won/Lost
+	•	Fastest Lap Time
+	•	Total Distance Driven
+	•	Average Speed
+	•	Achievements Collected
+
+8. CS:GO (full team, 8 laptops)
+	•	Kills/Deaths/Assists (K/D/A)
+	•	Rounds Won/Lost
+	•	Headshot Percentage
+	•	Bomb Plants/Defuses
+
+9. CS:GO (Free for All, Top Players TDM)
+	•	Kills/Deaths Ratio (K/D)
+	•	Score Per Match - will be added up
+	•	Kill Streaks - this value will be replaced each time instead of being updated
+	•	Most Used Weapon
+
+10. Bomb Diffusal (full team, 1 laptop)
+	•	Successful Bomb Diffuses
+	•	Rounds Won/Lost
+	•	Time Taken for Diffusal
+	•	Kill Count
+	•	Objectives Completed
+
+11. Super Mario (1 controller)
+	•	High Score
+	•	Levels Completed
+	•	Fastest Completion Time - replace value
+	•	Lives Lost
+	•	Coins Collected
+
+12. GTA San Andreas (multiplayer)
+	•	Missions Completed
+	•	Kills/Deaths Ratio
+	•	Achievements Earned
+	•	Total Cash Earned
+	•	Fastest Time in Races/Challenges
+
+13. Fortnite (1v1, 2 laptops)
+	•	Kills/Deaths Ratio (K/D)
+	•	Victory Royales
+	•	Damage Dealt
+	•	Survival Time
+	•	Shots Accuracy
+
+14. Rocket League (3v3, 6 laptops)
+	•	Goals Scored
+	•	Assists
+	•	Saves
+	•	MVP Awards
+	•	Matches Won/Lost
+
+15. FIFA (2v2, 4 controllers)
+	•	Goals Scored
+	•	Matches Won/Lost
+	•	Clean Sheets (No Goals Conceded)
+	•	Shots on Target
+	•	Possession Percentage
+
+16. Bowling
+	•	Total Points
+	•	Number of Strikes
+	•	Number of Spares
+	•	Average Score Per Game
+	•	Longest Streak of Strikes - replace value
+
+17. Shoot with a Gun
+	•	Hits/Misses Ratio
+	•	Total Targets Hit
+	•	Score
+	•	Accuracy
+
+18. BGMI (Battle Royale)
+	•	Kills/Deaths Ratio (K/D)
+	•	Chicken Dinners (Wins)
+	•	Damage Dealt
+	•	Revives Performed
+	•	Longest Survival Time
