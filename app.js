@@ -5,8 +5,8 @@ import responseHandler from "./middlewares/responseHandler.js";
 import cors from "cors";
 import path from "path";
 //routes
-import teamRoutes from "./routes/teamRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
+import teamRoutes from "./routes/team.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 const __dirname = path.resolve();
@@ -68,3 +68,5 @@ app.listen(config.server.port, () => {
 // get all users of a team
 // powerups
 // check parseInt everywhere
+// convert to IST everywhere
+// set regActive and eventActive middleware everywhere

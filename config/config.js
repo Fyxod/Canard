@@ -12,10 +12,8 @@ const config = {
     uri: process.env.MONGO_URI || "mongodb://localhost:27017/canardtest",
   },
   priority: {
-    candidate: 0,
-    expert: 1,
+    user: 1,
     admin: 2,
-    superadmin: 3,
   },
   auth: {
     tokenSecret: process.env.JWT_TOKEN || "thisbetterbeasecret",
@@ -23,6 +21,12 @@ const config = {
   },
   leftHandHealth: 1000,
   rightHandHealth: 1000,
+  phaseInterval: 45 * 60 * 1000, // 45 minutes
+  phaseStartTime: {
+    1: new Date(2025, 1, 1, 14, 0, 0), // 1st Feb 2025, 2 PM
+    2: new Date(2025, 1, 1, 15, 0, 0), // 1st Feb 2025, 3 PM
+    3: new Date(2025, 1, 1, 16, 0, 0), // 1st Feb 2025, 4 PM
+  },
 };
 
 export default config;

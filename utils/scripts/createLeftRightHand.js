@@ -1,5 +1,6 @@
-import Hand from "../../models/Hand";
+import Hand from "../../models/hand.model.js";
 import connectMongo from "../../config/db";
+import mongoose from "mongoose";
 
 export default async function createLeftRightHand() {
   await connectMongo();
@@ -19,6 +20,7 @@ export default async function createLeftRightHand() {
   });
   console.log("Left and right hand created successfully");
   console.log(leftHand, rightHand);
+  mongoose.connection.close();
 }
 
 createLeftRightHand();

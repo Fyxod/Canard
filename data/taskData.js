@@ -1,4 +1,4 @@
-const tasks = {
+const taskData = {
   phase1: {
     101: {
       title: "Task 1",
@@ -51,3 +51,5 @@ const tasks = {
     },
   },
 };
+
+export default taskData;

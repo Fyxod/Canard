@@ -1,3 +1,1 @@
-phaseNo = "55g"
-phaseNo = parseInt(phaseNo.trim(), 10);
-console.log(phaseNo);
+console.log(Date.now() - new Date(2025, 0, 17, 21, 0, 0));

@@ -1,12 +1,12 @@
 import express from "express";
-import checkAuth from "../middlewares/authMiddleware";
-import { safeHandler } from "../middlewares/safeHandler";
-import User from "../models/user";
-import { userLoginSchema, userRegistrationSchema } from "../utils/zodSchemas";
+import checkAuth from "../middlewares/authMiddleware.js";
+import { safeHandler } from "../middlewares/safeHandler.js";
+import User from "../models/user.model.js";
+import { userLoginSchema, userRegistrationSchema } from "../utils/zodSchemas.js";
 import { isValidObjectId } from "mongoose";
 import bcrypt from "bcrypt";
-import Team from "../models/Team";
-import { generateToken } from "../utils/jwtFuncs";
+import Team from "../models/team.model.js";
+import { generateToken } from "../utils/jwtFuncs.js";
 
 const router = express.Router();
 

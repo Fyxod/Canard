@@ -1,8 +1,8 @@
 import express from "express";
-import checkAuth from "../middlewares/authMiddleware";
-import { safeHandler } from "../middlewares/safeHandler";
-import Hand from "../models/Hand";
-import createLeftRightHand from "../utils/scripts/createLeftRightHand";
+import checkAuth from "../middlewares/authMiddleware.js";
+import { safeHandler } from "../middlewares/safeHandler.js";
+import Hand from "../models/hand.model.js";
+import createLeftRightHand from "../utils/scripts/createLeftRightHand.js";
 
 const router = express.Router();
 
