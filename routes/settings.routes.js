@@ -3,6 +3,7 @@ import { safeHandler } from "../middlewares/safeHandler.js";
 import ApiError from "../utils/errorClass.js";
 import Settings from "../models/settings.model.js";
 import checkAuth from "../middlewares/authMiddleware.js";
+import onBoard from "../utils/scripts/onBoard,js";
 
 const router = express.Router();
 
@@ -40,6 +41,7 @@ router
       }
       if (active === true && settings.currentPhaseValue === -1) {
         if (phaseValue === 1 && settings.eventStatus === "upcoming") {
+          onBoard();
           settings.eventStatus = "active";
         } else {
           throw new ApiError(400, "Invalid data", "INVALID_DATA");
@@ -61,7 +63,7 @@ router
       }
 
       await settings.save();
-      return res.success(200, "Settings updated successfully", {
+      res.success(200, "Settings updated successfully", {
         settings,
       });
     })
@@ -94,7 +96,7 @@ router.post(
 export default router;
 
 function parseBoolean(value) {
-    if (value === 'true') return true;
-    if (value === 'false') return false;
-    return value;
-  }
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return value;
+}

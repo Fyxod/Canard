@@ -278,6 +278,9 @@ router
           phase.tasks[taskId].timeTaken =
             Date.now() -
             config.phaseStartTime[team.phaseOrder.indexOf(phaseNo) + 1];
+
+          // set the current task to be the next task in the task order
+          phase.currentTask = phase.taskOrder[phase.completedTasks];
         }
 
         // if all tasks in the phase have been completed
@@ -336,6 +339,9 @@ router
           // time taken is the time between now and the last task of the phase
           phase.tasks[taskId].timeTaken =
             Date.now() - phase.tasks[taskId - 1].completedAt;
+
+          // set the current task to be the next task in the task order
+          phase.currentTask = phase.taskOrder[phase.completedTasks];
         }
       }
 

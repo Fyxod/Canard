@@ -1,0 +1,18 @@
+import Team from "../../models/team.model.js";
+
+export default async function onBoard() {
+  const teams = await Team.find();
+
+  for (let team of teams) {
+    team.state = "busy";
+    team.currentPhase = team.phaseOrder[0];
+    team[team.currentPhase].status = "inProgress";
+    team[team.currentPhase].currentTask = team[team.currentPhase].taskOrder[0];
+    team[team.currentPhase].tasks[team[team.currentPhase].currentTask].status =
+      "inProgress";
+
+    await team.save();
+    console.log(`Team ${team.name} is now busy and in their first task`);
+  }
+  console.log("All teams are now busy and in their first task");
+}

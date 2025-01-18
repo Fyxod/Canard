@@ -33,10 +33,11 @@ function generateEqualPhaseAndTaskOrders(
         .slice(taskOffset)
         .concat(tasks.slice(0, taskOffset));
     }
-    
-    taskOrders[1] = taskOrders[1].map((task) => 100 + task);
-    taskOrders[2] = taskOrders[2].map((task) => 200 + task);
-    taskOrders[3] = taskOrders[3].map((task) => 300 + task);
+
+    // convert [1, 2, 3] to [101, 102, 103]
+    for (let i = 1; i <= 3; i++) {
+      taskOrders[i] = taskOrders[i].map((task) => i * 100 + task);
+    }
 
     orders.push({ phaseOrder, ...taskOrders });
   }
