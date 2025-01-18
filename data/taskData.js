@@ -52,4 +52,6 @@ const taskData = {
   },
 };
 
+// points are the health points that will be deducted from the health of the left and right hand of the dictator(Ishan)
+
 export default taskData;

@@ -2,19 +2,14 @@
 
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import connectMongo from "../../config/db.js";
 
 dotenv.config();
 
-const DATABASE_URI = process.env.MONGODB_URI; // Replace with your database URI
-
 const deleteAllCollections = async () => {
   try {
-    // Connect to the database
-    await mongoose.connect(DATABASE_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to the database");
+
+    await connectMongo();
 
     // Get all collections in the database
     const collections = await mongoose.connection.db

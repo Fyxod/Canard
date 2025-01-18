@@ -9,11 +9,12 @@ const config = {
   },
 
   database: {
-    uri: process.env.MONGO_URI || "mongodb://localhost:27017/canardtest",
+    uri: process.env.MONGODB_URI || "mongodb://localhost:27017/canardtest",
   },
   priority: {
     user: 1,
     admin: 2,
+    superAdmin: 3,
   },
   auth: {
     tokenSecret: process.env.JWT_TOKEN || "thisbetterbeasecret",
@@ -27,6 +28,7 @@ const config = {
     2: new Date(2025, 1, 1, 15, 0, 0), // 1st Feb 2025, 3 PM
     3: new Date(2025, 1, 1, 16, 0, 0), // 1st Feb 2025, 4 PM
   },
+  defaultAvatar: "https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png",
 };
 
 export default config;

@@ -7,6 +7,9 @@ import User from "../models/user.model.js";
 import { teamRegistrationSchema } from "../utils/zodSchemas.js";
 import config from "../config/config.js";
 import taskData from "../data/taskData.js";
+import isRegistrationActive from "../middlewares/isRegistrationActive.js";
+import isEventActive from "../middlewares/isEventActive.js";
+import { isValidObjectId } from "mongoose";
 
 const router = express.Router();
 
@@ -25,6 +28,7 @@ router
   )
 
   .post(
+    isRegistrationActive, // check if registration is active
     safeHandler(async (req, res) => {
       const { name } = teamRegistrationSchema.parse(req.body);
       const teamExists = await Team.findOne({ name });
@@ -36,7 +40,19 @@ router
         );
       }
 
-      const team = await Team.create({ name });
+      const team = new Team({ name });
+      Object.keys(taskData).forEach((phase) => {
+        Object.keys(taskData[phase]).forEach((task) => {
+          team[phase].tasks.set(task, {
+            status: "notStarted",
+            completedAt: null,
+            timeTaken: -1,
+          });
+        });
+      });
+
+      await team.save();
+
       return res.success(201, "Team created successfully", {
         teamName: team.name,
         teamId: team._id,
@@ -47,7 +63,10 @@ router
   .delete(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
-      const teams = await Team.find().select("-password");
+      const teams = await Team.find().populate({
+        path: "members",
+        select: "-password",
+      });
       if (!teams || teams.length === 0) {
         throw new ApiError(404, "No team was found", "NO_TEAMS_FOUND");
       }
@@ -63,6 +82,9 @@ router
     checkAuth("user"),
     safeHandler(async (req, res) => {
       const { teamId } = req.params;
+      if (!isValidObjectId(teamId)) {
+        throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+      }
       if (req.user.role === "user" && req.user.teamId.toString() !== teamId) {
         throw new ApiError(
           403,
@@ -70,7 +92,12 @@ router
           "FORBIDDEN"
         );
       }
-      const team = await Team.findById(teamId);
+
+      // I know I shoudnt be sending the users along with the team but just making things easier for the frontend devs
+      const team = await Team.findById(teamId).populate({
+        path: "members",
+        select: "-password",
+      });
       if (!team) {
         throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
       }
@@ -82,9 +109,13 @@ router
   .patch(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
+      const { teamId } = req.params;
+      if (!isValidObjectId(teamId)) {
+        throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+      }
       const { name } = teamRegistrationSchema.parse(req.body);
       const team = await Team.findByIdAndUpdate(
-        req.params.teamId,
+        teamId,
         { name },
         { new: true }
       );
@@ -103,6 +134,9 @@ router
   .delete(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
+      if (!isValidObjectId(req.params.teamId)) {
+        throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+      }
       const team = await Team.findById(req.params.teamId).populate({
         path: "members",
         select: "-password",
@@ -126,6 +160,7 @@ router
   .post(
     // take a completed parameter too as there are multiple options in the schema
     checkAuth("admin"),
+    isEventActive, // check if event is active
     safeHandler(async (req, res) => {
       let { teamId, phaseNo, taskId, status } = req.params;
 
@@ -310,3 +345,5 @@ router
       }
     })
   );
+
+export default router;

@@ -18,7 +18,7 @@ export const userRegistrationSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(5, { message: "Password should be atleast 5 characters long" }),
-  teamId: z.string(),
+  teamId: z.string({ required_error: "Team id is required" }),
 });
 
 export const userLoginSchema = z.object({

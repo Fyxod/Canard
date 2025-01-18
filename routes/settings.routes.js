@@ -67,4 +67,34 @@ router
     })
   );
 
+router.post(
+  "/reg",
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    let { active } = req.body;
+    if (active === undefined) {
+      throw new ApiError(400, "Missing data", "MISSING_DATA");
+    }
+    active = parseBoolean(active);
+    if (typeof active !== "boolean") {
+      throw new ApiError(400, "Invalid data", "INVALID_DATA");
+    }
+    const settings = await Settings.findOne();
+    if (settings.eventStatus === "closed") {
+      throw new ApiError(400, "Event is closed", "EVENT_CLOSED");
+    }
+    settings.registrationsActive = active;
+    await settings.save();
+    return res.success(200, "Settings updated successfully", {
+      settings,
+    });
+  })
+);
+
 export default router;
+
+function parseBoolean(value) {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  }

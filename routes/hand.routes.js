@@ -68,3 +68,6 @@ router
       return res.success(200, "Hand health successfully updated", hand);
     })
   );
+
+
+export default router;

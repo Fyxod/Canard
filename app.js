@@ -7,6 +7,11 @@ import path from "path";
 //routes
 import teamRoutes from "./routes/team.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import settingsRoutes from "./routes/settings.routes.js";
+import handRoutes from "./routes/hand.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
+//utils
+import sendErrorMail from "./utils/sendErrorMail.js";
 
 const app = express();
 const __dirname = path.resolve();
@@ -14,7 +19,6 @@ const __dirname = path.resolve();
 connectMongo();
 
 app.use((req, res, next) => {
-  console.log(req.headers);
   console.log(req.url, req.method);
   next();
 });
@@ -39,6 +43,9 @@ app.get("/", (req, res) => {
 
 app.use("/team", teamRoutes);
 app.use("/user", userRoutes);
+app.use("/settings", settingsRoutes);
+app.use("/hand", handRoutes);
+app.use("/admin", adminRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);
@@ -51,7 +58,7 @@ app.use((error, req, res, next) => {
     const message = error.message || "Internal Server Error";
     return res.error(statusCode, message, error.errorCode, error.data);
   } else {
-    sendErrorMail(error);
+    // sendErrorMail(error);
     console.error("ALERT ALERT ALERT");
     console.error("Unhandled error:", error);
     return res.error(500, "Internal Server Error", "UNHANDLED_ERROR");
@@ -69,4 +76,11 @@ app.listen(config.server.port, () => {
 // powerups
 // check parseInt everywhere
 // convert to IST everywhere
-// set regActive and eventActive middleware everywhere
+// create script for equal distribution
+// add a failsafe that the distribution script runs if it has not already before the event starts
+// send registration mails
+// update team model with the avatar links too when it is updated in the user model
+// put await everywhere in db operations where we did not think it necessary
+// send websocket alerts to apps on phases start and end
+// check for blocked teams everywhere
+// are you really doing it according to taskOrders

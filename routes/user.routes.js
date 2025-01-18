@@ -2,11 +2,16 @@ import express from "express";
 import checkAuth from "../middlewares/authMiddleware.js";
 import { safeHandler } from "../middlewares/safeHandler.js";
 import User from "../models/user.model.js";
-import { userLoginSchema, userRegistrationSchema } from "../utils/zodSchemas.js";
+import {
+  userLoginSchema,
+  userRegistrationSchema,
+} from "../utils/zodSchemas.js";
+import ApiError from "../utils/errorClass.js";
 import { isValidObjectId } from "mongoose";
 import bcrypt from "bcrypt";
 import Team from "../models/team.model.js";
 import { generateToken } from "../utils/jwtFuncs.js";
+import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 
 const router = express.Router();
 
@@ -25,6 +30,7 @@ router
   )
 
   .post(
+    isRegistrationActive,
     safeHandler(async (req, res) => {
       let fields = userRegistrationSchema.parse(req.body);
       // username, email, password, teamId
@@ -32,11 +38,14 @@ router
         throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
       }
 
-      const userExists = await User.findOne({ email: fields.email });
+      const userExists = await User.findOne({
+        $or: [{ email: fields.email }, { username: fields.username }],
+      });
+
       if (userExists) {
         throw new ApiError(
           400,
-          "User with this email already exists",
+          "User with this email or username already exists",
           "USER_EXISTS"
         );
       }
@@ -50,22 +59,28 @@ router
         role: "user",
       });
 
-      const team = await Team.findByIdAndUpdate(
-        fields.team,
-        {
-          $push: { members: user._id },
-        },
-        { new: true }
-      );
-
+      const team = await Team.findById(fields.team);
       if (!team) {
-        User.findByIdAndDelete(user._id);
+        await User.findByIdAndDelete(user._id);
         throw new ApiError(
           500,
           "Team with this id not found",
           "INVALID_TEAM_ID"
         );
       }
+      if (team.members.length >= 4) {
+        await User.findByIdAndDelete(user._id);
+        throw new ApiError(400, "Team is full", "TEAM_FULL");
+      }
+
+      //doing atomic operation instead of team.members.push(user._id) to avoid race conditions although it's not a big deal here and I probably shoudn't do this as it won't happen here but who the fuck cares
+      await Team.findByIdAndUpdate(
+        fields.team,
+        {
+          $push: { members: user._id },
+        },
+        { new: true }
+      );
 
       return res.success(201, "User created successfully", {
         userId: user._id,
@@ -97,6 +112,9 @@ router
     checkAuth("user"),
     safeHandler(async (req, res) => {
       const { userId } = req.params;
+      if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "Invalid user id", "INVALID_USER_ID");
+      }
       if (req.user.role === "user" && req.user.id.toString() !== userId) {
         throw new ApiError(
           403,
@@ -261,7 +279,7 @@ router.post(
       role: user.role,
       teamId: user.team,
     });
-    res.cookie("userToken", userToken, { httpOnly: true });
+    res.cookie("userToken", userToken); // http true secure true all that
     return res.success(200, "Login successful", {
       userToken,
       user: {
@@ -273,3 +291,5 @@ router.post(
     });
   })
 );
+
+export default router;

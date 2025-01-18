@@ -6,11 +6,11 @@ const phaseSchema = new mongoose.Schema({
     of: new mongoose.Schema({
       timeTaken: {
         type: Number,
-        required: true,
+        default: -1,
       },
       completedAt: {
         type: Date,
-        required: true,
+        default: null,
       },
       status: {
         type: String,
@@ -65,7 +65,7 @@ const teamSchema = new mongoose.Schema(
     currentPhase: {
       type: Number,
       default: -1,
-      enum: [1, 2, 3],
+      enum: [1, 2, 3, -1],
     },
     phaseOrder: {
       type: [Number],
@@ -90,6 +90,7 @@ const teamSchema = new mongoose.Schema(
     state: {
       type: String,
       enum: ["busy", "idle", "completed", "blocked"],
+      default: "idle",
     },
     callingCard: {
       type: String,
