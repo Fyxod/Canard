@@ -110,3 +110,6 @@ server.listen(config.server.port, () => {
 // the completed time of a phase is defined as the point of time when the team enters the correct answer for the phase (NOT WHEN THEY COMPLETE ALL THE MAJOR AND MINOR TASKS)
 // dont make them idle after completion of major tasks, only after completion of all tasks(i.e. minor included)
 //dont change currentTask to -1 after completion of major tasks, only after completion of all tasks(i.e. minor included)
+// send success messages in each route
+
+// completed tasks are the no of major tasks done
