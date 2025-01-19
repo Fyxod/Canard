@@ -7,6 +7,10 @@ const phaseSchema = new mongoose.Schema({
       timeTaken: {
         type: Number,
         default: -1,
+        enum: [
+          -1, // not completed
+          -2, // -2 when this is a minor task and has been completed
+        ],
       },
       completedAt: {
         type: Date,
@@ -16,6 +20,11 @@ const phaseSchema = new mongoose.Schema({
         type: String,
         enum: ["completed", "inProgress", "notStarted"],
         default: "notStarted",
+      },
+      type: {
+        type: String,
+        enum: ["major", "minor"],
+        required: true,
       },
     }),
     default: () => new Map(),
@@ -42,7 +51,7 @@ const phaseSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["completed", "failed", "inProgress", "notStarted"],
+    enum: ["completed", "failed", "inProgress", "notStarted", "completedAll"],
     default: "notStarted",
   },
 });
@@ -93,7 +102,12 @@ const teamSchema = new mongoose.Schema(
       default: "idle",
     },
     callingCard: {
-      type: String,
+      type: Number,
+      default: 0,
+    },
+    powerups: {
+      type: [String],
+      default: () => [],
     },
   },
   {

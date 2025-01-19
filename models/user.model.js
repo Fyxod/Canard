@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: config.defaultAvatar,
+      // default: config.defaultAvatar,
     },
   },
   {
