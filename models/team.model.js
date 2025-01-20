@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// not a vaery well built model, can be much better but didn't have enough time to optimize it
 const phaseSchema = new mongoose.Schema({
   tasks: {
     type: Map,
@@ -17,8 +18,9 @@ const phaseSchema = new mongoose.Schema({
         default: null,
       },
       status: {
+        // --
         type: String,
-        enum: ["completed", "inProgress", "notStarted"],
+        enum: ["completed", "inProgress", "notStarted"], // Only completed and notStarted are used for minor tasks
         default: "notStarted",
       },
       type: {
@@ -84,9 +86,10 @@ const teamSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    totalScore: {
+    // score = credit card balance
+    score: {
       type: Number,
-      default: -1,
+      default: 0,
     },
     totalTimeTaken: {
       type: Number,
@@ -103,11 +106,13 @@ const teamSchema = new mongoose.Schema(
     },
     callingCard: {
       type: Number,
-      default: 0,
     },
     powerups: {
       type: [String],
       default: () => [],
+    },
+    creditCardNo: {
+      type: String,
     },
   },
   {

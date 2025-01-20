@@ -264,6 +264,19 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         );
       }
 
+      // the following condition will only be applicable if I am using this route to complete the routes but I am apparantly allowing other statuses too so this condition is useless
+      // if (phase.tasks[taskId].status === "completed") {
+      //   throw new ApiError(
+      //     400,
+      //     "Task has already been completed",
+      //     "TASK_COMPLETED"
+      //   );
+      // }
+
+      if (phase.tasks[taskId].type !== "major") {
+        throw new ApiError(400, "Task is not a major task", "TASK_NOT_MAJOR");
+      }
+
       // READ FROM HERE //huh.. AGAIN!
 
       if (status === "completed") {
@@ -273,6 +286,9 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         // sets the status of the task to completed
         phase.tasks[taskId].status = "completed";
 
+        // completed now obviously
+        phase.tasks[taskId].completedAt = new Date();
+
         // decrease the health of the hands equally by the number of points assigned to those tasks
         Hand.updateMany(
           {},
@@ -281,9 +297,6 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
         // if its the first task of the phase
         if (phase.completedTasks === 1) {
-          // completed now obviously
-          phase.tasks[taskId].completedAt = new Date();
-
           // time taken is the time between now and the start of the phase as this is the first task of the phase
           phase.tasks[taskId].timeTaken =
             Date.now() -
@@ -291,86 +304,43 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
           // set the current task to be the next task in the task order
           phase.currentTask = phase.taskOrder[phase.completedTasks];
+
+          // setting the next task to be "inProgress"
+          phase.tasks[currentTask].status = "inProgress";
         }
 
         // if all tasks in the phase have been completed
         else if (phase.completedTasks === phase.taskOrder.length) {
-          // phase is completed as all the tasks have been completed
-          phase.status = "completed";
-
-          phase.currentTask = -1;
-
-          // set the current phase to be inactive
-          team.currentPhase = -1;
-
-          // completed now obviously
-          phase.tasks[taskId].completedAt = new Date();
-
-          // time taken is the time between now and the last task of the phase
+          // time taken is the time between now and the last task of the phase that was completed
           phase.tasks[taskId].timeTaken =
             Date.now() -
             phase.tasks[phase.taskOrder[phase.completedTasks - 2]].completedAt;
 
-          // phase completed now obviously
-          phase.completedAt = new Date();
+          // All the major tasks are completed so setting the currentTask to be -1, minor tasks can also be done until the phase time is over
+          phase.currentTask = -1;
 
-          // time taken is the time between now and the start of the phase
-          phase.timeTaken =
-            Date.now() -
-            config.phaseStartTime[team.phaseOrder.indexOf(phaseNo) + 1];
-
-          // increase the number of completed phases in the team by 1
-          team.completedPhases = team.completedPhases + 1;
-
-          // if all phases have been completed
-          if (team.completedPhases === 3) {
-            // completed now obviously
-            team.completedAt = new Date();
-
-            // team has completed the game as all the phases have been completed
-            team.state = "completed";
-
-            // time taken is the time between now and the start of the game
-            team.totalTimeTaken =
-              team.phase1.timeTaken +
-              team.phase2.timeTaken +
-              team.phase3.timeTaken;
-
-            // announcement
-            announceSingle(
-              teamId,
-              "Congratulations! You have completed all the three phases and today's game!"
-            );
-          }
-
-          // if all phases have not been completed
-          else {
-            // set the current team state to be inactive
-            team.state = "idle";
-
-            //announcement
-            announceSingle(
-              teamId,
-              `Congratulations! You have completed Phase ${phaseNo}!`
-            );
-          }
+          // you can set the majorCompleted variable to be true here if you want to add it to the db
+          // phase.majorCompleted = true; // not yet added to the model (probably won't)
         }
 
         // if its not the first or the last task of the phase
         else {
-          // completed now obviously
-          phase.tasks[taskId].completedAt = new Date();
-
-          // time taken is the time between now and the last task of the phase
+          // time taken is the time between now and the last task of the phase that was completed
           phase.tasks[taskId].timeTaken =
-            Date.now() - phase.tasks[taskId - 1].completedAt;
+            Date.now() -
+            phase.tasks[phase.taskOrder[phase.completedTasks - 2]].completedAt;
 
           // set the current task to be the next task in the task order
           phase.currentTask = phase.taskOrder[phase.completedTasks];
+
+          // setting the next task to be "inProgress"
+          phase.tasks[currentTask].status = "inProgress";
         }
       }
 
       // if the status is something other than 'completed'
+
+      // condition not handled properly, do add more logic if this might be used
       else {
         phase.tasks[taskId].status = status;
       }
@@ -384,6 +354,8 @@ router.route("/:teamId/:phaseNo/:taskId").post(
     // I wouldn't have created seperate if conditions for minor tasks and instead integrated this into the above logic but I was told about minor tasks too late so I don't want to mess with the above logic as there is very little time left and the code above is already too complicated
     else if (taskType === "minor") {
       const minorTaskId = taskId;
+
+      // bruh so many conditions😂, I just kept putting them as they came to my mind. Most of them are useless or just a version of each other
 
       if (["completed", "notStarted"].indexOf(status) === -1) {
         throw new ApiError(400, "Invalid status", "INVALID_STATUS");
@@ -406,13 +378,13 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         );
       }
 
-      // if (team.state === "completed") {
-      //   throw new ApiError(
-      //     400,
-      //     "Team has already completed the three phases",
-      //     "COMPLETED"
-      //   );
-      // }
+      if (team.state === "completed") {
+        throw new ApiError(
+          400,
+          "Team has already completed the three phases",
+          "COMPLETED"
+        );
+      }
 
       if (team.state === "blocked") {
         throw new ApiError(400, "Team is blocked", "TEAM_BLOCKED");
@@ -440,10 +412,23 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         );
       }
 
+      if (phase.tasks[minorTaskId].type !== "minor") {
+        throw new ApiError(400, "Task is not a minor task", "TASK_NOT_MINOR");
+      }
+
       if (status === "completed") {
         phase.tasks[minorTaskId].status = "completed";
         phase.tasks[minorTaskId].completedAt = new Date();
         phase.tasks[minorTaskId].timeTaken = -2;
+
+        Hand.updateMany(
+          {},
+          { $inc: { health: -taskData[`phase${phaseNo}`][minorTaskId].points } }
+        );
+      }
+      // if some other condition other than completed
+      else {
+        phase.tasks[minorTaskId].status = status;
       }
 
       if (
@@ -458,7 +443,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
   })
 );
 
-// for giving answer of the phase (only possible after completing all the majot tasks of the event)
+// for giving answer of the phase (only possible after completing all the major tasks of the event)
 router.post(
   "/:teamId/:phaseNo/answer",
   checkAuth("admin"),
@@ -534,8 +519,10 @@ router.post(
     }
 
     if (
-      Object.values(phase.tasks).every((task) =>
-        task.type === "major" ? task.status === "completed" : true
+      !Object.values(phase.tasks).every(
+        (
+          task // check please
+        ) => (task.type === "major" ? task.status === "completed" : true)
       )
     ) {
       throw new ApiError(
@@ -545,13 +532,33 @@ router.post(
       );
     }
 
-    if (phase.answer !== taskData[`phase${phaseNo}`].answer) {
+    if (answer !== taskData[`phase${phaseNo}`].answer) {
       throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
     }
 
     phase.status = "completed";
+    team.completedPhases = team.completedPhases + 1;
+
+    // phase completed now obviously
+    phase.completedAt = new Date();
+
+    // time taken is the time between now and the start of the phase
+    phase.timeTaken =
+      Date.now() - config.phaseStartTime[team.phaseOrder.indexOf(phaseNo) + 1];
+
+    // if all phases have been completed
+    if (team.completedPhases === 3) {
+      // completed now obviously
+      team.completedAt = new Date();
+
+      team.totalTimeTaken =
+        team.phase1.timeTaken + team.phase2.timeTaken + team.phase3.timeTaken;
+    }
+
     await phase.save();
 
     res.success(200, "Answer submitted successfully", { phase });
+    announceSingle(teamId, "rebuild");
   })
 );
+ 
