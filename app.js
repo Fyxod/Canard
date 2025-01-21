@@ -29,11 +29,6 @@ const __dirname = path.resolve();
 
 connectMongo();
 
-app.use((req, res, next) => {
-  console.log(req.url, req.method);
-  next();
-});
-
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -47,6 +42,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(responseHandler);
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use((req, res, next) => {
+  console.log("printing body", req.body)
+  console.log(req.url, req.method);
+  next();
+});
 
 app.get("/", (req, res) => {
   res.send("<h1>Canard 2025</h1>");

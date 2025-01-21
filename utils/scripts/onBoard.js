@@ -11,14 +11,44 @@ export default async function onBoard(phaseValue) {
   for (let team of teams) {
     team.state = "busy";
     team.currentPhase = team.phaseOrder[phaseValue - 1];
-    team[team.currentPhase].status = "inProgress";
-    team[team.currentPhase].currentTask = team[team.currentPhase].taskOrder[0];
-
-    // too complicated huh😅 - I like it though
-    team[team.currentPhase].tasks[team[team.currentPhase].currentTask].status =
-      "inProgress";
-
+    const currentPhase = `phase${team.currentPhase}`;
+    team[currentPhase].status = "inProgress";
+    team[currentPhase].currentTask = team[currentPhase].taskOrder[0];
+    let currentTask = team[`phase${team.currentPhase}`].currentTask;
+    currentTask = currentTask.toString();
+    let task = team[currentPhase].tasks.get(currentTask);
+    task.status = "inProgress";
+    team[currentPhase].tasks.set(currentTask, task);
     await team.save(); // don't want to overload the server
+
+
+
+
+
+    // let currentTask = currentPhase.currentTask;
+    // currentTask = currentTask.toString();
+    // currentPhase.tasks[currentTask].status = "inProgress";
+    // team[`phase${team.currentPhase}`] = currentPhase;
+    // await team.save(); // don't want to overload the server
+
+
+
+
+
+
+
+
+    // team[currentPhase].status = "inProgress";
+    // team[currentPhase].currentTask = team[currentPhase].taskOrder[0];
+    // let currentTask = team[`phase${team.currentPhase}`].currentTask;
+    // currentTask = currentTask.toString();
+    // // too complicated huh😅 - I like it though
+    // console.log(team[currentPhase]["tasks"]);
+    // // team[currentPhase]["tasks"][currentTask].status =
+    // //   "inProgress";
+    // team[currentPhase].tasks.set(currentTask.status, "inProgress");
+
+    // await team.save(); // don't want to overload the server
     console.log(
       `Team ${team.name} is now busy and in their first task of phase ${phaseValue}`
     );

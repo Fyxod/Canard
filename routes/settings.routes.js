@@ -25,20 +25,20 @@ router
   .post(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
-      const { phaseValue, active } = req.body;
+      let { phaseValue, active } = req.body;
+      active = parseBoolean(active);
 
       // checking for missing data
       if (phaseValue === undefined || active === undefined) {
         throw new ApiError(400, "Missing data", "MISSING_DATA");
       }
       if (
-        typeof phaseValue !== "number" ||
-        ![1, 2, 3].includes(phaseValue) ||
+        ![1, 2, 3, "1", "2", "3"].includes(phaseValue) ||
         typeof active !== "boolean"
       ) {
         throw new ApiError(400, "Invalid data", "INVALID_DATA");
       }
-
+      phaseValue = parseInt(phaseValue);
       const settings = await Settings.findOne();
 
       // checking if event is already over
@@ -48,25 +48,36 @@ router
 
       // checking if the phase is being tried to set to active and no phase is currently in motion
       if (active === true && settings.currentPhaseValue === -1) {
-
         // checking if the phaseValue is 1 and the event is upcoming, if true, then starting the event and onboarding the teams
+        console.log("in here 1");
         if (phaseValue === 1) {
           if (settings.eventStatus === "upcoming") {
+            console.log("in here 2");
             settings.eventStatus = "active";
             settings.currentPhaseValue = phaseValue;
             settings.phaseValueStatus[phaseValue] = "inProgress";
           }
           //phasevalue can be 1 and be tried to set to true only if the event is "upcoming"
           else {
+            console.log("in here 3");
             throw new ApiError(400, "Invalid data", "INVALID_DATA");
           }
         }
 
         // if the phaseValue is something other than 1 (2,3) and be tried to activated
-        else if (settings.eventStatus === "active") {
+        else if (
+          settings.eventStatus === "active" &&
+          settings.phasesCompleted === phaseValue - 1
+        ) {
+          console.log("in here 4");
+
           settings.phaseValueStatus[phaseValue] = "inProgress";
           settings.currentPhaseValue = phaseValue;
+        } else {
+          console.log("in here 5");
+          throw new ApiError(400, "Invalid data", "INVALID_DATA");
         }
+        console.log("in here 6");
         await settings.save();
         onBoard(phaseValue); // onboarding command -- to be completed
       }
@@ -77,18 +88,25 @@ router
         active === false &&
         settings.currentPhaseValue === phaseValue
       ) {
+        console.log("in here 7");
+        if (settings.phaseValueStatus[phaseValue] !== "inProgress") {
+          console.log("in here 8");
+          throw new ApiError(400, "Invalid data", "INVALID_DATA");
+        }
         settings.phaseValueStatus[phaseValue] = "completed";
         settings.currentPhaseValue = -1;
         settings.phasesCompleted = phaseValue;
         if (phaseValue === 3) {
+          console.log("in here 9");
           settings.eventStatus = "closed";
         }
         await settings.save();
         offBoard(phaseValue); // announce in this only
       } else {
+        console.log("in here 10");
         throw new ApiError(400, "Invalid data", "INVALID_DATA");
       }
-
+      console.log("in here 11");
       res.success(200, "Settings updated successfully", {
         settings,
       });
