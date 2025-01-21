@@ -1,7 +1,7 @@
 const responseHandler = (req, res, next) => {
     res.success = (statusCode, message, data = {}) => {
         return res.status(statusCode).json({
-            status: "success",
+            status: true,
             message,
             data
         });
@@ -9,7 +9,7 @@ const responseHandler = (req, res, next) => {
 
     res.error = (statusCode = 500, message = "Internal Server Error", errorCode = "INTERNAL_SERVER_ERROR", data = {}) => {
         return res.status(statusCode).json({
-            status: "error",
+            status: false,
             errorCode,
             message,
             data

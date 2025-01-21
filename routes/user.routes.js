@@ -289,7 +289,6 @@ router.post(
         username: user.username,
         role: user.role,
         teamName: team.name,
-
         teamId: user.team,
       },
     });
