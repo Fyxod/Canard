@@ -9,8 +9,9 @@ import config from "../config/config.js";
 import taskData from "../data/taskData.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 import isEventActive from "../middlewares/isEventActive.js";
-import { isValidObjectId } from "mongoose";
+import { get, isValidObjectId } from "mongoose";
 import { announceSingle } from "../utils/Announcements.js";
+import getIstDate from "../utils/getIstDate.js";
 
 const router = express.Router();
 
@@ -291,7 +292,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         phase.tasks[taskId].status = "completed";
 
         // completed now obviously
-        phase.tasks[taskId].completedAt = new Date();
+        phase.tasks[taskId].completedAt = getIstDate();
 
         // decrease the health of the hands equally by the number of points assigned to those tasks
         Hand.updateMany(
@@ -428,7 +429,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
       if (status === "completed") {
         phase.tasks[minorTaskId].status = "completed";
-        phase.tasks[minorTaskId].completedAt = new Date();
+        phase.tasks[minorTaskId].completedAt = getIstDate();
         phase.tasks[minorTaskId].timeTaken = -2;
 
         Hand.updateMany(
@@ -562,7 +563,7 @@ router.post(
     team.completedPhases = team.completedPhases + 1;
 
     // phase completed now obviously
-    phase.completedAt = new Date();
+    phase.completedAt = getIstDate();
 
     // time taken is the time between now and the start of the phase
     phase.timeTaken =
@@ -571,7 +572,7 @@ router.post(
     // if all phases have been completed
     if (team.completedPhases === 3) {
       // completed now obviously
-      team.completedAt = new Date();
+      team.completedAt = getIstDate();
 
       team.totalTimeTaken =
         team.phase1.timeTaken + team.phase2.timeTaken + team.phase3.timeTaken;

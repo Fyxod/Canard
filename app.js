@@ -15,8 +15,9 @@ import userRoutes from "./routes/user.routes.js";
 import settingsRoutes from "./routes/settings.routes.js";
 import handRoutes from "./routes/hand.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import getIstDate from "./utils/getIstDate.js";
 
-console.log(new Date())
+console.log(getIstDate());
 
 const app = express();
 const server = http.createServer(app);

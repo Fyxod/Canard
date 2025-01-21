@@ -1,6 +1,7 @@
 import Team from "../../models/team.model.js";
 import {announceSingle} from "../Announcements.js";
 import config from "../../config/config.js";
+import getIstDate from "../getIstDate.js";
 
 export default async function offBoard(phaseValue) {
   const teams = await Team.find({});
@@ -39,7 +40,7 @@ export default async function offBoard(phaseValue) {
             team.phase2.timeTaken +
             team.phase3.timeTaken;
 
-          team.completedAt = new Date();
+          team.completedAt = getIstDate();
         }
       }
 
