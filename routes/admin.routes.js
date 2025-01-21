@@ -43,6 +43,7 @@ router
       return res.success(200, "Admins fetched successfully", { admins });
     })
   )
+
   .post(
     checkAuth("superadmin"),
     safeHandler(async (req, res) => {

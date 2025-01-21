@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import config from "../config/config.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,7 +25,6 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      // default: config.defaultAvatar,
     },
   },
   {

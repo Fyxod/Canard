@@ -3,7 +3,7 @@ import { safeHandler } from "../middlewares/safeHandler.js";
 import ApiError from "../utils/errorClass.js";
 import Settings from "../models/settings.model.js";
 import checkAuth from "../middlewares/authMiddleware.js";
-import onBoard from "../utils/scripts/onBoard,js";
+import onBoard from "../utils/scripts/onBoard.js";
 import offBoard from "../utils/scripts/offBoard.js";
 
 const router = express.Router();
@@ -48,11 +48,13 @@ router
 
       // checking if the phase is being tried to set to active and no phase is currently in motion
       if (active === true && settings.currentPhaseValue === -1) {
+
         // checking if the phaseValue is 1 and the event is upcoming, if true, then starting the event and onboarding the teams
         if (phaseValue === 1) {
           if (settings.eventStatus === "upcoming") {
-            onBoard(); // onboarding command
             settings.eventStatus = "active";
+            settings.currentPhaseValue = phaseValue;
+            settings.phaseValueStatus[phaseValue] = "inProgress";
           }
           //phasevalue can be 1 and be tried to set to true only if the event is "upcoming"
           else {
@@ -65,6 +67,8 @@ router
           settings.phaseValueStatus[phaseValue] = "inProgress";
           settings.currentPhaseValue = phaseValue;
         }
+        await settings.save();
+        onBoard(phaseValue); // onboarding command -- to be completed
       }
 
       // checking if the phase is being tried to set to inactive and the phase currently in motion is the same as the phaseValue provided in the request
@@ -76,15 +80,15 @@ router
         settings.phaseValueStatus[phaseValue] = "completed";
         settings.currentPhaseValue = -1;
         settings.phasesCompleted = phaseValue;
-        offBoard(phaseValue); // offboarding command
         if (phaseValue === 3) {
           settings.eventStatus = "closed";
         }
+        await settings.save();
+        offBoard(phaseValue); // announce in this only
       } else {
         throw new ApiError(400, "Invalid data", "INVALID_DATA");
       }
 
-      await settings.save();
       res.success(200, "Settings updated successfully", {
         settings,
       });

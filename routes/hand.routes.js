@@ -25,13 +25,12 @@ router
     })
   )
 
+  // just in case
   .post(
-    // something left I think in this route?
-    // just in case
     checkAuth("admin"),
     safeHandler(async (req, res) => {
-      await createLeftRightHand();
-      return res.success(201, "Hand successfully created", newHand);
+      const hands = await createLeftRightHand();
+      return res.success(201, "Hands successfully created", hands);
     })
   );
 
@@ -68,6 +67,5 @@ router
       return res.success(200, "Hand health successfully updated", hand);
     })
   );
-
 
 export default router;

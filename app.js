@@ -86,30 +86,24 @@ server.listen(config.server.port, () => {
 // add a failsafe that the distribution script runs if it has not already before the event starts
 // send registration mails
 // put await everywhere in db operations where we did not think it necessary
-// send websocket alerts to apps on phases start and end
 // check for blocked teams everywhere
-// are you really doing it according to taskOrders
-// ask whether to keep a team score or not
 // read team post route once more
 // add announcement route in admin routes
 // what all information about the team do you want after completion of the event
-// are we announcing even on completion of task?
 
-// more onboards left for each phase
 // see if you can add a task time limit if its possible
 
-
 //after it
-// do not put the team to idle after the major tasks of the phase is over now
-
-// I am not noting down the time of completion of minor tasks by any team
-// also set team to completedAll if all minor and majorr have been completed
 
 /// since the no of major tasks and minor tasks are different and seperate now, you have to remove the checks where you are comparing it to the length of the tasks array
 
-// the completed time of a phase is defined as the point of time when the team enters the correct answer for the phase (NOT WHEN THEY COMPLETE ALL THE MAJOR AND MINOR TASKS)
-// dont make them idle after completion of major tasks, only after completion of all tasks(i.e. minor included)
-//dont change currentTask to -1 after completion of major tasks, only after completion of all tasks(i.e. minor included)
+//dont change currentTask to -1 after completion of major tasks, only after completion of all tasks(i.e. minor included) -- check this out
 // send success messages in each route
 
+// see if objects inseide objects in mongoose get modified if we take them out and perform operations on it seperately
+
+//STATEMENTS
 // completed tasks are the no of major tasks done
+// I am not noting down the time of completion of minor tasks by any team
+// the completed time of a phase is defined as the point of time when the team enters the correct answer for the phase (NOT WHEN THEY COMPLETE ALL THE MAJOR AND MINOR TASKS)
+// dont make them idle after completion of major tasks, only after completion of all tasks(i.e. minor included)

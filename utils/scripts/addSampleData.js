@@ -4,8 +4,8 @@ import connectMongo from "../../config/db.js";
 import mongoose from "mongoose";
 import taskData from "../../data/taskData.js";
 
-async function addSampleData({ purge = false }) {
-  await connectMongo();
+export async function addSampleData({ purge = false }) {
+  // await connectMongo();
 
   if (purge) {
     await Team.deleteMany({});
@@ -29,11 +29,14 @@ async function addSampleData({ purge = false }) {
     });
 
     for (let j = 1; j <= 4; j++) {
+      const avatarOrder = randomAvatarOrder();
+
       const user = await User.create({
         username: "User" + userCount,
         email: "user" + userCount + "@gmail.com",
         password: "password",
         team: team._id,
+        avatar: sampleAvatars[avatarOrder[j - 1] - 1],
       });
       team.members.push(user._id);
       console.log("User" + userCount + " created successfully");
@@ -41,7 +44,19 @@ async function addSampleData({ purge = false }) {
     }
     await team.save();
   }
-  mongoose.connection.close();
+  // mongoose.connection.close();
 }
 
 addSampleData({ purge: true });
+
+function randomAvatarOrder() {
+  const avatarOrder = [1, 2, 3, 4];
+  
+  for (let i = values.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [values[i], values[j]] = [values[j], values[i]]; 
+  }
+  
+  return avatarOrder;
+}
+

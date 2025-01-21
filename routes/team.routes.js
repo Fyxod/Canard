@@ -10,8 +10,8 @@ import taskData from "../data/taskData.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 import isEventActive from "../middlewares/isEventActive.js";
 import { isValidObjectId } from "mongoose";
-import announceCompletion from "../utils/Announcement.js";
-import announceSingle from "../utils/Announcement.js";
+import announceCompletion from "../utils/Announcements.js";
+import announceSingle from "../utils/Announcements.js";
 
 const router = express.Router();
 
@@ -561,4 +561,3 @@ router.post(
     announceSingle(teamId, "rebuild");
   })
 );
- 
