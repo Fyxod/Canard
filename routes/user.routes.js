@@ -279,6 +279,7 @@ router.post(
       role: user.role,
       teamId: user.team,
     });
+    const team = Team.findById(user.team);
     res.cookie("userToken", userToken); // http true secure true all that
     return res.success(200, "Login successful", {
       userToken,
@@ -287,6 +288,9 @@ router.post(
         email: user.email,
         username: user.username,
         role: user.role,
+        teamName: team.name,
+
+        teamId: user.team,
       },
     });
   })
