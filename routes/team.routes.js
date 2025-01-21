@@ -85,17 +85,19 @@ router
   .get(
     checkAuth("user"),
     safeHandler(async (req, res) => {
+      // console.log(req.headers)
+      // console.log(req.user)
       const { teamId } = req.params;
       if (!isValidObjectId(teamId)) {
         throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
       }
-      if (req.user.role === "user" && req.user.teamId.toString() !== teamId) {
-        throw new ApiError(
-          403,
-          "You are not allowed to view this team",
-          "FORBIDDEN"
-        );
-      }
+      // if (req.user.role === "user" && req.user.teamId.toString() !== teamId) {
+      //   throw new ApiError(
+      //     403,
+      //     "You are not allowed to view this team",
+      //     "FORBIDDEN"
+      //   );
+      // }
 
       // I know I shoudnt be sending the users along with the team but just making things easier for the frontend devs
       const team = await Team.findById(teamId).populate({

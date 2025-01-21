@@ -24,12 +24,16 @@ export async function addSampleData({ purge = false }) {
 
     Object.keys(taskData).forEach((phase) => {
       Object.keys(taskData[phase]).forEach((task) => {
+
+        console.log(taskData[phase][task]?.title)
+
         if(task === "answer") return;
         team[phase].tasks.set(task, {
           status: "notStarted",
           completedAt: null,
           timeTaken: -1,
           type: taskData[phase][task].type,
+          title: taskData[phase][task].title,
         });
       });
     });

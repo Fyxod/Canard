@@ -28,6 +28,10 @@ const phaseSchema = new mongoose.Schema({
         enum: ["major", "minor"],
         required: true,
       },
+      title: {
+        type: String,
+        required: true,
+      },
     }),
     default: () => new Map(),
   },

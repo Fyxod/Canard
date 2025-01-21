@@ -272,7 +272,7 @@ router.post(
       throw new ApiError(401, "Invalid password", "INVALID_PASSWORD"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break
     }
 
-    const team = Team.findById(user.team);
+    const team = await Team.findById(user.team);
 
     const userToken = generateToken({
       id: user._id,
@@ -281,6 +281,7 @@ router.post(
       role: user.role,
       teamId: user.team,
       teamName: team.name,
+      callingCard: team.callingCard || "not set"
     });
     res.cookie("userToken", userToken); // http true secure true all that
     return res.success(200, "Login successful", {
