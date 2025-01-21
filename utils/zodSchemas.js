@@ -22,7 +22,7 @@ export const userRegistrationSchema = z.object({
 });
 
 export const userLoginSchema = z.object({
-  email: z.string().email({ message: "Enter a valid email address." }),
+  username: z.string({ required_error: "Username is required" }),
   password: z
     .string({ required_error: "Password is required." })
     .min(5, { message: "Password must be at least 5 characters long." }),
