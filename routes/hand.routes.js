@@ -9,7 +9,7 @@ const router = express.Router();
 router
   .route("/")
   .get(
-    checkAuth("admin"),
+    // checkAuth("admin"),
     safeHandler(async (req, res) => {
       const hands = await Hand.find();
       if (!hands || hands.length === 0) {
