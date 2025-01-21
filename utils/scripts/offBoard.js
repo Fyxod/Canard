@@ -1,5 +1,5 @@
 import Team from "../../models/team.model.js";
-import announceSingle from "../Announcements.js";
+import {announceSingle} from "../Announcements.js";
 import config from "../../config/config.js";
 
 export default async function offBoard(phaseValue) {

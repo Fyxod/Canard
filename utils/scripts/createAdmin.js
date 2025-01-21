@@ -7,11 +7,11 @@ dotenv.config();
 
 export default async function createAdmin({username, purge = false} = {}) {
   //   await connectMongo();
-  if (purge) {
-    await Admin.deleteMany({
-      role: "admin",
-    });
-  }
+//   if (purge) {
+//     await Admin.deleteMany({
+//       role: "admin",
+//     });
+//   }
   const password = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
   const newAdmin = await Admin.create({
     username: username,

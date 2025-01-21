@@ -1,5 +1,5 @@
-import { io } from "../app";
-import Team from "../models/team.model";
+import { io } from "../app.js";
+import Team from "../models/team.model.js";
 // may also send a mail to the admins confirming shit?
 
 export function announceSingle(teamId, message) {

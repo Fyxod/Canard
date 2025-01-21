@@ -10,8 +10,7 @@ import taskData from "../data/taskData.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 import isEventActive from "../middlewares/isEventActive.js";
 import { isValidObjectId } from "mongoose";
-import announceCompletion from "../utils/Announcements.js";
-import announceSingle from "../utils/Announcements.js";
+import { announceSingle } from "../utils/Announcements.js";
 
 const router = express.Router();
 
@@ -45,6 +44,7 @@ router
       const team = new Team({ name });
       Object.keys(taskData).forEach((phase) => {
         Object.keys(taskData[phase]).forEach((task) => {
+          if (task === "answer") return;
           team[phase].tasks.set(task, {
             status: "notStarted",
             completedAt: null,
@@ -158,7 +158,11 @@ router
     })
   );
 
-// for completing major tasks of the phase
+// SHIT STARTS
+// SHIT STARTS
+// SHIT STARTS
+// SHIT STARTS
+// SHIT STARTS
 router.route("/:teamId/:phaseNo/:taskId").post(
   // take a completed parameter too as there are multiple options in the schema
   checkAuth("admin"),
@@ -344,6 +348,12 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       else {
         phase.tasks[taskId].status = status;
       }
+
+      team[`phase${phaseNo}`] = phase;
+
+      await team.save();
+      announceSingle(team._id, "rebuild");
+      return res.success(200, "Task status updated successfully", { team });
     }
 
     // MINOR TASK STARTS HERE
@@ -439,7 +449,19 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         team.state = "idle";
         team.currentPhase = -1;
       }
+
+      team[`phase${phaseNo}`] = phase;
+
+      await team.save();
+      announceSingle(team._id, "rebuild");
+      return res.success(200, "Task status updated successfully", { team });
     }
+
+    throw new ApiError(
+      400,
+      "Something went wrong while updating the task\n Call Parth and tell him this",
+      "INVALID_TASK_TYPE"
+    );
   })
 );
 
@@ -555,9 +577,13 @@ router.post(
         team.phase1.timeTaken + team.phase2.timeTaken + team.phase3.timeTaken;
     }
 
-    await phase.save();
+    team[`phase${phaseNo}`] = phase;
+
+    await team.save();
 
     res.success(200, "Answer submitted successfully", { phase });
     announceSingle(teamId, "rebuild");
   })
 );
+
+export default router;

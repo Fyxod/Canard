@@ -16,10 +16,10 @@ export default async function createLeftRightHand({ purge = false } = {}) {
 
   await Hand.deleteMany({});
   const leftHand = await Hand.create({
-    hand: "left",
+    type: "left",
   });
   const rightHand = await Hand.create({
-    hand: "right",
+    type: "right",
   });
   console.log("Left and right hand created successfully");
   console.log(leftHand, rightHand);

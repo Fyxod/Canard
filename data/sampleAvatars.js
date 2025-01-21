@@ -4,3 +4,5 @@ const sampleAvatars = [
   "https://models.readyplayer.me/678891549d4ee5b5795aa00e.glb",
   "https://models.readyplayer.me/678891a87db94859385cbcd4.glb",
 ];
+
+export default sampleAvatars;

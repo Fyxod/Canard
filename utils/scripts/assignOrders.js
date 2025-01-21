@@ -45,8 +45,8 @@ function generateEqualPhaseAndTaskOrders(
   return orders;
 }
 
-async function assignOrders() {
-  await connectMongo();
+export default async function assignOrders() {
+  // await connectMongo();
   const teams = await Team.find({});
   if (!teams || teams.length === 0) {
     console.log("No teams found");
@@ -54,9 +54,9 @@ async function assignOrders() {
   }
   const teamCount = teams.length;
 
-  const phase1TaskCount = Object.keys(taskData.phase1).length;
-  const phase2TaskCount = Object.keys(taskData.phase2).length;
-  const phase3TaskCount = Object.keys(taskData.phase3).length;
+  const phase1TaskCount = 5; // the no of major tasks in phase 1
+  const phase2TaskCount = 5; // the no of major tasks in phase 2
+  const phase3TaskCount = 5; // the no of major tasks in phase 3
 
   const orders = generateEqualPhaseAndTaskOrders(
     teamCount,
@@ -84,7 +84,7 @@ async function assignOrders() {
   };
 
   await updateTeams();
-  mongoose.connection.close();
+  // mongoose.connection.close();
 }
 
-assignOrders();
+// assignOrders();
