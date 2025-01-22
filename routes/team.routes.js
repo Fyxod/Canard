@@ -394,6 +394,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
     // I wouldn't have created seperate if conditions for minor tasks and instead integrated this into the above logic but I was told about minor tasks too late so I don't want to mess with the above logic as there is very little time left and the code above is already too complicated
     else if (taskType === "minor") {
       const minorTaskId = taskId;
+      console.log("trace 20");
 
       // bruh so many conditions😂, I just kept putting them as they came to my mind. Most of them are useless or just a version of each other
 
@@ -455,21 +456,38 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       if (phase.tasks.get(minorTaskId).type !== "minor") {
         throw new ApiError(400, "Task is not a minor task", "TASK_NOT_MINOR");
       }
-
+      console.log("trace 21");
       const minorTask = phase.tasks.get(minorTaskId);
+      console.log("trace 22");
 
       if (status === "completed") {
+        if (minorTask.status === "completed") {
+          throw new ApiError(
+            400,
+            "Task has already been completed",
+            "TASK_COMPLETED"
+          );
+        }
+
+        console.log("trace 23");
         minorTask.status = "completed";
         minorTask.completedAt = getIstDate();
         minorTask.timeTaken = -2;
 
-        Hand.updateMany(
+        await Hand.updateMany(
           {},
-          { $inc: { health: -taskData[`phase${phaseNo}`][minorTaskId].points } }
+          {
+            $inc: {
+              health:
+                -taskData[`phase${phaseNo}`][parseInt(minorTaskId)].points,
+            },
+          }
         );
       }
+
       // if some other condition other than completed
       else {
+        console.log("trace 24");
         minorTask.status = status;
       }
 
@@ -477,8 +495,11 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
       if (
         phase.status === "completed" &&
-        Object.values(phase.tasks).every((task) => task.status === "completed") //check if this works, not sure
+        !Array.from(phase.tasks.values()).every(
+          (task) => task.status === "completed"
+        )
       ) {
+        console.log("trace 25");
         phase.status = "completedAll";
         team.state = "idle";
         team.currentPhase = -1;
@@ -501,6 +522,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
 // for giving answer of the phase (only possible after completing all the major tasks of the event)
 router.post(
+  // add completedAll for minor tasks completion before submitting answer
   "/:teamId/:phaseNo/",
   checkAuth("admin"),
   isEventActive,
@@ -575,10 +597,8 @@ router.post(
     }
 
     if (
-      !Object.values(phase.tasks).every(
-        (
-          task // check please
-        ) => (task.type === "major" ? task.status === "completed" : true)
+      !Array.from(phase.tasks.values()).every((task) =>
+        task.type === "major" ? task.status === "completed" : true
       )
     ) {
       throw new ApiError(
@@ -593,6 +613,16 @@ router.post(
     }
 
     phase.status = "completed";
+
+    // if the minor tasks have been completed as well
+    if (
+      !Array.from(phase.tasks.values()).every(
+        (task) => task.status === "completed"
+      )
+    ) {
+      phase.status = "completedAll";
+    }
+
     team.completedPhases = team.completedPhases + 1;
 
     // phase completed now obviously
