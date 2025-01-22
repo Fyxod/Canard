@@ -25,9 +25,9 @@ const config = {
   phaseInterval: 45 * 60 * 1000, // 45 minutes
   phaseStartTime: {
     // year month date hour minute second
-    1: new Date(2025, 0, 22, 14, 45, 0), // 1st Feb 2025, 2 PM
-    2: new Date(2025, 0, 22, 15, 0, 0), // 1st Feb 2025, 3 PM
-    3: new Date(2025, 0, 22, 15, 30, 0), // 1st Feb 2025, 4 PM
+    1: new Date(2025, 0, 23, 15, 0, 0), // 1st Feb 2025, 2 PM
+    2: new Date(2025, 0, 23, 35, 0, 0), // 1st Feb 2025, 3 PM
+    3: new Date(2025, 0, 23, 45, 30, 0), // 1st Feb 2025, 4 PM
     // 1: new Date(2025, 1, 1, 14, 0, 0), // 1st Feb 2025, 2 PM
     // 2: new Date(2025, 1, 1, 15, 0, 0), // 1st Feb 2025, 3 PM
     // 3: new Date(2025, 1, 1, 16, 0, 0), // 1st Feb 2025, 4 PM
