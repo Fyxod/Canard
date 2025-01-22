@@ -11,7 +11,7 @@ const router = express.Router();
 router
   .route("/")
   .get(
-    checkAuth("admin"),
+    // checkAuth("admin"),
     safeHandler(async (req, res) => {
       const settings = await Settings.findOne();
       if (!settings) {

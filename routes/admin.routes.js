@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import checkAuth from "../middlewares/authMiddleware.js";
 import Settings from "../models/settings.model.js";
 import getIstDate from "../utils/getIstDate.js";
+import { announceAll } from "../utils/Announcements.js";
 
 const router = express.Router();
 
@@ -68,8 +69,8 @@ router.post(
     if (!message) {
       return res.error(400, "message missing", "MISSING_DATA");
     }
-
-    await Settings.updateOne(
+    console.log("yes ia m reaching here");
+    await Settings.updateMany(
       {},
       {
         $push: {
@@ -80,8 +81,10 @@ router.post(
         },
       }
     );
+  
+    announceAll("notification");
 
-    return res.success(200, "Announcement sent successfully", { message });
+    res.success(200, "Announcement sent successfully", { message });
   })
 );
 

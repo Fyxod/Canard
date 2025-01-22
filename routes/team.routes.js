@@ -13,6 +13,7 @@ import { get, isValidObjectId } from "mongoose";
 import { announceSingle } from "../utils/Announcements.js";
 import getIstDate from "../utils/getIstDate.js";
 import Hand from "../models/hand.model.js";
+import powerUpsData from "../data/powerUpsData.js";
 
 const router = express.Router();
 
@@ -161,6 +162,37 @@ router
       return res.success(200, "Team deleted successfully", { team });
     })
   );
+
+router.patch(
+  "/:teamId/powerups",
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    const { teamId } = req.params;
+    const { powerups } = req.body;
+    if (!isValidObjectId(teamId)) {
+      throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+    }
+    if (!Array.isArray(powerups)) {
+      throw new ApiError(400, "Invalid powerups", "INVALID_POWERUPS");
+    }
+    const team = await Team.findById(teamId);
+    if (!team) {
+      throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+    }
+    const powerUpsArray = powerups.map((powerup) => {
+      return {
+        id: powerUpsData[powerup - 1].id,
+        title: powerUpsData[powerup - 1].title,
+        description: powerUpsData[powerup - 1].description,
+        credits: powerUpsData[powerup - 1].credits,
+      };
+    });
+
+    team.powerups = powerUpsArray;
+    await team.save();
+    return res.success(200, "Powerups updated successfully", { team });
+  })
+);
 
 // SHIT STARTS
 // SHIT STARTS
@@ -375,15 +407,14 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
       // condition not handled properly, do add more logic if this might be used
       else {
-        console.log("trace 5");
-        phase.tasks[taskId].status = status; // map get set
+        throw new ApiError(400, "Invalid status", "INVALID_STATUS");
       }
       console.log("trace 6");
       team[`phase${phaseNo}`] = phase;
 
       await team.save();
       announceSingle(team._id, "rebuild");
-      return res.success(200, "Task status updated successfully", { team });
+      res.success(200, "Task status updated successfully", { team });
     }
 
     // MINOR TASK STARTS HERE
@@ -487,8 +518,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
       // if some other condition other than completed
       else {
-        console.log("trace 24");
-        minorTask.status = status;
+        throw new ApiError(400, "Invalid status", "INVALID_STATUS");
       }
 
       phase.tasks.set(minorTaskId, minorTask);
@@ -511,12 +541,6 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       announceSingle(team._id, "rebuild");
       return res.success(200, "Task status updated successfully", { team });
     }
-
-    throw new ApiError(
-      400,
-      "Something went wrong while updating the task\n Call Parth and tell him this",
-      "INVALID_TASK_TYPE"
-    );
   })
 );
 
@@ -524,7 +548,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 router.post(
   // add completedAll for minor tasks completion before submitting answer
   "/:teamId/:phaseNo/",
-  checkAuth("admin"),
+  // checkAuth("admin"),
   isEventActive,
   safeHandler(async (req, res) => {
     let { teamId, phaseNo } = req.params;
