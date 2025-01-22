@@ -36,6 +36,21 @@ const settingsSchema = new mongoose.Schema(
         default: "notStarted",
       },
     },
+    announcements: {
+      type: [
+        {
+          message: {
+            type: String,
+            required: true,
+          },
+          time: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+      default: () => [],
+    },
   },
   {
     timestamps: true,

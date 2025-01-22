@@ -12,6 +12,7 @@ import isEventActive from "../middlewares/isEventActive.js";
 import { get, isValidObjectId } from "mongoose";
 import { announceSingle } from "../utils/Announcements.js";
 import getIstDate from "../utils/getIstDate.js";
+import Hand from "../models/hand.model.js";
 
 const router = express.Router();
 
@@ -180,7 +181,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
     if (/^-?\d+$/.test(phaseNo.trim()) && /^-?\d+$/.test(taskId.trim())) {
       phaseNo = parseInt(phaseNo.trim(), 10);
-      taskId = parseInt(taskId.trim(), 10);
+      // taskId = parseInt(taskId.trim(), 10);
     } else {
       throw new ApiError(
         400,
@@ -203,8 +204,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       throw new ApiError(400, "Invalid task id", "INVALID_TASK_ID");
     }
 
-    const taskType = taskData[`phase${phaseNo}`][taskId]?.type;
-
+    const taskType = taskData[`phase${phaseNo}`][parseInt(taskId)]?.type;
     if (taskType !== "major" && taskType !== "minor") {
       throw new ApiError(400, "Invalid task type", "INVALID_TASK_ID");
     }
@@ -218,7 +218,6 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       if (["completed", "inProgress", "notStarted"].indexOf(status) === -1) {
         throw new ApiError(400, "Invalid status", "INVALID_STATUS");
       }
-
       const team = await Team.findById(teamId);
       if (!team) {
         throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
@@ -263,7 +262,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
           "PHASE_COMPLETED"
         );
       }
-      if (phase.currentTask !== taskId) {
+      if (phase.currentTask !== parseInt(taskId)) {
         throw new ApiError(
           400,
           "Invalid task id.\nCurrent task is different",
@@ -280,9 +279,13 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       //   );
       // }
 
-      if (phase.tasks[taskId].type !== "major") {
+      // if (phase.tasks[taskId].type !== "major") {
+      //   throw new ApiError(400, "Task is not a major task", "TASK_NOT_MAJOR");
+      // }
+      if (phase.tasks.get(taskId).type !== "major") {
         throw new ApiError(400, "Task is not a major task", "TASK_NOT_MAJOR");
       }
+      console.log(phase.tasks.get(taskId).type);
 
       // READ FROM HERE //huh.. AGAIN!
 
@@ -290,38 +293,55 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         // increases the number of completed tasks in a phase by 1
         phase.completedTasks = phase.completedTasks + 1;
 
+        let task = phase.tasks.get(taskId);
+
         // sets the status of the task to completed
-        phase.tasks[taskId].status = "completed";
+        task.status = "completed";
 
         // completed now obviously
-        phase.tasks[taskId].completedAt = getIstDate();
+        task.completedAt = getIstDate();
 
+        console.log(
+          "health to be decreased",
+          taskData[`phase${phaseNo}`][parseInt(taskId)].points
+        );
         // decrease the health of the hands equally by the number of points assigned to those tasks
-        Hand.updateMany(
+        await Hand.updateMany(
           {},
-          { $inc: { health: -taskData[`phase${phaseNo}`][taskId].points } }
+          {
+            $inc: {
+              health: -taskData[`phase${phaseNo}`][parseInt(taskId)].points,
+            },
+          }
         );
 
         // if its the first task of the phase
         if (phase.completedTasks === 1) {
+          console.log("trace 1");
           // time taken is the time between now and the start of the phase as this is the first task of the phase
-          phase.tasks[taskId].timeTaken =
+          task.timeTaken =
             Date.now() -
             config.phaseStartTime[team.phaseOrder.indexOf(phaseNo) + 1];
 
           // set the current task to be the next task in the task order
           phase.currentTask = phase.taskOrder[phase.completedTasks];
-
+          console.log(phase.currentTask);
+          const currentTask = phase.tasks.get(phase.currentTask.toString());
+          console.log(currentTask);
           // setting the next task to be "inProgress"
-          phase.tasks[currentTask].status = "inProgress";
+          currentTask.status = "inProgress";
+          phase.tasks.set(phase.currentTask.toString(), currentTask);
         }
 
         // if all tasks in the phase have been completed
         else if (phase.completedTasks === phase.taskOrder.length) {
+          console.log("trace 2");
           // time taken is the time between now and the last task of the phase that was completed
-          phase.tasks[taskId].timeTaken =
-            Date.now() -
-            phase.tasks[phase.taskOrder[phase.completedTasks - 2]].completedAt;
+          task.timeTaken =
+            getIstDate() -
+            phase.tasks.get(
+              phase.taskOrder[phase.completedTasks - 2].toString()
+            ).completedAt;
 
           // All the major tasks are completed so setting the currentTask to be -1, minor tasks can also be done until the phase time is over
           phase.currentTask = -1;
@@ -332,26 +352,33 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
         // if its not the first or the last task of the phase
         else {
+          console.log("trace 3");
           // time taken is the time between now and the last task of the phase that was completed
-          phase.tasks[taskId].timeTaken =
-            Date.now() -
-            phase.tasks[phase.taskOrder[phase.completedTasks - 2]].completedAt;
+          task.timeTaken =
+            getIstDate() -
+            phase.tasks.get(
+              phase.taskOrder[phase.completedTasks - 2].toString()
+            ).completedAt;
 
           // set the current task to be the next task in the task order
           phase.currentTask = phase.taskOrder[phase.completedTasks];
-
+          const currentTask = phase.tasks.get(phase.currentTask.toString());
           // setting the next task to be "inProgress"
-          phase.tasks[currentTask].status = "inProgress";
+          currentTask.status = "inProgress";
+          phase.tasks.set(phase.currentTask.toString(), currentTask);
         }
+        console.log("trace 4");
+        phase.tasks.set(taskId, task);
       }
 
       // if the status is something other than 'completed'
 
       // condition not handled properly, do add more logic if this might be used
       else {
-        phase.tasks[taskId].status = status;
+        console.log("trace 5");
+        phase.tasks[taskId].status = status; // map get set
       }
-
+      console.log("trace 6");
       team[`phase${phaseNo}`] = phase;
 
       await team.save();
@@ -425,14 +452,16 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         );
       }
 
-      if (phase.tasks[minorTaskId].type !== "minor") {
+      if (phase.tasks.get(minorTaskId).type !== "minor") {
         throw new ApiError(400, "Task is not a minor task", "TASK_NOT_MINOR");
       }
 
+      const minorTask = phase.tasks.get(minorTaskId);
+
       if (status === "completed") {
-        phase.tasks[minorTaskId].status = "completed";
-        phase.tasks[minorTaskId].completedAt = getIstDate();
-        phase.tasks[minorTaskId].timeTaken = -2;
+        minorTask.status = "completed";
+        minorTask.completedAt = getIstDate();
+        minorTask.timeTaken = -2;
 
         Hand.updateMany(
           {},
@@ -441,8 +470,10 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       }
       // if some other condition other than completed
       else {
-        phase.tasks[minorTaskId].status = status;
+        minorTask.status = status;
       }
+
+      phase.tasks.set(minorTaskId, minorTask);
 
       if (
         phase.status === "completed" &&
@@ -470,11 +501,11 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
 // for giving answer of the phase (only possible after completing all the major tasks of the event)
 router.post(
-  "/:teamId/:phaseNo/answer",
+  "/:teamId/:phaseNo/",
   checkAuth("admin"),
   isEventActive,
   safeHandler(async (req, res) => {
-    const { teamId, phaseNo } = req.params;
+    let { teamId, phaseNo } = req.params;
     const { answer } = req.body;
 
     if (!isValidObjectId(teamId)) {

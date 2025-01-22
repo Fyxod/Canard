@@ -101,3 +101,4 @@ server.listen(config.server.port, () => {
 // I am not noting down the time of completion of minor tasks by any team
 // the completed time of a phase is defined as the point of time when the team enters the correct answer for the phase (NOT WHEN THEY COMPLETE ALL THE MAJOR AND MINOR TASKS)
 // dont make team idle after completion of major tasks, only after completion of all tasks(i.e. minor included)
+// Allow dynamic task changing and completion

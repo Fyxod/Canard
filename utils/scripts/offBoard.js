@@ -26,7 +26,7 @@ export default async function offBoard(phaseValue) {
       // changing the phase status to failed if it is still in progress
       if (team[currentPhase].status === "inProgress") {
         team[currentPhase].status = "failed";
-        team[currentPhase].completedAt = -1;
+        team[currentPhase].completedAt = null;
         team[currentPhase].timeTaken =
           Date.now() - config.phaseStartTime[phaseValue]; // phaseValue = team.phaseOrder.indexOf(phaseNo) + 1
         team.completedPhases = team.completedPhases + 1;
@@ -47,7 +47,7 @@ export default async function offBoard(phaseValue) {
       await team.save();
       console.log(`Team ${team.name} is now idle`);
       announceSingle(team._id, "rebuild");
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 200));
     }
   }
 }

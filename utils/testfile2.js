@@ -1,13 +1,5 @@
-const now = new Date();
-const istFormatter = new Intl.DateTimeFormat('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-});
+import config from "../config/config.js";
+import getIstDate from "./getIstDate.js";
 
-const istTime = istFormatter.format(now);
-console.log(istTime);
+console.log(Date.now() - config.phaseStartTime[1]);
+console.log(getIstDate() - config.phaseStartTime[1]);

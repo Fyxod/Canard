@@ -4,6 +4,8 @@ import Admin from "../models/admin.model.js";
 import { generateToken } from "../utils/jwtFuncs.js";
 import bcrypt from "bcrypt";
 import checkAuth from "../middlewares/authMiddleware.js";
+import Settings from "../models/settings.model.js";
+import getIstDate from "../utils/getIstDate.js";
 
 const router = express.Router();
 
@@ -57,5 +59,30 @@ router
       return res.success(201, "Admin created successfully", { admin });
     })
   );
+
+router.post(
+  "/announce",
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    const { message } = req.body;
+    if (!message) {
+      return res.error(400, "message missing", "MISSING_DATA");
+    }
+
+    await Settings.updateOne(
+      {},
+      {
+        $push: {
+          announcements: {
+            message,
+            time: getIstDate(),
+          },
+        },
+      }
+    );
+
+    return res.success(200, "Announcement sent successfully", { message });
+  })
+);
 
 export default router;
