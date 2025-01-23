@@ -3,6 +3,7 @@ import checkAuth from "../middlewares/authMiddleware.js";
 import { safeHandler } from "../middlewares/safeHandler.js";
 import User from "../models/user.model.js";
 import {
+  teamRegistrationSchema,
   userLoginSchema,
   userRegistrationSchema,
 } from "../utils/zodSchemas.js";
@@ -63,6 +64,8 @@ router
         role: "user",
       });
 
+      console.log(user);
+
       const team = await Team.findOne({ name: fields.teamName });
       if (!team) {
         await User.findByIdAndDelete(user._id);
@@ -72,6 +75,8 @@ router
           "INVALID_TEAM_ID"
         );
       }
+
+      console.log(team);
       if (team.members.length >= 4) {
         await User.findByIdAndDelete(user._id);
         throw new ApiError(400, "Team is full", "TEAM_FULL");
@@ -85,8 +90,9 @@ router
         },
         { new: true }
       );
-
+      console.log(team._id);
       user.team = team._id;
+      await user.save();
 
       return res.success(201, "User created successfully", {
         userId: user._id,
@@ -269,6 +275,7 @@ router.post(
   safeHandler(async (req, res) => {
     const { username, password } = userLoginSchema.parse(req.body);
     const user = await User.findOne({ username });
+    console.log(user);
     if (!user) {
       throw new ApiError(404, "User not found", "USER_NOT_FOUND"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break
     }
@@ -277,8 +284,8 @@ router.post(
     if (!validPassword) {
       throw new ApiError(401, "Invalid password", "INVALID_PASSWORD"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break
     }
-
     const team = await Team.findById(user.team);
+    console.log(team);
 
     const userToken = generateToken({
       id: user._id,
