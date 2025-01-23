@@ -16,7 +16,6 @@ import settingsRoutes from "./routes/settings.routes.js";
 import handRoutes from "./routes/hand.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import getIstDate from "./utils/getIstDate.js";
-import extraRoutes from "./routes/extraRoutes.js";
 
 console.log(getIstDate());
 
@@ -59,7 +58,7 @@ app.use("/user", userRoutes);
 app.use("/settings", settingsRoutes);
 app.use("/hand", handRoutes);
 app.use("/admin", adminRoutes);
-app.use("/", extraRoutes);
+// app.use("/", extraRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);

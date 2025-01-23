@@ -7,18 +7,24 @@ export const teamRegistrationSchema = z.object({
     .max(50, {
       message: "Team name should not be more than 50 characters long",
     }),
+  callingCard: z
+    .number({ required_error: "Calling card is required" })
+    .min(1, { message: "Calling card should be atleast 1" })
+    .max(10, { message: "Calling card should not be more than 10" }),
 });
 
 export const userRegistrationSchema = z.object({
   username: z
     .string({ required_error: "Username is required" })
     .min(2, { message: "Username should be atleast 2 characters long" })
-    .max(50, { message: "Username should not be more than 50 characters long" }),
+    .max(50, {
+      message: "Username should not be more than 50 characters long",
+    }),
   email: z.string({ required_error: "Email is required" }).email(),
   password: z
     .string({ required_error: "Password is required" })
     .min(5, { message: "Password should be atleast 5 characters long" }),
-  teamId: z.string({ required_error: "Team id is required" }),
+  teamName: z.string({ required_error: "Team name is required" }),
 });
 
 export const userLoginSchema = z.object({

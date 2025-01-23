@@ -113,9 +113,8 @@ const teamSchema = new mongoose.Schema(
       default: "idle",
     },
     callingCard: {
-      type: String,
-      default:
-        "https://res.cloudinary.com/dimesumyw/image/upload/v1737565199/callingone_ylssgb.gif",
+      type: Number,
+      default: 0,
     },
     powerups: {
       type: [

@@ -34,7 +34,6 @@ router
           Object.keys(taskData[`phase${i}`]).forEach((task) => {
             if (task === "answer") return;
             let taskObj = tasks[task.toString()];
-            console.log("taskObj", taskObj);
             taskObj["title"] = taskData[`phase${i}`][task].title;
             taskObj["description"] = taskData[`phase${i}`][task].description;
             taskObj["points"] = taskData[`phase${i}`][task].points;
@@ -54,7 +53,7 @@ router
   .post(
     isRegistrationActive, // check if registration is active
     safeHandler(async (req, res) => {
-      const { name } = teamRegistrationSchema.parse(req.body);
+      const { name, callingCard } = teamRegistrationSchema.parse(req.body);
       const teamExists = await Team.findOne({ name });
       if (teamExists) {
         throw new ApiError(
@@ -64,7 +63,7 @@ router
         );
       }
 
-      const team = new Team({ name });
+      const team = new Team({ name, callingCard });
       Object.keys(taskData).forEach((phase) => {
         Object.keys(taskData[phase]).forEach((task) => {
           if (task === "answer") return;
@@ -123,10 +122,12 @@ router
       // }
 
       // I know I shoudnt be sending the users along with the team but just making things easier for the frontend devs
-      const team = await Team.findById(teamId).populate({
-        path: "members",
-        select: "-password",
-      }).lean();
+      const team = await Team.findById(teamId)
+        .populate({
+          path: "members",
+          select: "-password",
+        })
+        .lean();
       if (!team) {
         throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
       }
@@ -143,7 +144,6 @@ router
         Object.keys(taskData[`phase${i}`]).forEach((task) => {
           if (task === "answer") return;
           let taskObj = tasks[task.toString()];
-          console.log("taskObj", taskObj);
           taskObj["title"] = taskData[`phase${i}`][task].title;
           taskObj["description"] = taskData[`phase${i}`][task].description;
           taskObj["points"] = taskData[`phase${i}`][task].points;
@@ -207,12 +207,11 @@ router
     })
   );
 
-  function parseBoolean(value) {
-    if (value === "true") return true;
-    if (value === "false") return false;
-    return value;
-  }
-  
+function parseBoolean(value) {
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return value;
+}
 
 router.patch(
   "/:teamId/:phaseNo/:taskId/hint",
@@ -580,7 +579,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       team[`phase${phaseNo}`] = phase;
 
       await team.save();
-      announceSingle(team._id, "rebuild");
+      announceSingle(team._id, { type: "completion", message:`Your task ${taskData[`phase${phaseNo}`][taskId].title} of phase ${phaseNo} is completed` });
       res.success(200, "Task status updated successfully", { team });
     }
 

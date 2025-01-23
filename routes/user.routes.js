@@ -34,9 +34,13 @@ router
     safeHandler(async (req, res) => {
       let fields = userRegistrationSchema.parse(req.body);
       // username, email, password, teamId
-      if (!isValidObjectId(fields.teamId)) {
-        throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+
+      if (typeof fields.teamName !== "string" || fields.teamName === "") {
+        throw new ApiError(400, "Invalid Team Name", "INVALID_TEAM_NAME");
       }
+      // if (!)) {
+      //   throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+      // }
 
       const userExists = await User.findOne({
         $or: [{ email: fields.email }, { username: fields.username }],
@@ -51,20 +55,20 @@ router
       }
 
       fields.password = await bcrypt.hash(fields.password, 10);
-      fields.team = fields.teamId;
-      delete fields.teamId;
+      // fields.team = fields.teamId;
+      // delete fields.teamId;
 
       const user = await User.create({
         ...fields,
         role: "user",
       });
 
-      const team = await Team.findById(fields.team);
+      const team = await Team.findOne({ name: fields.teamName });
       if (!team) {
         await User.findByIdAndDelete(user._id);
         throw new ApiError(
           500,
-          "Team with this id not found",
+          "Team with this name not found",
           "INVALID_TEAM_ID"
         );
       }
@@ -74,13 +78,15 @@ router
       }
 
       //doing atomic operation instead of team.members.push(user._id) to avoid race conditions although it's not a big deal here and I probably shoudn't do this as it won't happen here but who the fuck cares
-      await Team.findByIdAndUpdate(
-        fields.team,
+      await Team.findOneAndUpdate(
+        { name: fields.teamName },
         {
           $push: { members: user._id },
         },
         { new: true }
       );
+
+      user.team = team._id;
 
       return res.success(201, "User created successfully", {
         userId: user._id,
@@ -281,7 +287,7 @@ router.post(
       role: user.role,
       teamId: user.team,
       teamName: team.name,
-      callingCard: team.callingCard || "not set"
+      callingCard: team.callingCard || "not set",
     });
     res.cookie("userToken", userToken); // http true secure true all that
     return res.success(200, "Login successful", {
