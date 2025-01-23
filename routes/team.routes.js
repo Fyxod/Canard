@@ -22,10 +22,30 @@ router
   .get(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
-      const teams = await Team.find();
+      let teams = await Team.find().lean();
       if (!teams || teams.length === 0) {
         throw new ApiError(404, "No team was found", "NO_TEAMS_FOUND");
       }
+
+      teams = teams.map((team) => {
+        for (let i = 1; i <= 3; i++) {
+          let tasks = team[`phase${i}`]["tasks"];
+
+          Object.keys(taskData[`phase${i}`]).forEach((task) => {
+            if (task === "answer") return;
+            let taskObj = tasks[task.toString()];
+            console.log("taskObj", taskObj);
+            taskObj["title"] = taskData[`phase${i}`][task].title;
+            taskObj["description"] = taskData[`phase${i}`][task].description;
+            taskObj["points"] = taskData[`phase${i}`][task].points;
+            taskObj["hint"] = taskData[`phase${i}`][task].hint;
+            tasks[task.toString()] = taskObj;
+          });
+
+          team[`phase${i}`]["tasks"] = tasks;
+        }
+        return team;
+      });
 
       return res.success(200, "All teams successfully fetched", { teams });
     })
@@ -53,6 +73,7 @@ router
             completedAt: null,
             timeTaken: -1,
             type: taskData[phase][task].type,
+            hintUsed: false,
           });
         });
       });
@@ -105,9 +126,32 @@ router
       const team = await Team.findById(teamId).populate({
         path: "members",
         select: "-password",
-      });
+      }).lean();
       if (!team) {
         throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+      }
+      for (let i = 1; i <= 3; i++) {
+        let tasks = team[`phase${i}`]["tasks"];
+        // for(let j= 1; j <= Object.keys(taskData[`phase${i}`]).length -1; j++){
+        //   let task = tasks.get(j.toString());
+        //   task.title = taskData[`phase${i}`][j].title;
+        //   task.description = taskData[`phase${i}`][j].description;
+        //   task.points = taskData[`phase${i}`][j].points;
+        //   tasks.set(j.toString(), task);
+        // }
+
+        Object.keys(taskData[`phase${i}`]).forEach((task) => {
+          if (task === "answer") return;
+          let taskObj = tasks[task.toString()];
+          console.log("taskObj", taskObj);
+          taskObj["title"] = taskData[`phase${i}`][task].title;
+          taskObj["description"] = taskData[`phase${i}`][task].description;
+          taskObj["points"] = taskData[`phase${i}`][task].points;
+          taskObj["hint"] = taskData[`phase${i}`][task].hint;
+          tasks[task.toString()] = taskObj;
+        });
+
+        team[`phase${i}`]["tasks"] = tasks;
       }
 
       return res.success(200, "Team successfully fetched", { team });
@@ -162,6 +206,129 @@ router
       return res.success(200, "Team deleted successfully", { team });
     })
   );
+
+  function parseBoolean(value) {
+    if (value === "true") return true;
+    if (value === "false") return false;
+    return value;
+  }
+  
+
+router.patch(
+  "/:teamId/:phaseNo/:taskId/hint",
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    let { teamId, phaseNo, taskId } = req.params;
+    let { hintUsed } = req.body;
+
+    hintUsed = parseBoolean(hintUsed);
+
+    if (typeof hintUsed !== "boolean") {
+      throw new ApiError(400, "Invalid hintUsed", "INVALID_HINTUSED");
+    }
+
+    if (!isValidObjectId(teamId)) {
+      throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+    }
+
+    if (/^-?\d+$/.test(phaseNo.trim()) && /^-?\d+$/.test(taskId.trim())) {
+      phaseNo = parseInt(phaseNo.trim(), 10);
+      // taskId = parseInt(taskId.trim(), 10);
+    } else {
+      throw new ApiError(
+        400,
+        "Invalid phase number or task id",
+        "INVALID_PHASE_NUMBER_OR_TASK_ID"
+      );
+    }
+
+    if (phaseNo < 1 || phaseNo > 3) {
+      throw new ApiError(
+        400,
+        "Invalid phase number.\nCan only be 1,2,3",
+        "INVALID_PHASE_NUMBER"
+      );
+    }
+    if (
+      taskId.toString().length !== 3 ||
+      parseInt(taskId.toString()[0]) !== phaseNo
+    ) {
+      throw new ApiError(400, "Invalid task id", "INVALID_TASK_ID");
+    }
+
+    const taskType = taskData[`phase${phaseNo}`][parseInt(taskId)]?.type;
+    if (taskType !== "major" && taskType !== "minor") {
+      throw new ApiError(400, "Invalid task type", "INVALID_TASK_ID");
+    }
+
+    const team = await Team.findById(teamId);
+    if (!team) {
+      throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+    }
+
+    if (team.currentPhase === -1) {
+      throw new ApiError(400, "Canard not started yet", "GAME_NOT_STARTED");
+    }
+    if (team.currentPhase !== phaseNo) {
+      throw new ApiError(
+        400,
+        "Invalid phase number.\nCurrent phase is different",
+        "INVALID_PHASE_NUMBER"
+      );
+    }
+
+    if (team.currentPhase === -1) {
+      throw new ApiError(400, "Canard not started yet", "GAME_NOT_STARTED");
+    }
+    if (team.currentPhase !== phaseNo) {
+      throw new ApiError(
+        400,
+        "Invalid phase number.\nCurrent phase is different",
+        "INVALID_PHASE_NUMBER"
+      );
+    }
+
+    const phase = team[`phase${phaseNo}`];
+
+    if (!phase) {
+      throw new ApiError(404, "Phase not found", "PHASE_NOT_FOUND");
+    }
+    // if (phase.status === "completed") {
+    //   throw new ApiError(
+    //     400,
+    //     "Phase has already been completed",
+    //     "PHASE_COMPLETED"
+    //   );
+    // }
+
+    if (team.state === "blocked") {
+      throw new ApiError(400, "Team is blocked", "TEAM_BLOCKED");
+    }
+    if (team.state === "idle") {
+      throw new ApiError(
+        400,
+        "No phase currently assigned to team",
+        "TEAM_IDLE"
+      );
+    }
+
+    if (taskType === "major" && phase.currentTask !== parseInt(taskId)) {
+      throw new ApiError(
+        400,
+        "Invalid task id.\nCurrent task is different",
+        "INVALID_TASK_ID"
+      );
+    }
+
+    const task = phase.tasks.get(taskId);
+    task.hintUsed = hintUsed;
+    phase.tasks.set(taskId, task);
+    team[`phase${phaseNo}`] = phase;
+    await team.save();
+
+    res.success(200, "Hint status updated successfully", { team });
+  })
+);
 
 router.patch(
   "/:teamId/powerups",
