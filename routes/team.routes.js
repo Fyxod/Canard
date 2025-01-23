@@ -689,6 +689,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       }
 
       phase.tasks.set(minorTaskId, minorTask);
+      phase.minorCompletedTasks = phase.minorCompletedTasks + 1;
 
       if (
         phase.status === "completed" &&

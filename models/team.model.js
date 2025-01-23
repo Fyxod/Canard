@@ -55,6 +55,10 @@ const phaseSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  minorCompletedTasks: {
+    type: Number,
+    default: 0,
+  },
   status: {
     type: String,
     enum: ["completed", "failed", "inProgress", "notStarted", "completedAll"],
