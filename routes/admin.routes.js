@@ -81,8 +81,8 @@ router.post(
         },
       }
     );
-  
-    announceAll("notification");
+
+    announceAll({ type: "notification", message });
 
     res.success(200, "Announcement sent successfully", { message });
   })
