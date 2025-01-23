@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import taskData from "../../data/taskData.js";
 import sampleAvatars from "../../data/sampleAvatars.js";
 import bcrypt from "bcrypt";
+import callingCards from "../../data/callingCardData.js";
 
 export async function addSampleData({ purge = false }) {
   // await connectMongo();
@@ -20,6 +21,7 @@ export async function addSampleData({ purge = false }) {
   for (let i = 1; i <= 20; i++) {
     const team = await Team.create({
       name: "Team " + i,
+      callingCard:callingCards[1]
     });
 
     Object.keys(taskData).forEach((phase) => {

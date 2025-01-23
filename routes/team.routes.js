@@ -14,6 +14,7 @@ import { announceSingle } from "../utils/Announcements.js";
 import getIstDate from "../utils/getIstDate.js";
 import Hand from "../models/hand.model.js";
 import powerUpsData from "../data/powerUpsData.js";
+import callingCards from "../data/callingCardData.js";
 
 const router = express.Router();
 
@@ -63,7 +64,7 @@ router
         );
       }
 
-      const team = new Team({ name, callingCard });
+      const team = new Team({ name, callingCard: callingCards[parseInt(callingCard)] });
       Object.keys(taskData).forEach((phase) => {
         Object.keys(taskData[phase]).forEach((task) => {
           if (task === "answer") return;
@@ -133,13 +134,6 @@ router
       }
       for (let i = 1; i <= 3; i++) {
         let tasks = team[`phase${i}`]["tasks"];
-        // for(let j= 1; j <= Object.keys(taskData[`phase${i}`]).length -1; j++){
-        //   let task = tasks.get(j.toString());
-        //   task.title = taskData[`phase${i}`][j].title;
-        //   task.description = taskData[`phase${i}`][j].description;
-        //   task.points = taskData[`phase${i}`][j].points;
-        //   tasks.set(j.toString(), task);
-        // }
 
         Object.keys(taskData[`phase${i}`]).forEach((task) => {
           if (task === "answer") return;
@@ -705,7 +699,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       team[`phase${phaseNo}`] = phase;
 
       await team.save();
-      announceSingle(team._id, "rebuild");
+      announceSingle(team._id, { type: "completion", message:`Your task ${taskData[`phase${phaseNo}`][taskId].title} of phase ${phaseNo} is completed` });
       return res.success(200, "Task status updated successfully", { team });
     }
   })
