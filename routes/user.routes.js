@@ -306,6 +306,7 @@ router.post(
         role: user.role,
         teamName: team.name,
         teamId: user.team,
+        avatar: user.avatar || null,
       },
     });
   })
