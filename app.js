@@ -115,3 +115,5 @@ server.listen(config.server.port, () => {
 // Allow dynamic task changing and completion
 
 // shaders cache karne hain before rebuilding the app
+
+//email registration template

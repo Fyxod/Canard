@@ -13,6 +13,7 @@ import bcrypt from "bcrypt";
 import Team from "../models/team.model.js";
 import { generateToken } from "../utils/jwtFuncs.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
+import Game from "../models/game.model.js";
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router
     isRegistrationActive,
     safeHandler(async (req, res) => {
       let fields = userRegistrationSchema.parse(req.body);
-      // username, email, password, teamId
+      console.log(fields)
 
       if (typeof fields.teamName !== "string" || fields.teamName === "") {
         throw new ApiError(400, "Invalid Team Name", "INVALID_TEAM_NAME");
@@ -64,7 +65,7 @@ router
         role: "user",
       });
 
-      console.log(user);
+      console.log("printing user",user);
 
       const team = await Team.findOne({ name: fields.teamName });
       if (!team) {
@@ -309,7 +310,9 @@ router.post(
     if (!validPassword) {
       throw new ApiError(401, "Invalid password", "INVALID_PASSWORD"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break
     }
+    console.log(user.team);
     const team = await Team.findById(user.team);
+    console.log(team);
     console.log(team);
 
     const userToken = generateToken({

@@ -9,7 +9,7 @@ import config from "../config/config.js";
 import taskData from "../data/taskData.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 import isEventActive from "../middlewares/isEventActive.js";
-import { get, isValidObjectId } from "mongoose";
+import { isValidObjectId } from "mongoose";
 import { announceSingle } from "../utils/Announcements.js";
 import getIstDate from "../utils/getIstDate.js";
 import Hand from "../models/hand.model.js";
@@ -54,7 +54,8 @@ router
   .post(
     isRegistrationActive, // check if registration is active
     safeHandler(async (req, res) => {
-      const { name, callingCard } = teamRegistrationSchema.parse(req.body);
+      let { name, callingCard } = req.body;
+      callingCard = parseInt(callingCard);
       const teamExists = await Team.findOne({ name });
       if (teamExists) {
         throw new ApiError(
