@@ -155,11 +155,15 @@ router
   )
 
   .patch(
-    checkAuth("admin"),
+    checkAuth("user"),
     safeHandler(async (req, res) => {
       const { userId } = req.params;
       if (!isValidObjectId(userId)) {
         throw new ApiError(400, "Invalid user id", "INVALID_USER_ID");
+      }
+
+      if(req.user.role === "user" && req.user.id.toString() !== userId) {
+        throw new ApiError(403, "You are not allowed to update this user", "FORBIDDEN");
       }
 
       const updates = userUpdateSchema.parse(req.body);
