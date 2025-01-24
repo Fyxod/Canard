@@ -45,7 +45,36 @@
 <body>
   <h1>Team List</h1>
   <% for(let team of teams){ %>
-    <button class="team-button"><%= team.name %></button>
+    <button type="submit" class="team-button" data-teamId="<%= team._id %>"><%= team.name %></button>
     <% } %>
 </body>
+
+<script>
+    const teamButtons = document.querySelectorAll('.team-button');
+  
+    teamButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const teamId = button.getAttribute('data-teamId');
+  
+        // Create a form dynamically
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/game/teams';
+  
+        // Create an input element for the teamId
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'teamId';
+        input.value = teamId;
+  
+        // Append input to the form
+        form.appendChild(input);
+  
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+      });
+    });
+  </script>
+  
 </html>

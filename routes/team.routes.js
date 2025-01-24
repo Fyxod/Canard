@@ -325,13 +325,18 @@ router.patch(
 
 router.patch(
   "/:teamId/powerups",
-  checkAuth("admin"),
+  checkAuth("user"),
   safeHandler(async (req, res) => {
     const { teamId } = req.params;
     const { powerups } = req.body;
     if (!isValidObjectId(teamId)) {
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
     }
+
+    if(req.user.teamId !== teamId){
+      throw new ApiError('401', "You are not a user of this team", "UNAUTHORISED")
+    }
+
     if (!Array.isArray(powerups)) {
       throw new ApiError(400, "Invalid powerups", "INVALID_POWERUPS");
     }
@@ -339,6 +344,9 @@ router.patch(
     if (!team) {
       throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
     }
+
+    // add credit minusing
+
     const powerUpsArray = powerups.map((powerup) => {
       return {
         id: powerUpsData[powerup - 1].id,

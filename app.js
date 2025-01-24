@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
 //utils
 import sendErrorMail from "./utils/sendErrorMail.js";
 import responseHandler from "./middlewares/responseHandler.js";
@@ -45,6 +46,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 app.use(responseHandler);
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -52,6 +54,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./public/views"));
 
 app.use((req, res, next) => {
+  console.log(req.headers)
   console.log("printing body", req.body)
   console.log(req.url, req.method);
   next();

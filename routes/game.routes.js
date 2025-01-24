@@ -3,7 +3,7 @@ import { safeHandler } from "../middlewares/safeHandler.js";
 import Admin from "../models/admin.model.js";
 import Team from "../models/team.model.js";
 import bcrypt from "bcrypt";
-
+import ApiError from "../utils/errorClass.js";
 import express from "express";
 import { generateToken } from "../utils/jwtFuncs.js";
 import User from "../models/user.model.js";
@@ -61,25 +61,19 @@ router
   .post(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
-      const { teamName } = req.body;
-      if (!teamName) {
-        throw new ApiError(400, "Invalid team name", "INVALID_TEAM_NAME");
+      const { teamId } = req.body;
+      if (!teamId) {
+        throw new ApiError(400, "Please provide teamId", "TEAM_ID_REQUIRED");
       }
 
-      const team = await Team.findOne({ name: teamName });
+      const team = await Team.findById(teamId);
       if (!team) {
         throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
       }
 
-      res.cookie("teamId", team._id, {
-        // httpOnly: true,
-        // sameSite: "strict",
-      });
-      res.cookie("teamName", team.name, {
-        // httpOnly: true,
-        // sameSite: "strict",
-      });
-
+      res.cookie("teamId", team._id);
+      res.cookie("teamName", team.name);
+      //   console.log(team.name);
       return res.redirect(`/game/users`);
     })
   );
@@ -87,6 +81,7 @@ router
 router.route("/users").get(
   checkAuth("admin"),
   safeHandler(async (req, res) => {
+    console.log(req.cookies);
     const teamId = req.cookies.teamId;
     const teamName = req.cookies.teamName;
     if (!teamId || !teamName) {

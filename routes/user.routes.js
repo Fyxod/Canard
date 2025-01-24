@@ -166,7 +166,7 @@ router
         throw new ApiError(403, "You are not allowed to update this user", "FORBIDDEN");
       }
 
-      const updates = userUpdateSchema.parse(req.body);
+      const updates = req.body;
 
       const filteredUpdates = Object.fromEntries(
         Object.entries(updates).filter(([_, value]) => value != null)
@@ -332,6 +332,7 @@ router.post(
         teamName: team.name,
         teamId: user.team,
         avatar: user.avatar || null,
+        callingCard: team.callingCard || 'not set'
       },
     });
   })
