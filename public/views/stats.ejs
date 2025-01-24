@@ -44,8 +44,9 @@
 </head>
 <body>
   <h1><%= username %> - <%= teamName %></h1>
-  <% for(let game of games){ %>
-  <button class="team-button" data-gameKey="<%= game.key %>"><%= game.title %></button>
+  <h1><%= game.title%></h1>
+  <% for(let stat of game.stats){ %>
+  <button class="team-button" data-statKey="<%= stat.key %>"><%= stat.title %></button>
   <% } %>
 </body>
 
@@ -54,7 +55,7 @@
   
     teamButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const gameKey = button.getAttribute('data-gameKey');
+        const userId = button.getAttribute('data-gameKey');
   
         const form = document.createElement('form');
         form.method = 'POST';

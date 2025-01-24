@@ -6,6 +6,7 @@ import taskData from "../../data/taskData.js";
 import sampleAvatars from "../../data/sampleAvatars.js";
 import bcrypt from "bcrypt";
 import callingCards from "../../data/callingCardData.js";
+import Game from "../../models/game.model.js";
 
 export async function addSampleData({ purge = false }) {
   // await connectMongo();
@@ -43,17 +44,23 @@ export async function addSampleData({ purge = false }) {
     for (let j = 1; j <= 4; j++) {
       const avatarOrder = randomAvatarOrder();
 
-      const newGameStats = await Game.create({});
-
       const user = await User.create({
         username: "User" + userCount,
         email: "user" + userCount + "@gmail.com",
         password: hash,
         team: team._id,
         avatar: sampleAvatars[avatarOrder[j - 1] - 1],
-        gameStats: newGameStats._id,
       });
+
+      const newGameStats = await Game.create({
+        user: user._id,
+        team: team._id,
+      });
+
+      user.gameStats = newGameStats._id;
+
       team.members.push(user._id);
+      await user.save();
       console.log("User" + userCount + " created successfully");
       userCount++;
     }

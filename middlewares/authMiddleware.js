@@ -41,6 +41,9 @@ export default function checkAuth(role) { // role = minimum access level require
         if (!payload) {
             return res.error(401, 'Invalid or expired token', 'UNAUTHORIZED');
         }
+
+        console.log("PRINTING PRIORITY",config.priority[payload.role] < config.priority[role])
+
         if (role && (!(payload.role in config.priority) || config.priority[payload.role] < config.priority[role])) {
             return res.error(403, 'Unauthorized access', 'FORBIDDEN');
         }

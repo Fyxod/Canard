@@ -7,6 +7,8 @@ import ApiError from "../utils/errorClass.js";
 import express from "express";
 import { generateToken } from "../utils/jwtFuncs.js";
 import User from "../models/user.model.js";
+import Game from "../models/game.model.js";
+import { gamesList, schemaKeys } from "../data/gamesData.js";
 
 const router = express.Router();
 
@@ -78,23 +80,82 @@ router
     })
   );
 
-router.route("/users").get(
+router
+  .route("/users")
+  .get(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      console.log(req.cookies);
+      const teamId = req.cookies.teamId;
+      const teamName = req.cookies.teamName;
+      if (!teamId || !teamName) {
+        throw new ApiError(400, "Team not found", "TEAM_NOT_FOUND");
+      }
+
+      const users = await User.find({ team: teamId }).select("-password");
+      if (!users || users.length === 0) {
+        throw new ApiError(404, "No user was found", "NO_USERS_FOUND");
+      }
+
+      res.render("users", { users, teamName });
+    })
+  )
+  .post(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      const { userId } = req.body;
+      if (!userId) {
+        throw new ApiError(400, "Please provide userId", "USER_ID_REQUIRED");
+      }
+
+      const user = await User.findById(userId).select("-password");
+      if (!user) {
+        throw new ApiError(404, "User not found", "USER_NOT_FOUND");
+      }
+
+      res.cookie("userId", user._id);
+      res.cookie("username", user.username);
+
+      return res.redirect(`/game/games`);
+    })
+  );
+
+router.route("/games").get(
   checkAuth("admin"),
   safeHandler(async (req, res) => {
-    console.log(req.cookies);
-    const teamId = req.cookies.teamId;
+    const username = req.cookies.username;
     const teamName = req.cookies.teamName;
-    if (!teamId || !teamName) {
-      throw new ApiError(400, "Team not found", "TEAM_NOT_FOUND");
+
+    res.render("games", { username: username, games: gamesList, teamName });
+  })
+)
+
+.post(
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    const { gameKey } = req.body;
+    if (!gameKey) {
+      throw new ApiError(400, "Please provide gameId", "GAME_ID_REQUIRED");
     }
 
-    const users = await User.find({ team: teamId }).select("-password");
-    if (!users || users.length === 0) {
-      throw new ApiError(404, "No user was found", "NO_USERS_FOUND");
-    }
-
-    res.render("users", { users, teamName });
+    res.cookie("gameKey", gameKey);
+    return res.redirect(`/game/stats`);
   })
 );
 
+router.route("/stats").get(
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    const gameKey = req.cookies.gameKey;
+    const username = req.cookies.username;
+    const teamName = req.cookies.teamName;
+    console.log("GAMEKEY",gameKey)
+    const game = schemaKeys[gameKey];
+    if (!game) {
+      throw new ApiError(404, "Game not found", "GAME_NOT_FOUND");
+    }
+
+    res.render("stats", { game, username, teamName });
+  })
+);
 export default router;

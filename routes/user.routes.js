@@ -59,11 +59,8 @@ router
       // fields.team = fields.teamId;
       // delete fields.teamId;
 
-      const newGameStats = await Game.create({});
-
       const user = await User.create({
         ...fields,
-        gameStats: newGameStats._id,
         role: "user",
       });
 
@@ -95,6 +92,14 @@ router
       );
       console.log(team._id);
       user.team = team._id;
+
+      const newGameStats = await Game.create({
+        user: user._id,
+        team: team._id,
+      });
+
+      user.gameStats = newGameStats._id;
+
       await user.save();
 
       return res.success(201, "User created successfully", {
@@ -138,7 +143,10 @@ router
         );
       }
 
-      const user = await User.findById(userId).select("-password").lean();
+      const user = await User.findById(userId)
+        .select("-password")
+        .populate("gameStats")
+        .lean();
       if (!user) {
         throw new ApiError(404, "User not found", "USER_NOT_FOUND");
       }
@@ -148,7 +156,6 @@ router
       user.teamId = user.team;
       delete user.team;
       user.teamName = team.name;
-
 
       return res.success(200, "User successfully fetched", { user });
     })
@@ -162,8 +169,12 @@ router
         throw new ApiError(400, "Invalid user id", "INVALID_USER_ID");
       }
 
-      if(req.user.role === "user" && req.user.id.toString() !== userId) {
-        throw new ApiError(403, "You are not allowed to update this user", "FORBIDDEN");
+      if (req.user.role === "user" && req.user.id.toString() !== userId) {
+        throw new ApiError(
+          403,
+          "You are not allowed to update this user",
+          "FORBIDDEN"
+        );
       }
 
       const updates = req.body;
@@ -332,7 +343,7 @@ router.post(
         teamName: team.name,
         teamId: user.team,
         avatar: user.avatar || null,
-        callingCard: team.callingCard || 'not set'
+        callingCard: team.callingCard || "not set",
       },
     });
   })
