@@ -74,6 +74,7 @@ router
             completedAt: null,
             timeTaken: -1,
             type: taskData[phase][task].type,
+            title: taskData[phase][task].title,
             hintUsed: false,
           });
         });
