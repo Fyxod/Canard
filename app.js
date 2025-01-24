@@ -4,28 +4,33 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 //utils
 import sendErrorMail from "./utils/sendErrorMail.js";
 import responseHandler from "./middlewares/responseHandler.js";
 import connectMongo from "./config/db.js";
 import config from "./config/config.js";
+import getIstDate from "./utils/getIstDate.js";
 //routes
 import teamRoutes from "./routes/team.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import settingsRoutes from "./routes/settings.routes.js";
 import handRoutes from "./routes/hand.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
-import getIstDate from "./utils/getIstDate.js";
+import gameRoutes from "./routes/game.routes.js";
 
 console.log(getIstDate());
 
 const app = express();
 const server = http.createServer(app);
 export const io = new Server(server);
+
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
 });
-const __dirname = path.resolve();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 connectMongo();
 
@@ -43,6 +48,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(responseHandler);
 app.use(express.static(path.join(__dirname, "public")));
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "./public/views"));
+
 app.use((req, res, next) => {
   console.log("printing body", req.body)
   console.log(req.url, req.method);
@@ -58,6 +66,7 @@ app.use("/user", userRoutes);
 app.use("/settings", settingsRoutes);
 app.use("/hand", handRoutes);
 app.use("/admin", adminRoutes);
+app.use("/game", gameRoutes);
 // app.use("/", extraRoutes);
 
 app.use((error, req, res, next) => {
@@ -79,7 +88,7 @@ app.use((error, req, res, next) => {
 });
 
 server.listen(config.server.port, () => {
-  console.log(`Server is running on port ${config.server.port}`);
+  console.log(`Server is running on http://localhost:${config.server.port}`);
 });
 
 // prepare the role based access control and role priority
@@ -101,3 +110,5 @@ server.listen(config.server.port, () => {
 // the completed time of a phase is defined as the point of time when the team enters the correct answer for the phase (NOT WHEN THEY COMPLETE ALL THE MAJOR AND MINOR TASKS)
 // dont make team idle after completion of major tasks, only after completion of all tasks(i.e. minor included)
 // Allow dynamic task changing and completion
+
+// shaders cache karne hain before rebuilding the app

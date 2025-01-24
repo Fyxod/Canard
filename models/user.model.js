@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    gameStats: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Game",
+    },
   },
   {
     timestamps: true,

@@ -59,8 +59,11 @@ router
       // fields.team = fields.teamId;
       // delete fields.teamId;
 
+      const newGameStats = await Game.create({});
+
       const user = await User.create({
         ...fields,
+        gameStats: newGameStats._id,
         role: "user",
       });
 
@@ -135,10 +138,17 @@ router
         );
       }
 
-      const user = await User.findById(userId).select("-password");
+      const user = await User.findById(userId).select("-password").lean();
       if (!user) {
         throw new ApiError(404, "User not found", "USER_NOT_FOUND");
       }
+
+      const team = await Team.findById(user.team);
+
+      user.teamId = user.team;
+      delete user.team;
+      user.teamName = team.name;
+
 
       return res.success(200, "User successfully fetched", { user });
     })
@@ -297,6 +307,17 @@ router.post(
       callingCard: team.callingCard || "not set",
     });
     res.cookie("userToken", userToken); // http true secure true all that
+
+    console.log({
+      id: user._id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+      teamName: team.name,
+      teamId: user.team,
+      avatar: user.avatar || null,
+    });
+
     return res.success(200, "Login successful", {
       userToken,
       user: {

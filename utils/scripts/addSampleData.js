@@ -21,15 +21,14 @@ export async function addSampleData({ purge = false }) {
   for (let i = 1; i <= 20; i++) {
     const team = await Team.create({
       name: "Team " + i,
-      callingCard:callingCards[1]
+      callingCard: callingCards[1],
     });
 
     Object.keys(taskData).forEach((phase) => {
       Object.keys(taskData[phase]).forEach((task) => {
-
         // console.log(taskData[phase][task]?.title)
 
-        if(task === "answer") return;
+        if (task === "answer") return;
         team[phase].tasks.set(task, {
           status: "notStarted",
           completedAt: null,
@@ -44,12 +43,15 @@ export async function addSampleData({ purge = false }) {
     for (let j = 1; j <= 4; j++) {
       const avatarOrder = randomAvatarOrder();
 
+      const newGameStats = await Game.create({});
+
       const user = await User.create({
         username: "User" + userCount,
         email: "user" + userCount + "@gmail.com",
         password: hash,
         team: team._id,
         avatar: sampleAvatars[avatarOrder[j - 1] - 1],
+        gameStats: newGameStats._id,
       });
       team.members.push(user._id);
       console.log("User" + userCount + " created successfully");
@@ -64,12 +66,11 @@ export async function addSampleData({ purge = false }) {
 
 function randomAvatarOrder() {
   const avatarOrder = [1, 2, 3, 4];
-  
+
   for (let i = avatarOrder.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [avatarOrder[i], avatarOrder[j]] = [avatarOrder[j], avatarOrder[i]]; 
+    const j = Math.floor(Math.random() * (i + 1));
+    [avatarOrder[i], avatarOrder[j]] = [avatarOrder[j], avatarOrder[i]];
   }
-  
+
   return avatarOrder;
 }
-
