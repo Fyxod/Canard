@@ -120,42 +120,150 @@ router
     })
   );
 
-router.route("/games").get(
-  checkAuth("admin"),
-  safeHandler(async (req, res) => {
-    const username = req.cookies.username;
-    const teamName = req.cookies.teamName;
+router
+  .route("/games")
+  .get(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      const username = req.cookies.username;
+      const teamName = req.cookies.teamName;
 
-    res.render("games", { username: username, games: gamesList, teamName });
-  })
-)
+      res.render("games", { username: username, games: gamesList, teamName });
+    })
+  )
 
-.post(
-  checkAuth("admin"),
-  safeHandler(async (req, res) => {
-    const { gameKey } = req.body;
-    if (!gameKey) {
-      throw new ApiError(400, "Please provide gameId", "GAME_ID_REQUIRED");
-    }
+  .post(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      const { gameKey } = req.body;
+      if (!gameKey) {
+        throw new ApiError(400, "Please provide gameKey", "GAME_KEY_REQUIRED");
+      }
 
-    res.cookie("gameKey", gameKey);
-    return res.redirect(`/game/stats`);
-  })
-);
+      res.cookie("gameKey", gameKey);
+      return res.redirect(`/game/stats`);
+    })
+  );
 
-router.route("/stats").get(
-  checkAuth("admin"),
-  safeHandler(async (req, res) => {
-    const gameKey = req.cookies.gameKey;
-    const username = req.cookies.username;
-    const teamName = req.cookies.teamName;
-    console.log("GAMEKEY",gameKey)
-    const game = schemaKeys[gameKey];
-    if (!game) {
-      throw new ApiError(404, "Game not found", "GAME_NOT_FOUND");
-    }
+router
+  .route("/stats")
+  .get(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      const gameKey = req.cookies.gameKey;
+      const username = req.cookies.username;
+      const teamName = req.cookies.teamName;
+      console.log("GAMEKEY", gameKey);
+      const game = schemaKeys[gameKey];
+      if (!game) {
+        throw new ApiError(404, "Game not found", "GAME_NOT_FOUND");
+      }
 
-    res.render("stats", { game, username, teamName });
-  })
-);
+      res.render("statsList", { game, username, teamName });
+    })
+  )
+
+  .post(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      const { statKey } = req.body;
+      if (!statKey) {
+        throw new ApiError(400, "Please provide statKey", "STAT_KEy_REQUIRED");
+      }
+
+      res.cookie("statKey", statKey);
+      return res.redirect(`/game/input`);
+    })
+  );
+
+router
+  .route("/input")
+  .get(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      const statKey = req.cookies.statKey;
+      const username = req.cookies.username;
+      const teamName = req.cookies.teamName;
+      const gameKey = req.cookies.gameKey;
+      const game = schemaKeys[gameKey];
+
+      const stat = game.stats.find((stat) => stat.key === statKey);
+      res.cookie("replace", stat.replace || false);
+
+      const user = await User.findById(req.cookies.userId)
+        .populate("gameStats")
+        .lean();
+      if (!user) {
+        throw new ApiError(404, "User not found", "USER_NOT_FOUND");
+      }
+
+      const gameStats = user.gameStats;
+      const currentValue = gameStats[gameKey][statKey] || "not found";
+      res.cookie("currentValue", currentValue);
+      res.cookie("gameStatsId", gameStats._id);
+
+      if (!stat) {
+        throw new ApiError(404, "Stat not found", "STAT_NOT_FOUND");
+      }
+
+      res.render("input", {
+        stat,
+        username,
+        teamName,
+        game,
+        replace: stat.replace || false,
+        currentValue,
+      });
+    })
+  )
+
+  .post(
+    checkAuth("admin"),
+    safeHandler(async (req, res) => {
+      let { value } = req.body;
+      value = value.trim();
+      console.log(typeof value);
+      const gameKey = req.cookies.gameKey;
+      const statKey = req.cookies.statKey;
+      const replace = parseBoolean(req.cookies.replace);
+      console.log(value);
+      console.log(replace);
+      const gameStats = await Game.findById(req.cookies.gameStatsId);
+      if (!gameStats) {
+        throw new ApiError(404, "Game stats not found", "GAME_STATS_NOT_FOUND");
+      }
+
+      const userFieldType = Game.schema.path(
+        `${gameKey}.${statKey}.value`
+      ).instance;
+      console.log("printing type", userFieldType);
+      if (userFieldType === "Number") {
+        value = parseInt(value);
+      }
+
+      if (replace) {
+        gameStats[gameKey][statKey].value = value;
+        console.log("hereeeeeeeeeeeeeee");
+      } else {
+        gameStats[gameKey][statKey].value =
+          gameStats[gameKey][statKey].value + value;
+      }
+
+      if (statKey === "kills" || statKey === "deaths") {
+        gameStats[gameKey][
+          "kdRatio"
+        ].value = `${gameStats[gameKey]["kills"].value} : ${gameStats[gameKey]["deaths"].value}`;
+      }
+
+      await gameStats.save();
+      res.redirect("/game/input");
+    })
+  );
+
 export default router;
+
+function parseBoolean(value) {
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return value;
+}

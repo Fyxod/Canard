@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input and Actions</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      max-width: 400px;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      /* margin-bottom: 20px; */
+      box-sizing: border-box;
+    }
+
+    .action-button {
+      width: 90%;
+      max-width: 400px;
+      /* margin: 10px 0; */
+      padding: 15px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #28a745;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .action-button.replace {
+      background-color: #ffc107;
+    }
+
+    .action-button:hover {
+      transform: scale(1.03);
+    }
+
+    .action-button:active {
+      transform: scale(0.97);
+    }
+
+    .action-button.replace:hover {
+      background-color: #e0a800;
+    }
+
+    .action-button.replace:active {
+      background-color: #c69500;
+    }
+  </style>
+</head>
+<body>
+  <h1><%= teamName %> - <%= username %></h1>
+  <h1><%= game.title %> - <%= stat.title %></h1>
+  <input id="value" type="text" placeholder="Enter something..." />
+  <h4>Current Value - <%= currentValue.value %></h4>
+  <% if(replace){ %>
+    <button class="action-button replace">Replace</button>
+    <% }else{ %>
+      <button class="action-button add">Add</button>
+  <% } %>
+</body>
+<script>
+  const actionButton = document.querySelector('.action-button');
+
+    actionButton.addEventListener('click', () => {
+      const value = document.getElementById('value').value;
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/game/input';
+
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'value';
+      input.value = value;
+
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+    });
+</script>
+</html>

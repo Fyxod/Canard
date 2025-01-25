@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Input and Actions</title>
+  <title>Team List</title>
   <style>
     body {
       margin: 0;
@@ -15,32 +15,14 @@
       padding: 20px;
     }
 
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #333;
-    }
-
-    input[type="text"] {
-      width: 90%;
-      max-width: 400px;
-      padding: 15px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-    }
-
-    .action-button {
+    .team-button {
       width: 90%;
       max-width: 400px;
       margin: 10px 0;
       padding: 15px 20px;
       font-size: 16px;
       color: #fff;
-      background-color: #28a745;
+      background-color: #007BFF;
       border: none;
       border-radius: 8px;
       text-align: center;
@@ -49,31 +31,48 @@
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
-    .action-button.replace {
-      background-color: #ffc107;
-    }
-
-    .action-button:hover {
+    .team-button:hover {
+      background-color: #0056b3;
       transform: scale(1.03);
     }
 
-    .action-button:active {
+    .team-button:active {
+      background-color: #004094;
       transform: scale(0.97);
-    }
-
-    .action-button.replace:hover {
-      background-color: #e0a800;
-    }
-
-    .action-button.replace:active {
-      background-color: #c69500;
     }
   </style>
 </head>
 <body>
-  <h1>Stat name</h1>
-  <input type="text" placeholder="Enter something..." />
-  <button class="action-button add">Add</button>
-  <button class="action-button replace">Replace</button>
+  <h1><%= username %> - <%= teamName %></h1>
+  <h1><%= game.title%></h1>
+  <% for(let stat of game.stats){ %>
+    <% if(!stat.notShow){ %>
+  <button class="team-button" data-statKey="<%= stat.key %>"><%= stat.title %></button>
+    <% } %>
+  <% } %>
 </body>
+
+<script>
+    const teamButtons = document.querySelectorAll('.team-button');
+  
+    teamButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const statKey = button.getAttribute('data-statKey');
+  
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/game/stats';
+  
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'statKey';
+        input.value = statKey;
+  
+        form.appendChild(input);
+  
+        document.body.appendChild(form);
+        form.submit();
+      });
+    });
+  </script>
 </html>

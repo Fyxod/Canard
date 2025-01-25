@@ -203,12 +203,32 @@ const gameSchema = new mongoose.Schema(
     miniMilitia: {
       kdRatio: {
         value: {
+          type: String,
+          default: "0:0",
+        },
+        title: {
+          type: String,
+          default: "Kill Death Ratio",
+        },
+      },
+      kills: {
+        value: {
           type: Number,
           default: 0,
         },
         title: {
           type: String,
-          default: "Kill Death Ratio",
+          default: "Kills",
+        },
+      },
+      deaths: {
+        value: {
+          type: Number,
+          default: 0,
+        },
+        title: {
+          type: String,
+          default: "Deaths",
         },
       },
 
@@ -285,12 +305,32 @@ const gameSchema = new mongoose.Schema(
     csgoFullTeam: {
       kdRatio: {
         value: {
+          type: String,
+          default: "0:0",
+        },
+        title: {
+          type: String,
+          default: "Kill Death Ratio",
+        },
+      },
+      kills: {
+        value: {
           type: Number,
           default: 0,
         },
         title: {
           type: String,
-          default: "Kill Death Ratio",
+          default: "Kills",
+        },
+      },
+      deaths: {
+        value: {
+          type: Number,
+          default: 0,
+        },
+        title: {
+          type: String,
+          default: "Deaths",
         },
       },
 
@@ -309,12 +349,32 @@ const gameSchema = new mongoose.Schema(
     csgoFFA: {
       kdRatio: {
         value: {
+          type: String,
+          default: "0:0",
+        },
+        title: {
+          type: String,
+          default: "Kill Death Ratio",
+        },
+      },
+      kills: {
+        value: {
           type: Number,
           default: 0,
         },
         title: {
           type: String,
-          default: "Kill Death Ratio",
+          default: "Kills",
+        },
+      },
+      deaths: {
+        value: {
+          type: Number,
+          default: 0,
+        },
+        title: {
+          type: String,
+          default: "Deaths",
         },
       },
 
@@ -396,7 +456,7 @@ const gameSchema = new mongoose.Schema(
           default: "Matches Won",
         },
       },
-      totalKills: {
+      kills: {
         value: {
           type: Number,
           default: 0,
@@ -406,10 +466,20 @@ const gameSchema = new mongoose.Schema(
           default: "Total Kills",
         },
       },
-      kdRatio: {
+      deaths: {
         value: {
           type: Number,
           default: 0,
+        },
+        title: {
+          type: String,
+          default: "Total Deaths",
+        },
+      },
+      kdRatio: {
+        value: {
+          type: String,
+          default: "0:0",
         },
         title: {
           type: String,
@@ -546,7 +616,7 @@ const gameSchema = new mongoose.Schema(
           default: "Matches Won",
         },
       },
-      totalKills: {
+      kills: {
         value: {
           type: Number,
           default: 0,
@@ -556,10 +626,20 @@ const gameSchema = new mongoose.Schema(
           default: "Total Kills",
         },
       },
-      kdRatio: {
+      deaths: {
         value: {
           type: Number,
           default: 0,
+        },
+        title: {
+          type: String,
+          default: "Total Deaths",
+        },
+      },
+      kdRatio: {
+        value: {
+          type: String,
+          default: "0:0",
         },
         title: {
           type: String,

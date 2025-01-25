@@ -35,18 +35,11 @@ const __dirname = path.dirname(__filename);
 
 connectMongo();
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      callback(null, origin || "*");
-    },
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(responseHandler);
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -54,8 +47,8 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./public/views"));
 
 app.use((req, res, next) => {
-  console.log(req.headers)
-  console.log("printing body", req.body)
+  console.log(req.headers);
+  console.log("printing body", req.body);
   console.log(req.url, req.method);
   next();
 });

@@ -59,7 +59,9 @@ export const schemaTitles = {
   "Mini Militia": {
     key: "miniMilitia",
     stats: [
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
+      { title: "Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
       { title: "Wins", key: "wins" },
     ],
   },
@@ -81,14 +83,18 @@ export const schemaTitles = {
   "CSGO (4v4)": {
     key: "csgoFullTeam",
     stats: [
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
+      { title: "Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
       { title: "Wins", key: "wins" },
     ],
   },
   "CSGO(Free for all)": {
     key: "csgoFFA",
     stats: [
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
+      { title: "Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
       { title: "Wins", key: "wins" },
     ],
   },
@@ -113,7 +119,7 @@ export const schemaTitles = {
     stats: [
       { title: "Matches Won", key: "matchesWon" },
       { title: "Total Kills", key: "totalKills" },
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Average Damage Dealt", key: "avgDamageDealt" },
     ],
   },
@@ -152,7 +158,7 @@ export const schemaTitles = {
     stats: [
       { title: "Matches Won", key: "matchesWon" },
       { title: "Total Kills", key: "totalKills" },
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Average Damage Dealt", key: "avgDamageDealt" },
     ],
   },
@@ -163,42 +169,60 @@ export const schemaKeys = {
     title: "Tekken 3",
     stats: [
       { title: "Wins", key: "wins" },
-      { title: "Longest Win Streak", key: "longestWinStreak" },
+      { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
       { title: "Perfect Wins", key: "perfectWins" },
-      { title: "Most Played Character", key: "mostPlayedCharacter" },
+      {
+        title: "Most Played Character",
+        key: "mostPlayedCharacter",
+        replace: true,
+      },
     ],
   },
   tekken8: {
     title: "Tekken 8",
     stats: [
       { title: "Wins", key: "wins" },
-      { title: "Longest Win Streak", key: "longestWinStreak" },
+      { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
       { title: "Perfect Wins", key: "perfectWins" },
-      { title: "Most Played Character", key: "mostPlayedCharacter" },
+      {
+        title: "Most Played Character",
+        key: "mostPlayedCharacter",
+        replace: true,
+      },
     ],
   },
   wwe: {
     title: "WWE 2K23",
     stats: [
       { title: "Wins", key: "wins" },
-      { title: "Longest Win Streak", key: "longestWinStreak" },
+      { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
       { title: "Perfect Wins", key: "perfectWins" },
-      { title: "Most Played Character", key: "mostPlayedCharacter" },
+      {
+        title: "Most Played Character",
+        key: "mostPlayedCharacter",
+        replace: true,
+      },
     ],
   },
   brawlHalla: {
     title: "Brawl Halla",
     stats: [
       { title: "Wins", key: "wins" },
-      { title: "Longest Win Streak", key: "longestWinStreak" },
+      { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
       { title: "Perfect Wins", key: "perfectWins" },
-      { title: "Most Played Character", key: "mostPlayedCharacter" },
+      {
+        title: "Most Played Character",
+        key: "mostPlayedCharacter",
+        replace: true,
+      },
     ],
   },
   miniMilitia: {
     title: "Mini Militia",
     stats: [
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
+      { title: "Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
       { title: "Wins", key: "wins" },
     ],
   },
@@ -220,14 +244,18 @@ export const schemaKeys = {
   csgoFullTeam: {
     title: "CSGO (4v4)",
     stats: [
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
+      { title: "Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
       { title: "Wins", key: "wins" },
     ],
   },
   csgoFFA: {
     title: "CSGO(Free for all)",
     stats: [
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
+      { title: "Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
       { title: "Wins", key: "wins" },
     ],
   },
@@ -251,8 +279,9 @@ export const schemaKeys = {
     title: "Fortnite",
     stats: [
       { title: "Matches Won", key: "matchesWon" },
-      { title: "Total Kills", key: "totalKills" },
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Total Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Average Damage Dealt", key: "avgDamageDealt" },
     ],
   },
@@ -290,8 +319,9 @@ export const schemaKeys = {
     title: "BGMI",
     stats: [
       { title: "Matches Won", key: "matchesWon" },
-      { title: "Total Kills", key: "totalKills" },
-      { title: "Kill Death Ratio", key: "kdRatio" },
+      { title: "Total Kills", key: "kills" },
+      { title: "Deaths", key: "deaths" },
+      { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Average Damage Dealt", key: "avgDamageDealt" },
     ],
   },

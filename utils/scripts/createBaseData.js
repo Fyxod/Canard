@@ -7,12 +7,13 @@ import createAdmin from "./createAdmin.js";
 import Admin from "../../models/admin.model.js";
 import initializeSettings from "./intializeSettings.js";
 import assignOrders from "./assignOrders.js";
+import Game from "../../models/game.model.js";
 
 async function initializeTesting({ purge = false } = {}) {
   await connectMongo();
   console.log(purge)
 
-  
+    await Game.deleteMany({});
     await initializeSettings({ purge: purge })
     await addSampleData({ purge: purge })
     await createLeftRightHand({ purge: purge })
@@ -30,7 +31,7 @@ async function initializeTesting({ purge = false } = {}) {
   
   console.log("Data initialized successfully");
   console.log("Assigning orders.....");
-  await assignOrders();
+  // await assignOrders();
   mongoose.connection.close();
 }
 
