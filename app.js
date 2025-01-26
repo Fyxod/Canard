@@ -138,3 +138,7 @@ server.listen(config.server.port, () => {
 // shaders cache karne hain before rebuilding the app
 
 //email registration template
+
+// admin login then only registartions
+
+// send rebuild to everyone on task completion

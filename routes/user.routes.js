@@ -152,7 +152,7 @@ router
         throw new ApiError(404, "User not found", "USER_NOT_FOUND");
       }
 
-      const team = await Team.findById(user.team);
+      const team = await Team.findById(user.team).populate('gameStats').lean();
 
       user.teamId = user.team;
       delete user.team;

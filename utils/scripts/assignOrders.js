@@ -46,7 +46,7 @@ function generateEqualPhaseAndTaskOrders(
 }
 
 export default async function assignOrders() {
-  // await connectMongo();
+  await connectMongo();
   const teams = await Team.find({});
   if (!teams || teams.length === 0) {
     console.log("No teams found");
@@ -84,7 +84,7 @@ export default async function assignOrders() {
   };
 
   await updateTeams();
-  // mongoose.connection.close();
+  mongoose.connection.close();
 }
 
-// assignOrders();
+assignOrders();
