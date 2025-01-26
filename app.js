@@ -55,31 +55,31 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  const host = req.headers.host;
-  const adminAppDomain = "admin.mlsc.tech";
-  const userAppDomain = "app.mlsc.tech";
+// app.use((req, res, next) => {
+//   const host = req.headers.host;
+//   const adminAppDomain = "admin.mlsc.tech";
+//   const userAppDomain = "app.mlsc.tech";
 
-  return res.sendFile(path.resolve(__dirname, "./public/adminApp/index.html"));
+//   return res.sendFile(path.resolve(__dirname, "./public/adminApp/index.html"));
 
-  // const host = req.headers.host.split(':')[0]; // Get the host without port
-  const parts = host.split(".");
+//   // const host = req.headers.host.split(':')[0]; // Get the host without port
+//   const parts = host.split(".");
 
-  if (host === adminAppDomain) {
-    if (req.path === "/") {
-    }
-  } else if (host === userAppDomain) {
-    if (req.path === "/") {
-      return res.sendFile(
-        path.join(__dirname, "public", "userApp", "index.html")
-      );
-    }
-  } else if (parts.length > 2 && parts[0] === "game") {
-    gameRoutes(req, res, next);
-  } else {
-    next();
-  }
-});
+//   if (host === adminAppDomain) {
+//     if (req.path === "/") {
+//     }
+//   } else if (host === userAppDomain) {
+//     if (req.path === "/") {
+//       return res.sendFile(
+//         path.join(__dirname, "public", "userApp", "index.html")
+//       );
+//     }
+//   } else if (parts.length > 2 && parts[0] === "game") {
+//     gameRoutes(req, res, next);
+//   } else {
+//     next();
+//   }
+// });
 
 app.get("/", (req, res) => {
   res.send("<h1>Canard 2025</h1>");
