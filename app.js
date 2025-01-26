@@ -58,11 +58,14 @@ app.use((req, res, next) => {
   const adminAppDomain = "admin.mlsc.tech";
   const userAppDomain = "app.mlsc.tech";
 
+  return res.sendFile(
+    path.join(__dirname, "./public/adminApp/index.html")
+  );
+  // const host = req.headers.host.split(':')[0]; // Get the host without port
+  const parts = host.split('.');
+
   if (host === adminAppDomain) {
     if (req.path === "/") {
-      return res.sendFile(
-        path.join(__dirname, "public", "adminApp", "index.html")
-      );
     }
   } else if (host === userAppDomain) {
     if (req.path === "/") {
