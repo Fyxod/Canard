@@ -47,6 +47,8 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./public/views"));
 
 app.use((req, res, next) => {
+  console.log(path.join(__dirname, "./public/adminApp/index.html"));
+  console.log(path.join(__dirname, "./public/userApp/index.html"));
   console.log(req.headers);
   console.log("printing body", req.body);
   console.log(req.url, req.method);
@@ -58,11 +60,9 @@ app.use((req, res, next) => {
   const adminAppDomain = "admin.mlsc.tech";
   const userAppDomain = "app.mlsc.tech";
 
-  return res.sendFile(
-    path.join(__dirname, "./public/adminApp/index.html")
-  );
+  return res.sendFile(path.join(__dirname, "./public/adminApp/index.html"));
   // const host = req.headers.host.split(':')[0]; // Get the host without port
-  const parts = host.split('.');
+  const parts = host.split(".");
 
   if (host === adminAppDomain) {
     if (req.path === "/") {
