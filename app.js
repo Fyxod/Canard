@@ -53,6 +53,30 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  const adminAppDomain = "admin.mlsc.tech";
+  const userAppDomain = "app.mlsc.tech";
+
+  if (host === adminAppDomain) {
+    if (req.path === "/") {
+      return res.sendFile(
+        path.join(__dirname, "public", "adminApp", "index.html")
+      );
+    }
+  } else if (host === userAppDomain) {
+    if (req.path === "/") {
+      return res.sendFile(
+        path.join(__dirname, "public", "userApp", "index.html")
+      );
+    }
+  } else if (parts.length > 2 && parts[0] === "game") {
+    gameRoutes(req, res, next);
+  } else {
+    next();
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("<h1>Canard 2025</h1>");
 });

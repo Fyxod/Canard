@@ -52,10 +52,6 @@ router
     checkAuth("admin"),
     safeHandler(async (req, res) => {
       const teams = await Team.find();
-      if (!teams || teams.length === 0) {
-        throw new ApiError(404, "No teams were found", "NO_TEAMS_FOUND");
-      }
-
       res.render("teams", { teams });
     })
   )
@@ -85,7 +81,6 @@ router
   .get(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
-      console.log(req.cookies);
       const teamId = req.cookies.teamId;
       const teamName = req.cookies.teamName;
       if (!teamId || !teamName) {
@@ -181,6 +176,7 @@ router
   .get(
     checkAuth("admin"),
     safeHandler(async (req, res) => {
+      const { error } = req.query;
       const statKey = req.cookies.statKey;
       const username = req.cookies.username;
       const teamName = req.cookies.teamName;
@@ -213,6 +209,7 @@ router
         game,
         replace: stat.replace || false,
         currentValue,
+        error: error || null,
       });
     })
   )
@@ -238,6 +235,9 @@ router
       ).instance;
       console.log("printing type", userFieldType);
       if (userFieldType === "Number") {
+        if(!(/^[0-9]+$/.test(value))){
+          return res.redirect("/game/input?error=Please enter a valid number");
+        }
         value = parseInt(value);
       }
 

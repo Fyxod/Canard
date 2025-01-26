@@ -44,8 +44,12 @@
 </head>
 <body>
   <h1>Team List</h1>
+  <% if(!teams || teams.length === 0){ %>
+    <h2>No Teams found</h2>
+    <% }else{ %>
   <% for(let team of teams){ %>
     <button type="submit" class="team-button" data-teamId="<%= team._id %>"><%= team.name %></button>
+    <% } %>
     <% } %>
 </body>
 

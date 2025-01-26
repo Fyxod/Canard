@@ -15,6 +15,58 @@
       padding: 20px;
     }
 
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #6c757d;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #5a6268;
+      transform: scale(1.05);
+    }
+
+    .back-button:active {
+      background-color: #4e555b;
+      transform: scale(0.95);
+    }
+
+    .team-button {
+      width: 90%;
+      max-width: 400px;
+      margin: 10px 0;
+      padding: 15px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .team-button:hover {
+      background-color: #0056b3;
+      transform: scale(1.03);
+    }
+
+    .team-button:active {
+      background-color: #004094;
+      transform: scale(0.97);
+    }
+
     h1 {
       font-size: 24px;
       margin-bottom: 20px;
@@ -71,6 +123,7 @@
   </style>
 </head>
 <body>
+  <a href="/game/stats" class="back-button"><--</a>
   <h1><%= teamName %> - <%= username %></h1>
   <h1><%= game.title %> - <%= stat.title %></h1>
   <input id="value" type="text" placeholder="Enter something..." />
@@ -79,6 +132,9 @@
     <button class="action-button replace">Replace</button>
     <% }else{ %>
       <button class="action-button add">Add</button>
+  <% } %>
+  <% if(error){ %>
+    <h4 style="color: red;"><%= error %></h4>
   <% } %>
 </body>
 <script>

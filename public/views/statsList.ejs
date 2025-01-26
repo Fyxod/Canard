@@ -15,6 +15,32 @@
       padding: 20px;
     }
 
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #6c757d;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #5a6268;
+      transform: scale(1.05);
+    }
+
+    .back-button:active {
+      background-color: #4e555b;
+      transform: scale(0.95);
+    }
+
     .team-button {
       width: 90%;
       max-width: 400px;
@@ -43,6 +69,7 @@
   </style>
 </head>
 <body>
+  <a href="/game/games" class="back-button"><--</a>
   <h1><%= username %> - <%= teamName %></h1>
   <h1><%= game.title%></h1>
   <% for(let stat of game.stats){ %>
