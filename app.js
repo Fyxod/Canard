@@ -142,3 +142,5 @@ server.listen(config.server.port, () => {
 // admin login then only registartions
 
 // send rebuild to everyone on task completion
+// different admins for different tasks
+// fix kdratio

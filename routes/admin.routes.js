@@ -26,6 +26,7 @@ router.post(
       id: admin._id,
       role: admin.role,
       username: admin.username,
+      // taskId: admin.taskId,
     });
     res.cookie("userToken", adminToken); // http true secure true all that
     return res.success(200, "Admin successfully logged in", {
@@ -50,13 +51,13 @@ router
   .post(
     checkAuth("superadmin"),
     safeHandler(async (req, res) => {
-      const { username, password } = req.body;
+      const { username, password, taskId } = req.body;
       const adminExists = await Admin.findOne({ username });
       if (adminExists) {
         return res.error(400, "Admin already exists", "ADMIN_EXISTS");
       }
       const hash = await bcrypt.hash(password, 10);
-      const admin = await Admin.create({ username, password: hash });
+      const admin = await Admin.create({ username, password: hash, taskId });
       return res.success(201, "Admin created successfully", { admin });
     })
   );
@@ -69,7 +70,6 @@ router.post(
     if (!message) {
       return res.error(400, "message missing", "MISSING_DATA");
     }
-    console.log("yes ia m reaching here");
     await Settings.updateMany(
       {},
       {

@@ -235,7 +235,7 @@ router
       ).instance;
       console.log("printing type", userFieldType);
       if (userFieldType === "Number") {
-        if(!(/^[0-9]+$/.test(value))){
+        if(!(/^[0-9-]+$/.test(value))){
           return res.redirect("/game/input?error=Please enter a valid number");
         }
         value = parseInt(value);

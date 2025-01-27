@@ -65,7 +65,10 @@ router
         );
       }
 
-      const team = new Team({ name, callingCard: callingCards[parseInt(callingCard)] });
+      const team = new Team({
+        name,
+        callingCard: callingCards[parseInt(callingCard)],
+      });
       Object.keys(taskData).forEach((phase) => {
         Object.keys(taskData[phase]).forEach((task) => {
           if (task === "answer") return;
@@ -335,8 +338,12 @@ router.patch(
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
     }
 
-    if(req.user.teamId !== teamId){
-      throw new ApiError('401', "You are not a user of this team", "UNAUTHORISED")
+    if (req.user.teamId !== teamId) {
+      throw new ApiError(
+        "401",
+        "You are not a user of this team",
+        "UNAUTHORISED"
+      );
     }
 
     if (!Array.isArray(powerups)) {
@@ -376,6 +383,13 @@ router.route("/:teamId/:phaseNo/:taskId").post(
   safeHandler(async (req, res) => {
     let { teamId, phaseNo, taskId } = req.params;
     const { status } = req.body;
+    if (req.user.taskId !== taskId) {
+      throw new ApiError(
+        401,
+        "You are not allowed to complete this task",
+        "FORBIDDEN"
+      );
+    }
 
     if (!isValidObjectId(teamId)) {
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
@@ -583,7 +597,12 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       team[`phase${phaseNo}`] = phase;
 
       await team.save();
-      announceSingle(team._id, { type: "completion", message:`Your task ${taskData[`phase${phaseNo}`][taskId].title} of phase ${phaseNo} is completed` });
+      announceSingle(team._id, {
+        type: "completion",
+        message: `Your task ${
+          taskData[`phase${phaseNo}`][taskId].title
+        } of phase ${phaseNo} is completed`,
+      });
       res.success(200, "Task status updated successfully", { team });
     }
 
@@ -696,7 +715,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
       if (
         phase.status === "completed" &&
-        !Array.from(phase.tasks.values()).every(
+        Array.from(phase.tasks.values()).every(
           (task) => task.status === "completed"
         )
       ) {
@@ -709,7 +728,12 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       team[`phase${phaseNo}`] = phase;
 
       await team.save();
-      announceSingle(team._id, { type: "completion", message:`Your task ${taskData[`phase${phaseNo}`][taskId].title} of phase ${phaseNo} is completed` });
+      announceSingle(team._id, {
+        type: "completion",
+        message: `Your task ${
+          taskData[`phase${phaseNo}`][taskId].title
+        } of phase ${phaseNo} is completed`,
+      });
       return res.success(200, "Task status updated successfully", { team });
     }
   })
@@ -811,7 +835,7 @@ router.post(
 
     // if the minor tasks have been completed as well
     if (
-      !Array.from(phase.tasks.values()).every(
+      Array.from(phase.tasks.values()).every(
         (task) => task.status === "completed"
       )
     ) {
