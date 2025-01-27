@@ -53,6 +53,7 @@ router
 
   .post(
     isRegistrationActive, // check if registration is active
+    checkAuth("admin"),
     safeHandler(async (req, res) => {
       let { name, callingCard } = req.body;
       callingCard = parseInt(callingCard);
@@ -383,13 +384,13 @@ router.route("/:teamId/:phaseNo/:taskId").post(
   safeHandler(async (req, res) => {
     let { teamId, phaseNo, taskId } = req.params;
     const { status } = req.body;
-    if (req.user.taskId !== taskId) {
-      throw new ApiError(
-        401,
-        "You are not allowed to complete this task",
-        "FORBIDDEN"
-      );
-    }
+    // if (req.user.taskId !== taskId) {
+    //   throw new ApiError(
+    //     401,
+    //     "You are not allowed to complete this task",
+    //     "FORBIDDEN"
+    //   );
+    // }
 
     if (!isValidObjectId(teamId)) {
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
