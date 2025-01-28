@@ -24,8 +24,8 @@ router.route("/:teamName/users").get(
   checkAuth("admin"),
   safeHandler(async (req, res) => {
     const { teamName } = req.params;
-    if (!isValidObjectId(teamId)) {
-      throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+    if (!teamName || teamName.trim() === "") {
+      throw new ApiError(400, "Invalid team name", "INVALID_TEAM_NAME");
     }
 
     const team = await Team.findOne({ name: teamName })
@@ -42,10 +42,10 @@ router.route("/:teamName/users").get(
       return user.username;
     });
 
-    console.log(users)
+    console.log(users);
 
     return res.success(200, "Team members successfully fetched", {
-      users
+      users,
     });
   })
 );
