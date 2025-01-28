@@ -28,7 +28,7 @@ router
         throw new ApiError(404, "No user was found", "NO_USERS_FOUND");
       }
 
-      return res.success(200, "All users successfully fetched", { users });
+      res.success(200, "All users successfully fetched", { users });
     })
   )
 
@@ -129,7 +129,7 @@ router
       }
 
       await User.deleteMany();
-      return res.success(200, "All users successfully deleted", { users });
+      res.success(200, "All users successfully deleted", { users });
     })
   );
 
@@ -164,7 +164,7 @@ router
       delete user.team;
       user.teamName = team.name;
 
-      return res.success(200, "User successfully fetched", { user });
+      res.success(200, "User successfully fetched", { user });
     })
   )
 
@@ -260,7 +260,7 @@ router
         );
       }
 
-      return res.success(200, "User updated successfully", {
+      res.success(200, "User updated successfully", {
         userId: newUser._id,
         username: newUser.username,
         email: newUser.email,
@@ -291,7 +291,7 @@ router
         { new: true }
       );
 
-      return res.success(200, "User deleted successfully", {
+      res.success(200, "User deleted successfully", {
         //putting these checks here because I had some error with findByIdAndDelete before
         userId: user._id || userId,
         username: user.username || "Unknown",
@@ -342,7 +342,7 @@ router.post(
       avatar: user.avatar || null,
     });
 
-    return res.success(200, "Login successful", {
+    res.success(200, "Login successful", {
       userToken,
       user: {
         id: user._id,

@@ -10,7 +10,7 @@ import taskData from "../data/taskData.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 import isEventActive from "../middlewares/isEventActive.js";
 import { isValidObjectId } from "mongoose";
-import { announceSingle } from "../utils/Announcements.js";
+import { announceHand, announceSingle } from "../utils/Announcements.js";
 import getIstDate from "../utils/getIstDate.js";
 import Hand from "../models/hand.model.js";
 import powerUpsData from "../data/powerUpsData.js";
@@ -44,7 +44,7 @@ router.route("/:teamName/users").get(
 
     console.log(users);
 
-    return res.success(200, "Team members successfully fetched", {
+    res.success(200, "Team members successfully fetched", {
       users,
     });
   })
@@ -79,7 +79,7 @@ router
         return team;
       });
 
-      return res.success(200, "All teams successfully fetched", { teams });
+      res.success(200, "All teams successfully fetched", { teams });
     })
   )
 
@@ -118,7 +118,7 @@ router
 
       await team.save();
 
-      return res.success(201, "Team created successfully", {
+      res.success(201, "Team created successfully", {
         teamName: team.name,
         teamId: team._id,
       });
@@ -137,7 +137,7 @@ router
       }
 
       await Promise.all([Team.deleteMany(), User.deleteMany()]); // Also delete any other model that might apply
-      return res.success(200, "All teams successfully deleted", { teams });
+      res.success(200, "All teams successfully deleted", { teams });
     })
   );
 
@@ -186,7 +186,7 @@ router
         team[`phase${i}`]["tasks"] = tasks;
       }
 
-      return res.success(200, "Team successfully fetched", { team });
+      res.success(200, "Team successfully fetched", { team });
     })
   )
 
@@ -208,7 +208,7 @@ router
         throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
       }
 
-      return res.success(200, "Team updated successfully", {
+      res.success(200, "Team updated successfully", {
         teamName: team.name,
         teamId: team._id,
       });
@@ -235,7 +235,7 @@ router
         User.deleteMany({ team: req.params.teamId }),
       ]); // Also delete any other model that might apply
 
-      return res.success(200, "Team deleted successfully", { team });
+      res.success(200, "Team deleted successfully", { team });
     })
   );
 
@@ -409,7 +409,7 @@ router.route("/:teamId/powerups").patch(
       team.credits = team.credits - powerUpsData[powerup].credits;
     });
     await team.save();
-    return res.success(200, "Powerups updated successfully", { team });
+    res.success(200, "Powerups updated successfully", { team });
   })
 );
 
@@ -672,6 +672,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
           taskData[`phase${phaseNo}`][taskId].title
         } of phase ${phaseNo} is completed`,
       });
+      announceHand(team._id);
       res.success(200, "Task status updated successfully", { team });
     }
 
@@ -805,7 +806,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
       });
 
       announceHand(team._id);
-      return res.success(200, "Task status updated successfully", { team });
+      res.success(200, "Task status updated successfully", { team });
     }
   })
 );

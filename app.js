@@ -161,3 +161,5 @@ server.listen(config.server.port, () => {
 // send rebuild on answer completion too
 
 // add time check in agenda
+
+// make om change the announceHand one too
