@@ -365,7 +365,7 @@ router.route("/:teamId/powerups").patch(
   checkAuth("user"),
   safeHandler(async (req, res) => {
     const { teamId } = req.params;
-    const { powerups } = req.body;
+    const { powerups, creditCardNo } = req.body;
     if (!isValidObjectId(teamId)) {
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
     }
@@ -384,6 +384,14 @@ router.route("/:teamId/powerups").patch(
     const team = await Team.findById(teamId);
     if (!team) {
       throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+    }
+
+    if (team.creditCardNo !== creditCardNo) {
+      throw new ApiError(
+        400,
+        "Invalid credit card number",
+        "INVALID_CREDIT_CARD_NO"
+      );
     }
 
     // add credit minusing
@@ -777,7 +785,6 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         //     },
         //   }
         // );
-
 
         await Hand.updateMany(
           {},
