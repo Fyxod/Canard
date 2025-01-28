@@ -560,19 +560,19 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         // completed now obviously
         task.completedAt = getIstDate();
 
-        console.log(
-          "health to be decreased",
-          taskData[`phase${phaseNo}`][parseInt(taskId)].points
-        );
+        // console.log(
+        //   "health to be decreased",
+        //   taskData[`phase${phaseNo}`][parseInt(taskId)].points
+        // );
         // decrease the health of the hands equally by the number of points assigned to those tasks
-        await Hand.updateMany(
-          {},
-          {
-            $inc: {
-              health: -taskData[`phase${phaseNo}`][parseInt(taskId)].points,
-            },
-          }
-        );
+        // await Hand.updateMany(
+        //   {},
+        //   {
+        //     $inc: {
+        //       health: -taskData[`phase${phaseNo}`][parseInt(taskId)].points,
+        //     },
+        //   }
+        // );
 
         // if its the first task of the phase
         if (phase.completedTasks === 1) {
@@ -763,6 +763,21 @@ router.route("/:teamId/:phaseNo/:taskId").post(
         minorTask.status = "completed";
         minorTask.completedAt = getIstDate();
         minorTask.timeTaken = -2;
+
+        // console.log(
+        //   "health to be decreased",
+        //   taskData[`phase${phaseNo}`][parseInt(taskId)].points
+        // );
+        // decrease the health of the hands equally by the number of points assigned to those tasks
+        // await Hand.updateMany(
+        //   {},
+        //   {
+        //     $inc: {
+        //       health: -taskData[`phase${phaseNo}`][parseInt(taskId)].points,
+        //     },
+        //   }
+        // );
+
 
         await Hand.updateMany(
           {},

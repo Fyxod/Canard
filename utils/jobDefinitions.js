@@ -18,7 +18,9 @@ export default (agenda) => {
       task.hintActive = true;
       team[currentPhase].tasks.set(currentTask, task);
       await team.save();
-      announceSingle(teamId, "rebuild");
+      announceSingle(teamId, {
+        type: "hint",
+      });
     } catch (error) {
       console.log(error);
     }

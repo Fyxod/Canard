@@ -162,4 +162,4 @@ server.listen(config.server.port, () => {
 
 // add time check in agenda
 
-// make om change the announceHand one too
+// remove left hand right hand decresion for major tasks and add for minor tasks
