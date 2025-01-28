@@ -33,6 +33,7 @@ router
 
   .post(
     isRegistrationActive,
+    checkAuth("admin"),
     safeHandler(async (req, res) => {
       let fields = userRegistrationSchema.parse(req.body);
       console.log(fields)
