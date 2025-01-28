@@ -20,6 +20,34 @@ import Settings from "../models/settings.model.js";
 
 const router = express.Router();
 
+router.route("/:teamName/users").get(
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    const { teamName } = req.params;
+    if (!isValidObjectId(teamId)) {
+      throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+    }
+
+    const team = await Team.findOne({ name: teamName })
+      .populate({
+        path: "members",
+        select: "-password",
+      })
+      .lean();
+    if (!team) {
+      throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+    }
+
+    const users = team.members.map((user) => {
+      return user.username;
+    });
+
+    return res.success(200, "Team members successfully fetched", {
+      users
+    });
+  })
+);
+
 router
   .route("/")
   .get(
