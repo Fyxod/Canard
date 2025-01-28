@@ -31,7 +31,7 @@ async function initializeTesting({ purge = false } = {}) {
   
   console.log("Data initialized successfully");
   console.log("Assigning orders.....");
-  // await assignOrders();
+  await assignOrders();
   mongoose.connection.close();
 }
 

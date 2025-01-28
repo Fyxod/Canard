@@ -5,6 +5,7 @@ import Settings from "../models/settings.model.js";
 import checkAuth from "../middlewares/authMiddleware.js";
 import onBoard from "../utils/scripts/onBoard.js";
 import offBoard from "../utils/scripts/offBoard.js";
+import getIstDate from "../utils/getIstDate.js";
 
 const router = express.Router();
 
@@ -55,7 +56,7 @@ router
             console.log("in here 2");
             settings.eventStatus = "active";
             settings.currentPhaseValue = phaseValue;
-            settings.phaseValueStatus[phaseValue] = "inProgress";
+            settings.phaseValue[phaseValue].status = "inProgress";
           }
           //phasevalue can be 1 and be tried to set to true only if the event is "upcoming"
           else {
@@ -71,13 +72,14 @@ router
         ) {
           console.log("in here 4");
 
-          settings.phaseValueStatus[phaseValue] = "inProgress";
+          settings.phaseValue[phaseValue].status = "inProgress";
           settings.currentPhaseValue = phaseValue;
         } else {
           console.log("in here 5");
           throw new ApiError(400, "Invalid data", "INVALID_DATA");
         }
         console.log("in here 6");
+        settings.phaseValue[phaseValue].startTime = getIstDate();
         await settings.save();
         onBoard(phaseValue); // onboarding command -- to be completed
       }
@@ -89,17 +91,18 @@ router
         settings.currentPhaseValue === phaseValue
       ) {
         console.log("in here 7");
-        if (settings.phaseValueStatus[phaseValue] !== "inProgress") {
+        if (settings.phaseValue[phaseValue].status !== "inProgress") {
           console.log("in here 8");
           throw new ApiError(400, "Invalid data", "INVALID_DATA");
         }
-        settings.phaseValueStatus[phaseValue] = "completed";
+        settings.phaseValue[phaseValue].status = "completed";
         settings.currentPhaseValue = -1;
         settings.phasesCompleted = phaseValue;
         if (phaseValue === 3) {
           console.log("in here 9");
           settings.eventStatus = "closed";
         }
+        settings.phaseValue[phaseValue].endTime = getIstDate();
         await settings.save();
         offBoard(phaseValue); // announce in this only
       } else {

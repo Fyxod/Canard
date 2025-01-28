@@ -15,6 +15,8 @@ import getIstDate from "../utils/getIstDate.js";
 import Hand from "../models/hand.model.js";
 import powerUpsData from "../data/powerUpsData.js";
 import callingCards from "../data/callingCardData.js";
+import { agenda } from "../app.js";
+import Settings from "../models/settings.model.js";
 
 const router = express.Router();
 
@@ -53,7 +55,6 @@ router
 
   .post(
     isRegistrationActive, // check if registration is active
-    checkAuth("admin"),
     safeHandler(async (req, res) => {
       let { name, callingCard } = req.body;
       callingCard = parseInt(callingCard);
@@ -120,13 +121,13 @@ router
       if (!isValidObjectId(teamId)) {
         throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
       }
-      // if (req.user.role === "user" && req.user.teamId.toString() !== teamId) {
-      //   throw new ApiError(
-      //     403,
-      //     "You are not allowed to view this team",
-      //     "FORBIDDEN"
-      //   );
-      // }
+      if (req.user.role === "user" && req.user.teamId.toString() !== teamId) {
+        throw new ApiError(
+          403,
+          "You are not allowed to view this team",
+          "FORBIDDEN"
+        );
+      }
 
       // I know I shoudnt be sending the users along with the team but just making things easier for the frontend devs
       const team = await Team.findById(teamId)
@@ -384,13 +385,14 @@ router.route("/:teamId/:phaseNo/:taskId").post(
   safeHandler(async (req, res) => {
     let { teamId, phaseNo, taskId } = req.params;
     const { status } = req.body;
-    // if (req.user.taskId !== taskId) {
-    //   throw new ApiError(
-    //     401,
-    //     "You are not allowed to complete this task",
-    //     "FORBIDDEN"
-    //   );
-    // }
+
+    if (req.user.role === "admin" && req.user.taskId !== taskId) {
+      throw new ApiError(
+        401,
+        "You are not allowed to complete this task",
+        "FORBIDDEN"
+      );
+    }
 
     if (!isValidObjectId(teamId)) {
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
@@ -534,11 +536,12 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
         // if its the first task of the phase
         if (phase.completedTasks === 1) {
+          const settings = await Settings.findOne();
           console.log("trace 1");
           // time taken is the time between now and the start of the phase as this is the first task of the phase
           task.timeTaken =
-            Date.now() -
-            config.phaseStartTime[team.phaseOrder.indexOf(phaseNo) + 1];
+            getIstDate() -
+            settings.phaseValue[team.phaseOrder.indexOf(phaseNo) + 1].startTime;
 
           // set the current task to be the next task in the task order
           phase.currentTask = phase.taskOrder[phase.completedTasks];
@@ -548,6 +551,19 @@ router.route("/:teamId/:phaseNo/:taskId").post(
           // setting the next task to be "inProgress"
           currentTask.status = "inProgress";
           phase.tasks.set(phase.currentTask.toString(), currentTask);
+
+          // scheduling hints
+
+          const hintTime =
+            taskData[`phase${phaseNo}`][phase.currentTask].hintTime;
+
+          agenda.schedule(new Date(Date.now() + hintTime * 60 * 1000), "hint", {
+            teamName: team.name,
+            teamId: team._id,
+            phaseNo,
+            taskId: phase.currentTask,
+            hintTime,
+          });
         }
 
         // if all tasks in the phase have been completed
@@ -583,6 +599,18 @@ router.route("/:teamId/:phaseNo/:taskId").post(
           // setting the next task to be "inProgress"
           currentTask.status = "inProgress";
           phase.tasks.set(phase.currentTask.toString(), currentTask);
+
+          // scheduling hints
+
+          const hintTime =
+            taskData[`phase${phaseNo}`][phase.currentTask].hintTime;
+
+          agenda.schedule(new Date(Date.now() + hintTime * 60 * 1000), "hint", {
+            teamId: team._id,
+            phaseNo,
+            taskId: phase.currentTask,
+            hintTime,
+          });
         }
         console.log("trace 4");
         phase.tasks.set(taskId, task);
@@ -735,6 +763,8 @@ router.route("/:teamId/:phaseNo/:taskId").post(
           taskData[`phase${phaseNo}`][taskId].title
         } of phase ${phaseNo} is completed`,
       });
+
+      announceHand(team._id);
       return res.success(200, "Task status updated successfully", { team });
     }
   })
@@ -848,9 +878,11 @@ router.post(
     // phase completed now obviously
     phase.completedAt = getIstDate();
 
+    const settings = await Settings.findOne();
+
     // time taken is the time between now and the start of the phase
     phase.timeTaken =
-      Date.now() - config.phaseStartTime[team.phaseOrder.indexOf(phaseNo) + 1];
+      getIstDate() - settings.phaseValue[team.phaseOrder.indexOf(phaseNo) + 1].startTime;
 
     // if all phases have been completed
     if (team.completedPhases === 3) {

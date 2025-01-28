@@ -19,21 +19,51 @@ const settingsSchema = new mongoose.Schema(
       type: Number,
       default: -1,
     },
-    phaseValueStatus: {
+    phaseValue: {
       1: {
-        type: String,
-        enum: ["completed", "inProgress", "notStarted"],
-        default: "notStarted",
+        status: {
+          type: String,
+          enum: ["completed", "inProgress", "notStarted"],
+          default: "notStarted",
+        },
+        startTime: {
+          type: Date,
+          default: null,
+        },
+        endTime: {
+          type: Date,
+          default: null,
+        },
       },
       2: {
-        type: String,
-        enum: ["completed", "inProgress", "notStarted"],
-        default: "notStarted",
+        status: {
+          type: String,
+          enum: ["completed", "inProgress", "notStarted"],
+          default: "notStarted",
+        },
+        startTime: {
+          type: Date,
+          default: null,
+        },
+        endTime: {
+          type: Date,
+          default: null,
+        },
       },
       3: {
-        type: String,
-        enum: ["completed", "inProgress", "notStarted"],
-        default: "notStarted",
+        status: {
+          type: String,
+          enum: ["completed", "inProgress", "notStarted"],
+          default: "notStarted",
+        },
+        startTime: {
+          type: Date,
+          default: null,
+        },
+        endTime: {
+          type: Date,
+          default: null,
+        },
       },
     },
     announcements: {

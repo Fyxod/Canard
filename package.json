@@ -46,6 +46,9 @@
   "dependencies": {
   
     
+  "agenda": "^5.0.0",
+  
+    
   "bcrypt": "^5.1.1",
   
     

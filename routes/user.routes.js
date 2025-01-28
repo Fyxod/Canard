@@ -33,10 +33,9 @@ router
 
   .post(
     isRegistrationActive,
-    checkAuth("admin"),
     safeHandler(async (req, res) => {
       let fields = userRegistrationSchema.parse(req.body);
-      console.log(fields);
+      console.log(fields)
 
       if (typeof fields.teamName !== "string" || fields.teamName === "") {
         throw new ApiError(400, "Invalid Team Name", "INVALID_TEAM_NAME");
@@ -66,7 +65,7 @@ router
         role: "user",
       });
 
-      console.log("printing user", user);
+      console.log("printing user",user);
 
       const team = await Team.findOne({ name: fields.teamName });
       if (!team) {

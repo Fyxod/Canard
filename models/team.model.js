@@ -28,7 +28,7 @@ const phaseSchema = new mongoose.Schema({
         enum: ["major", "minor"],
         required: true,
       },
-      hintUsed: {
+      hintActive: {
         type: Boolean,
         default: false,
       },
@@ -114,7 +114,8 @@ const teamSchema = new mongoose.Schema(
     },
     callingCard: {
       type: String,
-      default: "https://res.cloudinary.com/dimesumyw/image/upload/v1737565199/callingone_ylssgb.gif",
+      default:
+        "https://res.cloudinary.com/dimesumyw/image/upload/v1737565199/callingone_ylssgb.gif",
     },
     powerups: {
       type: [

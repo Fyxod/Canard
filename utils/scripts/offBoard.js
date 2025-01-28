@@ -2,6 +2,7 @@ import Team from "../../models/team.model.js";
 import {announceSingle} from "../Announcements.js";
 import config from "../../config/config.js";
 import getIstDate from "../getIstDate.js";
+import Settings from "../../models/settings.model.js";
 
 export default async function offBoard(phaseValue) {
   const teams = await Team.find({});
@@ -9,6 +10,8 @@ export default async function offBoard(phaseValue) {
     console.log("No teams found");
     return;
   }
+
+  const settings = await Settings.findOne();
 
   for (let team of teams) {
     // this is the case when the phase is either "completed" or "inProgress"
@@ -28,7 +31,7 @@ export default async function offBoard(phaseValue) {
         team[currentPhase].status = "failed";
         team[currentPhase].completedAt = null;
         team[currentPhase].timeTaken =
-          Date.now() - config.phaseStartTime[phaseValue]; // phaseValue = team.phaseOrder.indexOf(phaseNo) + 1
+          getIstDate() - settings.phaseValue[phaseValue].startTime; // phaseValue = team.phaseOrder.indexOf(phaseNo) + 1
         team.completedPhases = team.completedPhases + 1;
 
         // if all the phases are over

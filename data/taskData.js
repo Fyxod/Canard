@@ -6,6 +6,7 @@ const taskData = {
       points: 10,
       type: "major",
       hint: "Hint 1",
+      hintTime: 0.5, // in minutes
     },
     102: {
       title: "Task 2",
@@ -13,6 +14,7 @@ const taskData = {
       points: 20,
       type: "major",
       hint: "Hint 2",
+      hintTime: 0.5, // in minutes
     },
     103: {
       title: "Task 3",
@@ -20,6 +22,7 @@ const taskData = {
       points: 30,
       type: "major",
       hint: "Hint 3",
+      hintTime: 0.5, // in minutes
     },
     104: {
       title: "Task 4",
@@ -27,6 +30,7 @@ const taskData = {
       points: 40,
       type: "major",
       hint: "Hint 4",
+      hintTime: 0.5, // in minutes
     },
     105: {
       title: "Task 5",
@@ -34,27 +38,28 @@ const taskData = {
       points: 50,
       type: "major",
       hint: "Hint 5",
+      hintTime: 0.5, // in minutes
     },
     106: {
       title: "Hoops of Fury",
       description: "This is the sixth task",
       points: 5,
       type: "minor",
-      hint: "Hint 6",
+      hint: null,
     },
     107: {
       title: "Where in the World?",
       description: "This is the seventh task",
       points: 5,
       type: "minor",
-      hint: "Hint 7",
+      hint: null,
     },
     108: {
       title: "Card Chaos",
       description: "This is the eighth task",
       points: 5,
       type: "minor",
-      hint: "Hint 8",
+      hint: null,
     },
     answer: "answer1",
   },
@@ -65,6 +70,7 @@ const taskData = {
       points: 10,
       type: "major",
       hint: "Hint 1",
+      hintTime: 0.5, // in minutes
     },
     202: {
       title: "Task 2",
@@ -72,6 +78,7 @@ const taskData = {
       points: 20,
       type: "major",
       hint: "Hint 2",
+      hintTime: 0.5, // in minutes
     },
     203: {
       title: "Task 3",
@@ -79,6 +86,7 @@ const taskData = {
       points: 30,
       type: "major",
       hint: "Hint 3",
+      hintTime: 0.5, // in minutes
     },
     204: {
       title: "Task 4",
@@ -86,6 +94,7 @@ const taskData = {
       points: 40,
       type: "major",
       hint: "Hint 4",
+      hintTime: 0.5, // in minutes
     },
     205: {
       title: "Task 5",
@@ -93,27 +102,28 @@ const taskData = {
       points: 50,
       type: "major",
       hint: "Hint 5",
+      hintTime: 0.5, // in minutes
     },
     206: {
       title: "Boat Blitz",
       description: "This is the sixth task",
       points: 5,
       type: "minor",
-      hint: "Hint 6",
+      hint: null,
     },
     207: {
       title: "String Symphony",
       description: "This is the seventh task",
       points: 5,
       type: "minor",
-      hint: "Hint 7",
+      hint: null,
     },
     208: {
       title: "Triple Trouble",
       description: "This is the eighth task",
       points: 5,
       type: "minor",
-      hint: "Hint 8",
+      hint: null,
     },
     answer: "answer2",
   },
@@ -124,6 +134,7 @@ const taskData = {
       points: 10,
       type: "major",
       hint: "Hint 1",
+      hintTime: 0.5, // in minutes
     },
     302: {
       title: "Task 2",
@@ -131,6 +142,7 @@ const taskData = {
       points: 20,
       type: "major",
       hint: "Hint 2",
+      hintTime: 0.5, // in minutes
     },
     303: {
       title: "Task 3",
@@ -138,6 +150,7 @@ const taskData = {
       points: 30,
       type: "major",
       hint: "Hint 3",
+      hintTime: 0.5, // in minutes
     },
     304: {
       title: "Task 4",
@@ -145,6 +158,7 @@ const taskData = {
       points: 40,
       type: "major",
       hint: "Hint 4",
+      hintTime: 0.5, // in minutes
     },
     305: {
       title: "Task 5",
@@ -152,27 +166,28 @@ const taskData = {
       points: 50,
       type: "major",
       hint: "Hint 5",
+      hintTime: 0.5, // in minutes
     },
     306: {
       title: "Gundown",
       description: "This is the sixth task",
       points: 5,
       type: "minor",
-      hint: "Hint 6",
+      hint: null,
     },
     307: {
       title: "Maze in the Box",
       description: "This is the seventh task",
       points: 5,
       type: "minor",
-      hint: "Hint 7",
+      hint: null,
     },
     308: {
       title: "Skipster",
       description: "This is the eighth task",
       points: 5,
       type: "minor",
-      hint: "Hint 8",
+      hint: null,
     },
     answer: "answer3",
   },

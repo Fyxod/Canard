@@ -6,12 +6,14 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
+import Agenda from "agenda";
 //utils
 import sendErrorMail from "./utils/sendErrorMail.js";
 import responseHandler from "./middlewares/responseHandler.js";
 import connectMongo from "./config/db.js";
 import config from "./config/config.js";
 import getIstDate from "./utils/getIstDate.js";
+import jobDefinitions from "./utils/jobDefinitions.js";
 //routes
 import teamRoutes from "./routes/team.routes.js";
 import userRoutes from "./routes/user.routes.js";
@@ -33,7 +35,27 @@ io.on("connection", (socket) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-connectMongo();
+(async () => {
+  await connectMongo();
+})();
+
+export const agenda = new Agenda({
+  db: { address: config.database.uri },
+  processEvery: "20 seconds",
+});
+
+agenda.on("ready", () => {
+  console.log("Agenda started");
+});
+
+agenda.on("error", (error) => {
+  console.error("Agenda error:", error);
+});
+
+(async () => {
+  await agenda.start();
+  jobDefinitions(agenda);
+})();
 
 app.use(cors());
 
@@ -47,9 +69,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./public/views"));
 
 app.use((req, res, next) => {
-  console.log(path.join(__dirname, "./public/adminApp/index.html"));
-  console.log(path.join(__dirname, "./public/userApp/index.html"));
-  console.log(req.headers);
+  // console.log(path.join(__dirname, "./public/adminApp/index.html"));
+  // console.log(path.join(__dirname, "./public/userApp/index.html"));
+  // console.log(req.headers);
   console.log("printing body", req.body);
   console.log(req.url, req.method);
   next();
@@ -143,4 +165,14 @@ server.listen(config.server.port, () => {
 
 // send rebuild to everyone on task completion
 // different admins for different tasks
-// fix kdratio
+// fix kdratio - 45:5 - 9:1
+
+// change start time to be dynamic to be stored in settings when changed
+
+// fetch all users from user name
+
+// send rebuild on answer completion too
+
+// add time check in agenda
+
+// change date.now ot ist date
