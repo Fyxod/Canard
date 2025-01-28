@@ -14,6 +14,7 @@ import Team from "../models/team.model.js";
 import { generateToken } from "../utils/jwtFuncs.js";
 import isRegistrationActive from "../middlewares/isRegistrationActive.js";
 import Game from "../models/game.model.js";
+import sendRegistrationMail from "../utils/sendRegistrationMail.js";
 
 const router = express.Router();
 
@@ -36,7 +37,7 @@ router
     checkAuth("admin"),
     safeHandler(async (req, res) => {
       let fields = userRegistrationSchema.parse(req.body);
-      console.log(fields)
+      console.log(fields);
 
       if (typeof fields.teamName !== "string" || fields.teamName === "") {
         throw new ApiError(400, "Invalid Team Name", "INVALID_TEAM_NAME");
@@ -103,8 +104,12 @@ router
       user.gameStats = newGameStats._id;
 
       await user.save();
-
-      return res.success(201, "User created successfully", {
+      sendRegistrationMail({
+        username: user.username,
+        teamName: fields.teamName,
+        email: user.email,
+      });
+      res.success(201, "User created successfully", {
         userId: user._id,
         username: user.username,
         email: user.email,
