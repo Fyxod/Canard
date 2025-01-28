@@ -42,6 +42,8 @@ router.route("/:teamName/users").get(
       return user.username;
     });
 
+    console.log(users)
+
     return res.success(200, "Team members successfully fetched", {
       users
     });
@@ -83,6 +85,7 @@ router
 
   .post(
     isRegistrationActive, // check if registration is active
+    checkAuth("admin"),
     safeHandler(async (req, res) => {
       let { name, callingCard } = req.body;
       callingCard = parseInt(callingCard);

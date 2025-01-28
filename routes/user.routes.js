@@ -65,7 +65,7 @@ router
         role: "user",
       });
 
-      console.log("printing user",user);
+      // console.log("printing user",user);
 
       const team = await Team.findOne({ name: fields.teamName });
       if (!team) {
