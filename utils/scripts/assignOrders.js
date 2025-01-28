@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import connectMongo from "../../config/db.js";
 import taskData from "../../data/taskData.js";
 import Team from "../../models/team.model.js";
+import creditcardData from "../../data/creditCardData.js";
 
 function generateEqualPhaseAndTaskOrders(
   teamCount,
@@ -76,6 +77,7 @@ export default async function assignOrders() {
         team.phase1.taskOrder = order[1];
         team.phase2.taskOrder = order[2];
         team.phase3.taskOrder = order[3];
+        team.creditCardNo = creditcardData[index];
 
         await team.save();
       })

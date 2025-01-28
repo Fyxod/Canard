@@ -40,3 +40,5 @@ const creditcardData = [
   "MLSC 2730 6719 4825",
   "MLSC 2773 2591 8047",
 ];
+
+export default creditcardData;

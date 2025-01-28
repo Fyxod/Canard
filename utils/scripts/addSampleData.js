@@ -7,6 +7,7 @@ import sampleAvatars from "../../data/sampleAvatars.js";
 import bcrypt from "bcrypt";
 import callingCards from "../../data/callingCardData.js";
 import Game from "../../models/game.model.js";
+import creditcardData from "../../data/creditCardData.js";
 
 export async function addSampleData({ purge = false }) {
   // await connectMongo();
@@ -22,7 +23,9 @@ export async function addSampleData({ purge = false }) {
   for (let i = 1; i <= 20; i++) {
     const team = await Team.create({
       name: "Team " + i,
-      callingCard: callingCards[1],
+      callingCard: callingCards[i],
+      // creditCardNo: creditcardData[i - 1],
+      score: 100,
     });
 
     Object.keys(taskData).forEach((phase) => {

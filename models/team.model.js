@@ -118,27 +118,7 @@ const teamSchema = new mongoose.Schema(
         "https://res.cloudinary.com/dimesumyw/image/upload/v1737565199/callingone_ylssgb.gif",
     },
     powerups: {
-      type: [
-        {
-          id: {
-            type: Number,
-            required: true,
-          },
-          title: {
-            type: String,
-            required: true,
-          },
-          description: {
-            type: String,
-            required: true,
-          },
-          credits: {
-            type: Number,
-            required: true,
-          },
-        },
-      ],
-
+      type: [Number],
       default: () => [],
     },
     creditCardNo: {

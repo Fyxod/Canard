@@ -330,8 +330,7 @@ router.patch(
   })
 );
 
-router.patch(
-  "/:teamId/powerups",
+router.route("/:teamId/powerups").patch(
   checkAuth("user"),
   safeHandler(async (req, res) => {
     const { teamId } = req.params;
@@ -357,17 +356,27 @@ router.patch(
     }
 
     // add credit minusing
-
-    const powerUpsArray = powerups.map((powerup) => {
-      return {
-        id: powerUpsData[powerup - 1].id,
-        title: powerUpsData[powerup - 1].title,
-        description: powerUpsData[powerup - 1].description,
-        credits: powerUpsData[powerup - 1].credits,
-      };
+    const totalCredits = 0;
+    powerups.forEach((powerup) => {
+      if (!powerUpsData[powerup]) {
+        throw new ApiError(400, "Invalid powerup", "INVALID_POWERUP");
+      }
+      totalCredits += powerUpsData[powerup].credits;
     });
 
-    team.powerups = powerUpsArray;
+    if (team.credits < totalCredits) {
+      throw new ApiError(400, "Insufficient credits", "INSUFFICIENT_CREDITS");
+    }
+
+    powerups.forEach((powerup) => {
+      if (team.powerups.includes(powerup)) {
+        throw new ApiError(400, "Powerup already added", "POWERUP_ADDED");
+      }
+      team.powerups.push(powerup);
+
+      // decrease the credits of the team by the credits of the powerup
+      team.credits = team.credits - powerUpsData[powerup].credits;
+    });
     await team.save();
     return res.success(200, "Powerups updated successfully", { team });
   })
@@ -882,7 +891,8 @@ router.post(
 
     // time taken is the time between now and the start of the phase
     phase.timeTaken =
-      getIstDate() - settings.phaseValue[team.phaseOrder.indexOf(phaseNo) + 1].startTime;
+      getIstDate() -
+      settings.phaseValue[team.phaseOrder.indexOf(phaseNo) + 1].startTime;
 
     // if all phases have been completed
     if (team.completedPhases === 3) {
