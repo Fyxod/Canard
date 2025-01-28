@@ -138,14 +138,8 @@ server.listen(config.server.port, () => {
 });
 
 // prepare the role based access control and role priority
-// check parseInt everywhere
-// convert to IST everywhere
-// powerups
 // add a failsafe that the distribution script runs if it has not already before the event starts
-// send registration mails
 // check for blocked teams everywhere
-// read team post route once more
-// add announcement route in admin routes - do you want a route to announce to different teams or all teams
 // what all information about the team do you want after completion of the event
 
 // see if you can add a task time limit if its possible
@@ -155,24 +149,15 @@ server.listen(config.server.port, () => {
 // I am not noting down the time of completion of minor tasks by any team
 // the completed time of a phase is defined as the point of time when the team enters the correct answer for the phase (NOT WHEN THEY COMPLETE ALL THE MAJOR AND MINOR TASKS)
 // dont make team idle after completion of major tasks, only after completion of all tasks(i.e. minor included)
+
 // Allow dynamic task changing and completion
 
 // shaders cache karne hain before rebuilding the app
-
-//email registration template
-
-// admin login then only registartions
 
 // send rebuild to everyone on task completion
 // different admins for different tasks
 // fix kdratio - 45:5 - 9:1
 
-// change start time to be dynamic to be stored in settings when changed
-
-// fetch all users from user name
-
 // send rebuild on answer completion too
 
 // add time check in agenda
-
-// change date.now ot ist date
