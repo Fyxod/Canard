@@ -42,9 +42,6 @@ router
       if (typeof fields.teamName !== "string" || fields.teamName === "") {
         throw new ApiError(400, "Invalid Team Name", "INVALID_TEAM_NAME");
       }
-      // if (!)) {
-      //   throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
-      // }
 
       const userExists = await User.findOne({
         $or: [{ email: fields.email }, { username: fields.username }],
