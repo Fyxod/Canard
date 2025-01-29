@@ -56,6 +56,10 @@ const gameSchema = new mongoose.Schema(
           default: "Most Played Character",
         },
       },
+      title: {
+        type: String,
+        default: "Tekken 3",
+      },
     },
 
     tekken8: {
@@ -104,6 +108,10 @@ const gameSchema = new mongoose.Schema(
           default: "Most Played Character",
         },
       },
+      title: {
+        type: String,
+        default: "Tekken 8",
+      },
     },
     wwe: {
       wins: {
@@ -150,6 +158,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Most Played Character",
         },
+      },
+      title: {
+        type: String,
+        default: "WWE",
       },
     },
     brawlHalla: {
@@ -198,6 +210,10 @@ const gameSchema = new mongoose.Schema(
           default: "Most Played Character",
         },
       },
+      title: {
+        type: String,
+        default: "Brawlhalla",
+      },
     },
 
     miniMilitia: {
@@ -242,6 +258,11 @@ const gameSchema = new mongoose.Schema(
           default: "Wins",
         },
       },
+
+      title: {
+        type: String,
+        default: "Mini Militia",
+      },
     },
 
     clashRoyale: {
@@ -277,6 +298,11 @@ const gameSchema = new mongoose.Schema(
           default: "Win Rate",
         },
       },
+
+      title: {
+        type: String,
+        default: "Clash Royale",
+      },
     },
 
     forzaHorizon: {
@@ -300,6 +326,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Fastest Lap Time",
         },
+      },
+      title: {
+        type: String,
+        default: "Forza Horizon",
       },
     },
     csgoFullTeam: {
@@ -343,6 +373,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Wins",
         },
+      },
+      title: {
+        type: String,
+        default: "CSGO Full Team",
       },
     },
 
@@ -388,6 +422,10 @@ const gameSchema = new mongoose.Schema(
           default: "Wins",
         },
       },
+      title: {
+        type: String,
+        default: "CSGO FFA",
+      },
     },
     bombDiffusal: {
       matchesWon: {
@@ -399,6 +437,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Matches Won",
         },
+      },
+      title: {
+        type: String,
+        default: "Bomb Diffusal",
       },
     },
     superMario: {
@@ -432,6 +474,10 @@ const gameSchema = new mongoose.Schema(
           default: "Coins Collected",
         },
       },
+      title: {
+        type: String,
+        default: "Super Mario",
+      },
     },
     gtaSanAndreas: {
       bestSurvivalTime: {
@@ -443,6 +489,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Best Survival TIme",
         },
+      },
+      title: {
+        type: String,
+        default: "GTA San Andreas",
       },
     },
     fortnite: {
@@ -496,6 +546,10 @@ const gameSchema = new mongoose.Schema(
           default: "Average Damage Dealt",
         },
       },
+      title: {
+        type: String,
+        default: "Fortnite",
+      },
     },
     rocketLeague: {
       matchesWon: {
@@ -528,6 +582,10 @@ const gameSchema = new mongoose.Schema(
           default: "Goals Scored",
         },
       },
+      title: {
+        type: String,
+        default: "Rocket League",
+      },
     },
     fifa: {
       matchesWon: {
@@ -549,6 +607,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Goals Scored",
         },
+      },
+      title: {
+        type: String,
+        default: "FIFA",
       },
     },
     bowling: {
@@ -582,6 +644,10 @@ const gameSchema = new mongoose.Schema(
           default: "Average Points per game",
         },
       },
+      title: {
+        type: String,
+        default: "Bowling",
+      },
     },
     shootWithAGun: {
       score: {
@@ -603,6 +669,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Accuracy",
         },
+      },
+      title: {
+        type: String,
+        default: "Shoot with a Gun",
       },
     },
     bgmi: {
@@ -655,6 +725,10 @@ const gameSchema = new mongoose.Schema(
           type: String,
           default: "Average Damage Dealt",
         },
+      },
+      title: {
+        type: String,
+        default: "BGMI",
       },
     },
   },

@@ -71,7 +71,7 @@ app.set("views", path.join(__dirname, "./public/views"));
 app.use((req, res, next) => {
   // console.log(path.join(__dirname, "./public/adminApp/index.html"));
   // console.log(path.join(__dirname, "./public/userApp/index.html"));
-  console.log(req.headers);
+  console.log("Authorization header",req.headers['authorization']);
   console.log("printing body", req.body);
   console.log(req.url, req.method);
   next();
@@ -165,3 +165,9 @@ server.listen(config.server.port, () => {
 // remove left hand right hand decresion for major tasks and add for minor tasks
 
 //TEST POWERUPS
+
+// add title to each
+
+// has the response popup been added?
+
+// security

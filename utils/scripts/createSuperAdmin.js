@@ -14,7 +14,12 @@ export default async function createSuperAdmin({ purge = false } = {}) {
   }
   const password = await bcrypt.hash(process.env.SUPER_ADMIN_PASSWORD, 10);
   const newSuperAdmin = await Admin.create({
-    username: "Mlsc27",
+    username: "omrajpal",
+    password: password,
+    role: "superAdmin",
+  });
+  const newSuperAdmin2 = await Admin.create({
+    username: "parth94",
     password: password,
     role: "superAdmin",
   });

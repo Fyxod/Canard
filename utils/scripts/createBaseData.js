@@ -25,8 +25,8 @@ async function initializeTesting({ purge = false } = {}) {
     }
 
     await createSuperAdmin({ purge: purge })
-    await createAdmin({ username: "Parth", purge: purge })
-    await createAdmin({ username: "omrajpal", purge: purge })
+    await createAdmin({ username: "admin1", purge: purge })
+    await createAdmin({ username: "admin2", purge: purge })
     await createAdmin({ username: "admin3", purge: purge })
   
   console.log("Data initialized successfully");
@@ -36,3 +36,49 @@ async function initializeTesting({ purge = false } = {}) {
 }
 
 initializeTesting({ purge: true });
+
+
+
+
+
+
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
+//GAME TITLES
