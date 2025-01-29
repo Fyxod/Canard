@@ -30,4 +30,4 @@ export default async function sendRegistrationMail(response) {
   console.log(info);
 }
 
-// sendRegistrationMail({ email: 'parthdev0101@gmail.com', username: 'Parth', teamName: 'BlackSwan', });
+sendRegistrationMail({ email: 'parthdev0101@gmail.com', username: 'Parth', teamName: 'BlackSwan', });
