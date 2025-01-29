@@ -389,6 +389,19 @@ router.route("/:teamId/powerups").patch(
     if (!Array.isArray(powerups)) {
       throw new ApiError(400, "Invalid powerups", "INVALID_POWERUPS");
     }
+
+    if(powerups.length === 0) {
+      throw new ApiError(400, "No powerups selected", "NO_POWERUPS_SELECTED");
+    }
+
+    if (!creditCardNo || creditCardNo.trim() === "") {
+      throw new ApiError(
+        400,
+        "Invalid credit card number",
+        "INVALID_CREDIT_CARD_NO"
+      );
+    }
+
     const team = await Team.findById(teamId);
     if (!team) {
       throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
