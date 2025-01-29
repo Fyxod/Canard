@@ -443,7 +443,7 @@ router.route("/:teamId/powerups").patch(
       team.powerups.push(powerup);
 
       // decrease the credits of the team by the credits of the powerup
-      team.credits = team.credits - powerUpsData[powerup].credits;
+      team.score = team.score - powerUpsData[powerup].credits;
     });
     await team.save();
     res.success(200, "Powerups updated successfully", { team });
