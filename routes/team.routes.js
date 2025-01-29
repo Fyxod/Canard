@@ -88,18 +88,14 @@ router
     checkAuth("admin"),
     safeHandler(async (req, res) => {
       let { name, callingCard } = req.body;
-      if (
-        !name ||
-        !callingCard ||
-        name.trim() === "" ||
-        callingCard.trim() === ""
-      ) {
+      if (!name || !callingCard || name.trim() === "") {
         throw new ApiError(
           400,
           "Invalid team name or calling card",
           "INVALID_TEAM_NAME_OR_CALLING_CARD"
         );
       }
+      name = name.trim();
       callingCard = parseInt(callingCard);
       const teamExists = await Team.findOne({ name });
       if (teamExists) {
