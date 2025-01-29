@@ -390,8 +390,16 @@ router.route("/:teamId/powerups").patch(
       throw new ApiError(400, "Invalid powerups", "INVALID_POWERUPS");
     }
 
-    if(powerups.length === 0) {
+    if (powerups.length === 0) {
       throw new ApiError(400, "No powerups selected", "NO_POWERUPS_SELECTED");
+    }
+
+    if (hasDuplicates(powerups)) {
+      throw new ApiError(
+        400,
+        "Duplicate powerups selected",
+        "DUPLICATE_POWERUPS"
+      );
     }
 
     if (!creditCardNo || creditCardNo.trim() === "") {
@@ -988,3 +996,7 @@ router.post(
 );
 
 export default router;
+
+function hasDuplicates(arr) {
+  return new Set(arr).size !== arr.length;
+}
