@@ -57,7 +57,36 @@ agenda.on("error", (error) => {
   jobDefinitions(agenda);
 })();
 
-app.use(cors());
+const allowedOrigins = [
+  "https://admin.mlsc.tech",
+  "https://app.mlsc.tech",
+  "https://canard.mlsc.tech",
+  "https://game.mlsc.tech",
+];
+
+app.use((req, res, next) => {
+  if (!req.headers.origin) {
+
+    const secretKeyHeader = req.headers["secret-key"];
+
+    if (!secretKeyHeader && req.headers["user-agent"]?.includes("Postman")) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+  }
+  next();
+});
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -71,7 +100,7 @@ app.set("views", path.join(__dirname, "./public/views"));
 app.use((req, res, next) => {
   // console.log(path.join(__dirname, "./public/adminApp/index.html"));
   // console.log(path.join(__dirname, "./public/userApp/index.html"));
-  console.log("Authorization header",req.headers['authorization']);
+  console.log("Authorization header", req.headers["authorization"]);
   console.log("printing body", req.body);
   console.log(req.url, req.method);
   next();
