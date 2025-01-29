@@ -62,7 +62,6 @@ const allowedOrigins = [
   "https://app.mlsc.tech",
   "https://canard.mlsc.tech",
   "https://game.mlsc.tech",
-  "http://localhost:5173",
 ];
 
 app.use((req, res, next) => {
@@ -86,15 +85,15 @@ app.use((req, res, next) => {
 // CORS Middleware for browser-based requests
 app.use(
   cors(
-  //   {
-  //   origin: function (origin, callback) {
-  //     if (!origin || allowedOrigins.includes(origin)) {
-  //       callback(null, true);
-  //     } else {
-  //       callback(new Error("Not allowed by CORS"));
-  //     }
-  //   },
-  // }
+    {
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  }
 )
 );
 
