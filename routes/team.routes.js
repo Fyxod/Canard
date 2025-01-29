@@ -424,7 +424,7 @@ router.route("/:teamId/powerups").patch(
     }
 
     // add credit minusing
-    const totalCredits = 0;
+    let totalCredits = 0;
     powerups.forEach((powerup) => {
       if (!powerUpsData[powerup]) {
         throw new ApiError(400, "Invalid powerup", "INVALID_POWERUP");
