@@ -67,11 +67,13 @@ const allowedOrigins = [
 app.use((req, res, next) => {
   if (!req.headers.origin) {
     // Requests without an Origin header (Mobile apps & Postman)
-    const secretKeyHeader = req.headers["API-Key"];
+    const secretKeyHeader = req.headers["api-key"];
+    console.log(req.headers);
+    console.log("Secret key header", secretKeyHeader);
 
     if (
-      req.headers["user-agent"]?.includes("Postman") && 
-      secretKeyHeader !== process.env.API-Key
+      req.headers["user-agent"]?.includes("Postman") &&
+      secretKeyHeader !== process.env.APIKey
     ) {
       // Only allow Postman requests if the correct secret key is provided
       return res.status(401).json({ message: "Unauthorized" });
@@ -152,18 +154,28 @@ app.use("/game", gameRoutes);
 app.use((error, req, res, next) => {
   console.log(error);
   if (error.errors && error.errors[0].message) {
-    return res.error(400, error.errors[0].message, "VALIDATION_ERROR");
+    // return res.error(400, error.errors[0].message, "VALIDATION_ERROR");
+    return res.status(400).json({ message: error.errors[0].message });
   }
 
   if (error.isOperational) {
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";
-    return res.error(statusCode, message, error.errorCode, error.data);
+    return res.status(statusCode).json({
+      status: false,
+      errorCode: error.errorCode,
+      message,
+      data: error.data,
+    });
   } else {
     // sendErrorMail(error);
     console.error("ALERT ALERT ALERT");
     console.error("Unhandled error:", error);
-    return res.error(500, "Internal Server Error", "UNHANDLED_ERROR");
+    return res.status(500).json({
+      status: false,
+      errorCode: "UNHANDLED_ERROR",
+      message: "Internal Server Error",
+    });
   }
 });
 
