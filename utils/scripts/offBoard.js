@@ -1,5 +1,5 @@
 import Team from "../../models/team.model.js";
-import {announceSingle} from "../Announcements.js";
+import { announceSingle } from "../Announcements.js";
 import config from "../../config/config.js";
 import getIstDate from "../getIstDate.js";
 import Settings from "../../models/settings.model.js";
@@ -49,11 +49,18 @@ export default async function offBoard(phaseValue) {
 
       await team.save();
       console.log(`Team ${team.name} is now idle`);
-      
-      announceSingle(team._id, {
-        type: "completion",
-        message: `Sorry, you were unable to complete phase ${temp} in time.`,
-      });
+
+      if (team[`phase${temp}`].status === "failed") {
+        announceSingle(team._id, {
+          type: "completion",
+          message: `Sorry, you were unable to complete phase ${temp} in time.`,
+        });
+      } else {
+        announceSingle(team._id, {
+          type: "completion",
+          message: `Phase ${temp}'s time is over😊.`,
+        });
+      }
 
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
