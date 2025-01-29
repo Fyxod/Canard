@@ -432,7 +432,7 @@ router.route("/:teamId/powerups").patch(
       totalCredits += powerUpsData[powerup].credits;
     });
 
-    if (team.credits < totalCredits) {
+    if (team.score < totalCredits) {
       throw new ApiError(400, "Insufficient credits", "INSUFFICIENT_CREDITS");
     }
 
