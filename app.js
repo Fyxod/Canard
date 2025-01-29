@@ -67,11 +67,11 @@ const allowedOrigins = [
 app.use((req, res, next) => {
   if (!req.headers.origin) {
     // Requests without an Origin header (Mobile apps & Postman)
-    const secretKeyHeader = req.headers["secret-key"];
+    const secretKeyHeader = req.headers["API-Key"];
 
     if (
       req.headers["user-agent"]?.includes("Postman") && 
-      secretKeyHeader !== process.env.SECRET_KEY
+      secretKeyHeader !== process.env.API-Key
     ) {
       // Only allow Postman requests if the correct secret key is provided
       return res.status(401).json({ message: "Unauthorized" });
