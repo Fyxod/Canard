@@ -21,6 +21,7 @@ import settingsRoutes from "./routes/settings.routes.js";
 import handRoutes from "./routes/hand.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import gameRoutes from "./routes/game.routes.js";
+import ApiError from "./utils/errorClass.js";
 
 console.log(getIstDate());
 
@@ -92,7 +93,7 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new ApiError(400,"Not allowed by CORS", 'CORS_ERROR'));
       }
     },
   }
