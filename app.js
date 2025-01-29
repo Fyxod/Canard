@@ -63,6 +63,7 @@ const allowedOrigins = [
   "https://canard.mlsc.tech",
   "https://game.mlsc.tech",
   "http://localhost:5173",
+  'https://api.mlsc.tech',
 ];
 
 app.use((req, res, next) => {
