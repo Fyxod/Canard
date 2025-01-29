@@ -18,7 +18,7 @@ export default async function offBoard(phaseValue) {
     if (team.state === "busy") {
       // change the team state to idle
       team.state = "idle";
-
+      const temp = team.currentPhase;
       // getting the current phase
       const currentPhase = `phase${team.currentPhase}`;
 
@@ -49,7 +49,12 @@ export default async function offBoard(phaseValue) {
 
       await team.save();
       console.log(`Team ${team.name} is now idle`);
-      announceSingle(team._id, "rebuild");
+      
+      announceSingle(team._id, {
+        type: "completion",
+        message: `Sorry, you were unable to complete phase ${temp} in time.`,
+      });
+
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
   }
