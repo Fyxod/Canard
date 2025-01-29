@@ -991,7 +991,11 @@ router.post(
     await team.save();
 
     res.success(200, "Answer submitted successfully", { phase });
-    announceSingle(teamId, "rebuild");
+
+    announceSingle(team._id, {
+      type: "completion",
+      message: `Your phase ${phaseNo} is completed`,
+    });
   })
 );
 
