@@ -2,7 +2,7 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-// import cors from "cors";
+import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
@@ -62,38 +62,39 @@ const allowedOrigins = [
   "https://app.mlsc.tech",
   "https://canard.mlsc.tech",
   "https://game.mlsc.tech",
+  "http://localhost:5173",
 ];
 
-// app.use((req, res, next) => {
-//   if (!req.headers.origin) {
-//     // Requests without an Origin header (Mobile apps & Postman)
-//     const secretKeyHeader = req.headers["api-key"];
-//     console.log(req.headers);
-//     console.log("Secret key header", secretKeyHeader);
+app.use((req, res, next) => {
+  if (!req.headers.origin) {
+    // Requests without an Origin header (Mobile apps & Postman)
+    const secretKeyHeader = req.headers["api-key"];
+    console.log(req.headers);
+    console.log("Secret key header", secretKeyHeader);
 
-//     if (
-//       req.headers["user-agent"]?.includes("Postman") &&
-//       secretKeyHeader !== process.env.APIKey
-//     ) {
-//       // Only allow Postman requests if the correct secret key is provided
-//       return res.status(401).json({ message: "Unauthorized" });
-//     }
-//   }
-//   next();
-// });
+    if (
+      req.headers["user-agent"]?.includes("Postman") &&
+      secretKeyHeader !== process.env.APIKey
+    ) {
+      // Only allow Postman requests if the correct secret key is provided
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+  }
+  next();
+});
 
 // CORS Middleware for browser-based requests
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//   })
-// );
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
