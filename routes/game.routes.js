@@ -298,6 +298,7 @@ router.post(
       team.score = team.score - schemaKeys[gameKey].credits;
     }
     await team.save();
+    await gameStats.save();
     res.redirect("/game/stats");
   })
 );
