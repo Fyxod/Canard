@@ -11,11 +11,11 @@ async function createGames() {
 
   for (let user of users) {
     const game = await Game.create({ user: user._id, team: user.team });
-    user.game = game._id;
+    user.gameStats = game._id;
     await user.save();
     console.log(`Game created for user ${user.username}`);
   }
   mongoose.connection.close();
 }
 
-createGames();
+// createGames();

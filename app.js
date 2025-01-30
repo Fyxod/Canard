@@ -64,7 +64,7 @@ const allowedOrigins = [
   "https://canard.mlsc.tech",
   "https://game.mlsc.tech",
   "http://localhost:5173",
-  'https://api.mlsc.tech',
+  "https://api.mlsc.tech",
 ];
 
 app.use((req, res, next) => {
@@ -87,7 +87,7 @@ app.use((req, res, next) => {
 
 // CORS Middleware for browser-based requests
 app.use(
-  cors(
+  cors()
   //   {
   //   origin: function (origin, callback) {
   //     if (!origin || allowedOrigins.includes(origin)) {
@@ -97,7 +97,6 @@ app.use(
   //     }
   //   },
   // }
-)
 );
 
 app.use(express.json());
@@ -118,31 +117,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   const host = req.headers.host;
-//   const adminAppDomain = "admin.mlsc.tech";
-//   const userAppDomain = "app.mlsc.tech";
-
-//   return res.sendFile(path.resolve(__dirname, "./public/adminApp/index.html"));
-
-//   // const host = req.headers.host.split(':')[0]; // Get the host without port
-//   const parts = host.split(".");
-
-//   if (host === adminAppDomain) {
-//     if (req.path === "/") {
-//     }
-//   } else if (host === userAppDomain) {
-//     if (req.path === "/") {
-//       return res.sendFile(
-//         path.join(__dirname, "public", "userApp", "index.html")
-//       );
-//     }
-//   } else if (parts.length > 2 && parts[0] === "game") {
-//     gameRoutes(req, res, next);
-//   } else {
-//     next();
-//   }
-// });
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  if (host === "game.mlsc.tech") {
+    gameRoutes(req, res, next);
+  } else {
+    next();
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("<h1>Canard 2025</h1>");
@@ -223,8 +205,7 @@ server.listen(config.server.port, () => {
 
 // security
 
-//answer to be trimmed and lowercased
-
+//answer to be trimmed and lowercased - PLEASE CHECK THIS
 
 //adjust 2nd phase answer for different hours
 

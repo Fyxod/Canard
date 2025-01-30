@@ -1,117 +1,116 @@
 const taskData = {
   phase1: {
     101: {
-      title: "isn'tangram fun",
-      description: "Volleyball Court",
+      title: "Task 1",
+      description: "This is the first task",
       type: "major",
-      hint: "Sometimes what you want in the ahead is hidden aback.",
+      hint: "Hint 1",
       hintTime: 0.5, // in minutes
     },
     102: {
-      title: "Contortion Chaos",
-      description:
-        "DOME AREA (ambulance area and basketball area ke middway me  elevated area)",
+      title: "Task 2",
+      description: "This is the second task",
       type: "major",
-      hint: "No hint",
+      hint: "Hint 2",
       hintTime: 0.5, // in minutes
     },
     103: {
-      title: "King's Dead",
-      description: "Ambulance Area",
+      title: "Task 3",
+      description: "This is the third task",
       type: "major",
-      hint: "Hmm..that code feels familiar, perhaps it notes what happened all along?",
+      hint: "Hint 3",
       hintTime: 0.5, // in minutes
     },
     104: {
-      title: "The Bar",
-      description: "Badminton Court",
+      title: "Task 4",
+      description: "This is the fourth task",
       type: "major",
-      hint: "Everyday or Amaron, I prefer DURA",
+      hint: "Hint 4",
       hintTime: 0.5, // in minutes
     },
     105: {
-      title: "Due Date",
-      description: "Boys Hostel Road",
+      title: "Task 5",
+      description: "This is the fifth task",
       type: "major",
-      hint: "markedDate < monthName.length()",
+      hint: "Hint 5",
       hintTime: 0.5, // in minutes
     },
     106: {
-      title: "Card Chaos",
-      description: "Basketball Court",
+      title: "Hoops of Fury",
+      description: "This is the sixth task",
       points: 50,
       type: "minor",
       hint: null,
     },
     107: {
-      title: "Hoops of Fury",
-      description: "Basketball Court",
+      title: "Where in the World?",
+      description: "This is the seventh task",
       points: 50,
       type: "minor",
       hint: null,
     },
     108: {
-      title: "Where in the World?",
-      description: "Full Outdoor Areas",
+      title: "Card Chaos",
+      description: "This is the eighth task",
       points: 50,
       type: "minor",
       hint: null,
     },
-    answer: "SCAR 13",
+    answer: "answer1",
   },
   phase2: {
     201: {
-      title: "Zig Zag",
-      description: "OAT",
+      title: "Task 1",
+      description: "This is the first task",
       type: "major",
-      hint: "Left and Right don't always need to go in sync, they have independent personalities.",
+      hint: "Hint 1",
       hintTime: 0.5, // in minutes
     },
     202: {
-      title: "Disappointment Ablaze",
-      description: "OAT Inner rooms",
+      title: "Task 2",
+      description: "This is the second task",
       type: "major",
-      hint: "I read somewhere the greeks punished those who gave them the torch",
+      hint: "Hint 2",
       hintTime: 0.5, // in minutes
     },
     203: {
-      title: "Audio Recording",
-      description: "OAT Inner rooms",
+      title: "Task 3",
+      description: "This is the third task",
       type: "major",
-      hint: "Is it just me or those verse numbers look like time stamps?",
+      hint: "Hint 3",
       hintTime: 0.5, // in minutes
     },
     204: {
-      title: "Fingerprint Analysis ( YOU CANT TAKE MY IDENTITY)",
-      description: "OAT",
+      title: "Task 4",
+      description: "This is the fourth task",
       type: "major",
-      hint: "No Hint",
+      hint: "Hint 4",
       hintTime: 0.5, // in minutes
     },
     205: {
       title: "Task 5",
-      description: "Right side of OAT",
+      description: "This is the fifth task",
       type: "major",
       hint: "Hint 5",
       hintTime: 0.5, // in minutes
     },
     206: {
       title: "Boat Blitz",
-      description: "Left side of OAT",
+      description: "This is the sixth task",
       points: 50,
       type: "minor",
       hint: null,
     },
     207: {
       title: "String Symphony",
-      description: "OAT(parking area)",
+      description: "This is the seventh task",
       points: 50,
       type: "minor",
       hint: null,
     },
     208: {
       title: "Triple Trouble",
-      description: "OAT(near benches)",
+      description: "This is the eighth task",
       points: 50,
       type: "minor",
       hint: null,
@@ -120,57 +119,57 @@ const taskData = {
   },
   phase3: {
     301: {
-      title: "Turning Through Wisdom",
-      description: "Conference Hall A",
+      title: "Task 1",
+      description: "This is the first task",
       type: "major",
-      hint: "The similarities between title and subject, along with strange numbers can't be a coincidence now, can it",
+      hint: "Hint 1",
       hintTime: 0.5, // in minutes
     },
     302: {
-      title: "Cube",
-      description: "Student Lounge 2",
+      title: "Task 2",
+      description: "This is the second task",
       type: "major",
-      hint: "Just follow the transformation and take a note of what's ahead",
+      hint: "Hint 2",
       hintTime: 0.5, // in minutes
     },
     303: {
-      title: "Birdbox",
-      description: "Emergency stairs ke saamne vaala hallway, floor 1/floor 2",
+      title: "Task 3",
+      description: "This is the third task",
       type: "major",
-      hint: "No Hint",
+      hint: "Hint 3",
       hintTime: 0.5, // in minutes
     },
     304: {
-      title: "Tool of Warfronts",
-      description: "Hall",
+      title: "Task 4",
+      description: "This is the fourth task",
       type: "major",
-      hint: "Damn that's lengthy, I wonder what's common?",
+      hint: "Hint 4",
       hintTime: 0.5, // in minutes
     },
     305: {
-      title: "Interlinked",
-      description: "SL0 SZl2",
+      title: "Task 5",
+      description: "This is the fifth task",
       type: "major",
-      hint: "Have you ever thought of being in two places at once?",
+      hint: "Hint 5",
       hintTime: 0.5, // in minutes
     },
     306: {
-      title: "Skipster",
-      description: "Flag area",
+      title: "Gundown",
+      description: "This is the sixth task",
       points: 50,
       type: "minor",
       hint: null,
     },
     307: {
       title: "Maze in the Box",
-      description: "Floor 1 watercooler(below SL2)",
+      description: "This is the seventh task",
       points: 50,
       type: "minor",
       hint: null,
     },
     308: {
-      title: "Gundown",
-      description: "floor 2(s4 ke left hand side wala pathway)",
+      title: "Skipster",
+      description: "This is the eighth task",
       points: 50,
       type: "minor",
       hint: null,

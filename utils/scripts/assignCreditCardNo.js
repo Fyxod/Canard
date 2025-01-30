@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import connectMongo from "../../config/db";
-import Team from "../../models/team.model";
-import creditcardData from "../../data/creditCardData";
+import connectMongo from "../../config/db.js";
+import Team from "../../models/team.model.js";
+import creditcardData from "../../data/creditCardData.js";
 
 async function assignCreditcard() {
   await connectMongo();
