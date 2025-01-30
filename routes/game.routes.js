@@ -149,7 +149,8 @@ router
       const username = req.cookies.username;
       const teamName = req.cookies.teamName;
       const teamId = req.cookies.teamId;
-      const team = await Team.findById(teamId);
+      const userId = req.cookies.userId;
+      const user = await User.findById(userId).populate("gameStats").lean();
       console.log("GAMEKEY", gameKey);
       const game = schemaKeys[gameKey];
       if (!game) {
@@ -160,7 +161,7 @@ router
         game,
         username,
         teamName,
-        isChecked: team[gameKey].creditsGiven,
+        isChecked: user.gameStats[gameKey].creditsGiven,
       });
     })
   )
