@@ -1,124 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team List</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team List</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
 
-    .back-button {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 10px 15px;
-      font-size: 14px;
-      color: #fff;
-      background-color: #6c757d;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+      .back-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 10px 15px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #6c757d;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
 
-    .back-button:hover {
-      background-color: #5a6268;
-      transform: scale(1.05);
-    }
+      .back-button:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
+      }
 
-    .back-button:active {
-      background-color: #4e555b;
-      transform: scale(0.95);
-    }
+      .back-button:active {
+        background-color: #4e555b;
+        transform: scale(0.95);
+      }
 
-    h1 {
-      font-size: 24px;
-    }
+      h1 {
+        font-size: 24px;
+      }
 
-    .team-button {
-      width: 90%;
-      max-width: 400px;
-      margin: 10px 0;
-      padding: 15px 20px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+      .team-button {
+        width: 90%;
+        max-width: 400px;
+        margin: 10px 0;
+        padding: 15px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
 
-    .team-button:hover {
-      background-color: #0056b3;
-      transform: scale(1.03);
-    }
+      .team-button:hover {
+        background-color: #0056b3;
+        transform: scale(1.03);
+      }
 
-    .team-button:active {
-      background-color: #004094;
-      transform: scale(0.97);
-    }
+      .team-button:active {
+        background-color: #004094;
+        transform: scale(0.97);
+      }
 
-    .send-credits-container {
-      display: flex;
-      align-items: center;
-      margin-top: 15px;
-      font-size: 18px;
-    }
+      .send-credits-container {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        font-size: 18px;
+      }
 
-    .send-credits-container input {
-      margin-left: 10px;
-      width: 22px;
-      height: 22px;
-    }
-  </style>
-</head>
-<body>
-  <a href="/game/games" class="back-button"><--</a>
-  <h1><%= username %> - <%= teamName %></h1>
-  <h1><%= game.title%></h1>
-  <% for(let stat of game.stats){ %>
-    <% if(!stat.notShow){ %>
-  <button class="team-button" data-statKey="<%= stat.key %>"><%= stat.title %></button>
-    <% } %>
-  <% } %>
+      .send-credits-container input {
+        margin-left: 10px;
+        width: 22px;
+        height: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/game/games" class="back-button"><--</a>
+    <h1><%= username %> - <%= teamName %></h1>
+    <h1><%= game.title%></h1>
+    <% for(let stat of game.stats){ %> <% if(!stat.notShow){ %>
+    <button class="team-button" data-statKey="<%= stat.key %>">
+      <%= stat.title %>
+    </button>
+    <% } %> <% } %>
 
-  <div class="send-credits-container">
-    <label for="send-credits">Send credits</label>
-    <input type="checkbox" id="send-credits">
-  </div>
-</body>
+    <div class="send-credits-container">
+      <label for="send-credits">Send credits</label>
+      <input type="checkbox" id="send-credits" isChecked?checked="checked":''%>
+      >
+    </div>
+  </body>
 
-<script>
-    const teamButtons = document.querySelectorAll('.team-button');
-  
-    teamButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const statKey = button.getAttribute('data-statKey');
-  
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/game/stats';
-  
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'statKey';
+  <script>
+    const teamButtons = document.querySelectorAll(".team-button");
+    const sendCredits = document.getElementById("send-credits");
+
+    sendCredits.addEventListener("change", () => {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "/game/credits";
+
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "value";
+      input.value = sendCredits.checked;
+
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+    });
+
+    teamButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const statKey = button.getAttribute("data-statKey");
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/game/stats";
+
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "statKey";
         input.value = statKey;
-  
+
         form.appendChild(input);
-  
+
         document.body.appendChild(form);
         form.submit();
       });

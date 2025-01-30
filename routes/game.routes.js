@@ -148,13 +148,15 @@ router
       const gameKey = req.cookies.gameKey;
       const username = req.cookies.username;
       const teamName = req.cookies.teamName;
+      const teamId = req.cookies.teamId;
+      const team = await Team.findById(teamId);
       console.log("GAMEKEY", gameKey);
       const game = schemaKeys[gameKey];
       if (!game) {
         throw new ApiError(404, "Game not found", "GAME_NOT_FOUND");
       }
 
-      res.render("statsList", { game, username, teamName });
+      res.render("statsList", { game, username, teamName, isChecked: team[gameKey].creditsGiven });
     })
   )
 
@@ -235,7 +237,7 @@ router
       ).instance;
       console.log("printing type", userFieldType);
       if (userFieldType === "Number") {
-        if(!(/^[0-9-]+$/.test(value))){
+        if (!/^[0-9-]+$/.test(value)) {
           return res.redirect("/game/input?error=Please enter a valid number");
         }
         value = parseInt(value);
@@ -259,6 +261,37 @@ router
       res.redirect("/game/input");
     })
   );
+
+router.post(
+  "/credits",
+  checkAuth("admin"),
+  safeHandler(async (req, res) => {
+    let { value } = req.body;
+    value = value.trim();
+    value = parseBoolean(value);
+    if (typeof value !== "boolean") {
+      throw new ApiError(400, "Please provide a valid value", "INVALID_VALUE");
+    }
+    console.log(value);
+    const teamId = req.cookies.teamId;
+    const gameKey = req.cookies.gameKey;
+    const team = await Team.findById(teamId);
+    if (!team) {
+      throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+    }
+    if (team[gameKey].creditsGiven === value) {
+      return res.redirect("/game/stats");
+    }
+    team[gameKey].creditsGiven = value;
+    if (value) {
+      team.score = team.score + schemaKeys[gameKey].credits;
+    } else {
+      team.score = team.score - schemaKeys[gameKey].credits;
+    }
+    await team.save();
+    res.redirect("/game/stats");
+  })
+);
 
 export default router;
 

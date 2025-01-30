@@ -210,3 +210,5 @@ server.listen(config.server.port, () => {
 //adjust 2nd phase answer for different hours
 
 // check lowercase user login
+
+// check all stats by opening them once
