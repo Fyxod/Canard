@@ -10,12 +10,12 @@ export const gamesList = [
   { title: "CSGO(Free for all)", key: "csgoFFA" },
   { title: "Bomb Diffusal", key: "bombDiffusal" },
   { title: "Super Mario", key: "superMario" },
-  { title: "GTA San Andreas", key: "gtaSanAndreas" },
+  { title: "GTA V", key: "gtaSanAndreas" },
   { title: "Fortnite", key: "fortnite" },
   { title: "Rocket League", key: "rocketLeague" },
   { title: "Fifa", key: "fifa" },
   { title: "Bowling", key: "bowling" },
-  { title: "Shoot with a gun", key: "shootWithAGun" },
+  { title: "Nerf Showdown", key: "shootWithAGun" },
   { title: "BGMI", key: "bgmi" },
 ];
 
@@ -110,7 +110,7 @@ export const schemaTitles = {
       { title: "Coins Collected", key: "coinsCollected" },
     ],
   },
-  "GTA San Andreas": {
+  "GTA V": {
     key: "gtaSanAndreas",
     stats: [{ title: "Best Survival Time", key: "bestSurvivalTime" }],
   },
@@ -146,7 +146,7 @@ export const schemaTitles = {
       { title: "Average Points per game", key: "averagePointsPerGame" },
     ],
   },
-  "Shoot with a gun": {
+  "Nerf Showdown": {
     key: "shootWithAGun",
     stats: [
       { title: "Score", key: "score" },
@@ -272,7 +272,7 @@ export const schemaKeys = {
     ],
   },
   gtaSanAndreas: {
-    title: "GTA San Andreas",
+    title: "GTA V",
     stats: [{ title: "Best Survival Time", key: "bestSurvivalTime" }],
   },
   fortnite: {
@@ -309,7 +309,7 @@ export const schemaKeys = {
     ],
   },
   shootWithAGun: {
-    title: "Shoot with a gun",
+    title: "Nerf Showdown",
     stats: [
       { title: "Score", key: "score" },
       { title: "Accuracy", key: "accuracy" },

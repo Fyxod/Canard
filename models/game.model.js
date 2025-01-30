@@ -492,7 +492,7 @@ const gameSchema = new mongoose.Schema(
       },
       title: {
         type: String,
-        default: "GTA San Andreas",
+        default: "GTA V",
       },
     },
     fortnite: {
@@ -672,7 +672,7 @@ const gameSchema = new mongoose.Schema(
       },
       title: {
         type: String,
-        default: "Shoot with a Gun",
+        default: "Nerf Showdown",
       },
     },
     bgmi: {
