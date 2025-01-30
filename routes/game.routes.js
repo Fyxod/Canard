@@ -151,12 +151,10 @@ router
       const teamId = req.cookies.teamId;
       const userId = req.cookies.userId;
       const user = await User.findById(userId).populate("gameStats").lean();
-      console.log("GAMEKEY", gameKey);
       const game = schemaKeys[gameKey];
       if (!game) {
         throw new ApiError(404, "Game not found", "GAME_NOT_FOUND");
       }
-
       res.render("statsList", {
         game,
         username,
@@ -275,6 +273,7 @@ router.post(
     let { value } = req.body;
     value = value.trim();
     value = parseBoolean(value);
+    console.log(value);
     if (typeof value !== "boolean") {
       throw new ApiError(400, "Please provide a valid value", "INVALID_VALUE");
     }
@@ -282,7 +281,7 @@ router.post(
     const userId = req.cookies.userId;
     const teamId = req.cookies.teamId;
     const gameKey = req.cookies.gameKey;
-    const user = await User.findById(userId).populate("gameStats").lean();
+    const user = await User.findById(userId).populate("gameStats");
     const team = await Team.findById(teamId);
     let gameStats = user.gameStats;
     if (!user) {

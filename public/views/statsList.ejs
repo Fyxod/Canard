@@ -97,8 +97,11 @@
 
     <div class="send-credits-container">
       <label for="send-credits">Send credits</label>
-      <input type="checkbox" id="send-credits" isChecked?checked="checked":''%>
-      >
+      <input type="checkbox" id="send-credits"
+       <% if(isChecked){ %>
+        checked
+        <% } %>
+        >
     </div>
   </body>
 

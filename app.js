@@ -65,38 +65,47 @@ const allowedOrigins = [
   "https://game.mlsc.tech",
   "http://localhost:5173",
   "https://api.mlsc.tech",
+  "http://localhost:4140",
 ];
 
 app.use((req, res, next) => {
-  if (!req.headers.origin) {
-    // Requests without an Origin header (Mobile apps & Postman)
-    const secretKeyHeader = req.headers["api-key"];
-    console.log(req.headers);
-    console.log("Secret key header", secretKeyHeader);
+  const secretKeyHeader = req.headers["api-key"];
+  const userAgent = req.headers["user-agent"] || "";
+  const origin = req.headers.origin;
+  const allowedHostnames = ["localhost", "api.mlsc.tech", "game.mlsc.tech"];
 
-    if (
-      req.headers["user-agent"]?.includes("Postman") &&
-      secretKeyHeader !== process.env.APIKey
-    ) {
-      // Only allow Postman requests if the correct secret key is provided
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+  // Check if request is coming from an allowed hostname
+  const isAllowedHost =
+    allowedHostnames.includes(req.hostname) || req.ip === "127.0.0.1";
+
+  // Allow browser requests (with Origin) OR requests from allowed hostnames
+  if (origin || isAllowedHost) {
+    return next();
   }
+
+  // If it's a non-browser request, only allow Postman and require API key
+  if (!userAgent.includes("Postman")) {
+    return res.status(403).json({ message: "Forbidden: Only Postman is allowed" });
+  }
+
+  if (secretKeyHeader !== process.env.APIKey) {
+    return res.status(401).json({ message: "Unauthorized: Invalid API key" });
+  }
+
   next();
 });
 
 // CORS Middleware for browser-based requests
 app.use(
-  cors()
-    {
+  cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new ApiError(400,"Not allowed by CORS", 'CORS_ERROR'));
+        callback(new ApiError(400, "Not allowed by CORS", "CORS_ERROR"));
       }
     },
-  }
+  })
 );
 
 app.use(express.json());
