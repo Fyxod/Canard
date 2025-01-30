@@ -156,7 +156,12 @@ router
         throw new ApiError(404, "Game not found", "GAME_NOT_FOUND");
       }
 
-      res.render("statsList", { game, username, teamName, isChecked: team[gameKey].creditsGiven });
+      res.render("statsList", {
+        game,
+        username,
+        teamName,
+        isChecked: team[gameKey].creditsGiven,
+      });
     })
   )
 
@@ -273,16 +278,19 @@ router.post(
       throw new ApiError(400, "Please provide a valid value", "INVALID_VALUE");
     }
     console.log(value);
+    const userId = req.cookies.userId;
     const teamId = req.cookies.teamId;
     const gameKey = req.cookies.gameKey;
+    const user = await User.findById(userId).populate("gameStats").lean();
     const team = await Team.findById(teamId);
-    if (!team) {
-      throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+    let gameStats = user.gameStats;
+    if (!user) {
+      throw new ApiError(404, "User not found", "USER_NOT_FOUND");
     }
-    if (team[gameKey].creditsGiven === value) {
+    if (gameStats[gameKey].creditsGiven === value) {
       return res.redirect("/game/stats");
     }
-    team[gameKey].creditsGiven = value;
+    gameStats[gameKey].creditsGiven = value;
     if (value) {
       team.score = team.score + schemaKeys[gameKey].credits;
     } else {

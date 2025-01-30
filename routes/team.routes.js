@@ -415,7 +415,7 @@ router.route("/:teamId/powerups").patch(
       throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
     }
 
-    if (team.creditCardNo !== creditCardNo) {
+    if (team.creditCardNo.toLowerCase() !== creditCardNo.toLowerCase()) {
       throw new ApiError(
         400,
         "Invalid credit card number",
