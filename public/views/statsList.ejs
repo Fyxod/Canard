@@ -41,6 +41,10 @@
       transform: scale(0.95);
     }
 
+    h1 {
+      font-size: 24px;
+    }
+
     .team-button {
       width: 90%;
       max-width: 400px;
@@ -66,6 +70,19 @@
       background-color: #004094;
       transform: scale(0.97);
     }
+
+    .send-credits-container {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+
+    .send-credits-container input {
+      margin-left: 10px;
+      width: 22px;
+      height: 22px;
+    }
   </style>
 </head>
 <body>
@@ -77,6 +94,11 @@
   <button class="team-button" data-statKey="<%= stat.key %>"><%= stat.title %></button>
     <% } %>
   <% } %>
+
+  <div class="send-credits-container">
+    <label for="send-credits">Send credits</label>
+    <input type="checkbox" id="send-credits">
+  </div>
 </body>
 
 <script>

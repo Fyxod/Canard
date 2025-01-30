@@ -10,6 +10,7 @@ const gameSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Team",
     },
+
     tekken3: {
       wins: {
         value: {
@@ -59,6 +60,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "Tekken 3",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
 
@@ -112,7 +117,12 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Tekken 8",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
+
     wwe: {
       wins: {
         value: {
@@ -163,7 +173,12 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "WWE",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
+
     brawlHalla: {
       wins: {
         value: {
@@ -198,7 +213,6 @@ const gameSchema = new mongoose.Schema(
           default: "Perfect Wins",
         },
       },
-
       mostPlayedCharacter: {
         value: {
           // replace
@@ -213,6 +227,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "Brawlhalla",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
 
@@ -263,6 +281,10 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Mini Militia",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
 
     clashRoyale: {
@@ -298,10 +320,13 @@ const gameSchema = new mongoose.Schema(
           default: "Win Rate",
         },
       },
-
       title: {
         type: String,
         default: "Clash Royale",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
 
@@ -330,6 +355,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "Forza Horizon",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
     csgoFullTeam: {
@@ -377,6 +406,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "CSGO Full Team",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
 
@@ -426,6 +459,10 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "CSGO FFA",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
     bombDiffusal: {
       matchesWon: {
@@ -442,7 +479,12 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Bomb Diffusal",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
+
     superMario: {
       highScore: {
         value: {
@@ -478,6 +520,10 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Super Mario",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
     gtaSanAndreas: {
       bestSurvivalTime: {
@@ -493,6 +539,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "GTA V",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
     fortnite: {
@@ -550,6 +600,10 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Fortnite",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
     rocketLeague: {
       matchesWon: {
@@ -586,6 +640,10 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Rocket League",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
     fifa: {
       matchesWon: {
@@ -611,6 +669,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "FIFA",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
     bowling: {
@@ -648,6 +710,10 @@ const gameSchema = new mongoose.Schema(
         type: String,
         default: "Bowling",
       },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
+      },
     },
     shootWithAGun: {
       score: {
@@ -673,6 +739,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "Nerf Showdown",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
     bgmi: {
@@ -729,6 +799,10 @@ const gameSchema = new mongoose.Schema(
       title: {
         type: String,
         default: "BGMI",
+      },
+      creditsGiven: {
+        type: Boolean,
+        default: false,
       },
     },
   },

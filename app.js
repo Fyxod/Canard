@@ -88,15 +88,15 @@ app.use((req, res, next) => {
 // CORS Middleware for browser-based requests
 app.use(
   cors(
-    {
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new ApiError(400,"Not allowed by CORS", 'CORS_ERROR'));
-      }
-    },
-  }
+  //   {
+  //   origin: function (origin, callback) {
+  //     if (!origin || allowedOrigins.includes(origin)) {
+  //       callback(null, true);
+  //     } else {
+  //       callback(new ApiError(400,"Not allowed by CORS", 'CORS_ERROR'));
+  //     }
+  //   },
+  // }
 )
 );
 
@@ -227,3 +227,5 @@ server.listen(config.server.port, () => {
 
 
 //adjust 2nd phase answer for different hours
+
+// check lowercase user login
