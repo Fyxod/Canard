@@ -870,8 +870,8 @@ router.post(
   isEventActive,
   safeHandler(async (req, res) => {
     let { teamId, phaseNo } = req.params;
-    const { answer } = req.body;
-
+    let { answer } = req.body;
+    answer = answer.trim();
     if (!isValidObjectId(teamId)) {
       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
     }
@@ -950,7 +950,9 @@ router.post(
       );
     }
 
-    if (answer !== taskData[`phase${phaseNo}`].answer) {
+    if (
+      answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer.toLowerCase()
+    ) {
       throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
     }
 

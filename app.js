@@ -225,4 +225,5 @@ server.listen(config.server.port, () => {
 
 //answer to be trimmed and lowercased
 
-// change title of gta san and shoot with a gun
+
+//adjust 2nd phase answer for different hours

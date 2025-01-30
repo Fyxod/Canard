@@ -303,7 +303,9 @@ router.post(
   "/login",
   safeHandler(async (req, res) => {
     const { username, password } = userLoginSchema.parse(req.body);
-    const user = await User.findOne({ username });
+
+    const user = await User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") } });
+    
     console.log(user);
     if (!user) {
       throw new ApiError(404, "User not found", "USER_NOT_FOUND"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break

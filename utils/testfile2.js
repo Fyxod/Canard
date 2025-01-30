@@ -1,14 +1,18 @@
-import connectMongo from "../config/db.js";
-import Game from "../models/game.model.js";
-import User from "../models/user.model.js";
+// import mongoose from "mongoose";
+// import connectMongo from "../config/db.js";
+// import Game from "../models/game.model.js";
 
-async function test(){
-    await connectMongo();
-    for(let i=0; i<80; i++){
-        const game = await Game.findOne();
-        await Game.deleteOne({ _id: game._id });
-        console.log(i, "deleted");
-    }
-}
+// async function changeTitle(){
+//     await connectMongo();
+//     const games = await Game.find();
+// let i = 0;
+//     for(let game of games){
+//         game.shootWithAGun.title = "Nerf Showdown";
+//         game.gtaSanAndreas.title = "GTA V";
+//         await game.save();
+//         console.log(++i)
+//     }
+//     mongoose.connection.close();
+// }
 
-// test();
+// // changeTitle();
