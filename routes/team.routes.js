@@ -42,8 +42,6 @@ router.route("/:teamName/users").get(
       return user.username;
     });
 
-    console.log(users);
-
     res.success(200, "Team members successfully fetched", {
       users,
     });
@@ -154,8 +152,6 @@ router
   .get(
     checkAuth("user"),
     safeHandler(async (req, res) => {
-      // console.log(req.headers)
-      // console.log(req.user)
       const { teamId } = req.params;
       if (!isValidObjectId(teamId)) {
         throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
@@ -622,9 +618,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
 
           // set the current task to be the next task in the task order
           phase.currentTask = phase.taskOrder[phase.completedTasks];
-          console.log(phase.currentTask);
           const currentTask = phase.tasks.get(phase.currentTask.toString());
-          console.log(currentTask);
           // setting the next task to be "inProgress"
           currentTask.status = "inProgress";
           phase.tasks.set(phase.currentTask.toString(), currentTask);

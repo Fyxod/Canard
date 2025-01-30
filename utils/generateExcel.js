@@ -13,6 +13,7 @@ async function generateExcel(data) {
 
     // Define the columns
     worksheet.columns = [
+        { header: 'Serial No', key: 'serialNo', width: 10 },
         { header: 'Team Name', key: 'teamName', width: 20 },
         { header: 'Users', key: 'users', width: 50 },
         { header: 'Phase Order', key: 'phaseOrder', width: 20 },
@@ -23,9 +24,10 @@ async function generateExcel(data) {
         { header: 'Credit Card No', key: 'creditCardNo', width: 30 }
     ];
 
-    // Populate rows
-    teams.forEach(team => {
+    // Populate rows with serial numbers
+    teams.forEach((team, index) => {
         worksheet.addRow({
+            serialNo: index + 1, // Assigning serial numbers
             teamName: team.name,
             users: team.members.map(m => m.username).join(', '),
             phaseOrder: team.phaseOrder.join(', '),

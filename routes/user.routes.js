@@ -76,7 +76,6 @@ router
         );
       }
 
-      console.log(team);
       if (team.members.length >= 4) {
         await User.findByIdAndDelete(user._id);
         throw new ApiError(400, "Team is full", "TEAM_FULL");
@@ -90,7 +89,6 @@ router
         },
         { new: true }
       );
-      console.log(team._id);
       user.team = team._id;
 
       const newGameStats = await Game.create({
@@ -305,8 +303,7 @@ router.post(
     const { username, password } = userLoginSchema.parse(req.body);
 
     const user = await User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") } });
-    
-    console.log(user);
+
     if (!user) {
       throw new ApiError(404, "User not found", "USER_NOT_FOUND"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break
     }
@@ -315,10 +312,7 @@ router.post(
     if (!validPassword) {
       throw new ApiError(401, "Invalid password", "INVALID_PASSWORD"); // usually I'll do "Invalid email or password" but since it's a society event, there are chances of things going wrong and I can't take the risk as it'll allow me to efficiently debug during the event if things break
     }
-    console.log(user.team);
     const team = await Team.findById(user.team);
-    console.log(team);
-    console.log(team);
 
     const userToken = generateToken({
       id: user._id,
@@ -330,16 +324,6 @@ router.post(
       callingCard: team.callingCard || "not set",
     });
     res.cookie("userToken", userToken); // http true secure true all that
-
-    console.log({
-      id: user._id,
-      email: user.email,
-      username: user.username,
-      role: user.role,
-      teamName: team.name,
-      teamId: user.team,
-      avatar: user.avatar || null,
-    });
 
     res.success(200, "Login successful", {
       userToken,
