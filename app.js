@@ -222,3 +222,7 @@ server.listen(config.server.port, () => {
 // has the response popup been added?
 
 // security
+
+//answer to be trimmed and lowercased
+
+// change title of gta san and shoot with a gun
