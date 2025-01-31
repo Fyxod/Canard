@@ -165,7 +165,7 @@ router
       }
 
       // I know I shoudnt be sending the users along with the team but just making things easier for the frontend devs
-      const team = await Team.findById(teamId)
+      let team = await Team.findById(teamId)
         .populate({
           path: "members",
           select: "-password",
@@ -188,6 +188,16 @@ router
         });
 
         team[`phase${i}`]["tasks"] = tasks;
+        
+        team.powerups = team.powerups.map((powerup) => {
+          return {
+            title: powerUpsData[powerup].title,
+            description: powerUpsData[powerup].description,
+            credits: powerUpsData[powerup].credits,
+          };
+        }
+        );
+
       }
 
       res.success(200, "Team successfully fetched", { team });

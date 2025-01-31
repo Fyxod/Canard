@@ -21,7 +21,8 @@ async function generateExcel(data) {
         { header: 'Phase 2 Task Order', key: 'phase2TaskOrder', width: 20 },
         { header: 'Phase 3 Task Order', key: 'phase3TaskOrder', width: 20 },
         { header: 'Powerups', key: 'powerups', width: 20 },
-        { header: 'Credit Card No', key: 'creditCardNo', width: 30 }
+        { header: 'Credit Card No', key: 'creditCardNo', width: 30 },
+        { header: 'Score', key: 'score', width: 10 }
     ];
 
     // Populate rows with serial numbers
@@ -35,7 +36,8 @@ async function generateExcel(data) {
             phase2TaskOrder: team.phase2?.taskOrder?.join(', ') || '',
             phase3TaskOrder: team.phase3?.taskOrder?.join(', ') || '',
             powerups: team.powerups.join(', '),
-            creditCardNo: team.creditCardNo
+            creditCardNo: team.creditCardNo,
+            score: team.score
         });
     });
 
