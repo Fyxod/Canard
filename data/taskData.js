@@ -19,7 +19,7 @@ const taskData = {
       title: "King's Dead",
       description: "Ambulance Area",
       type: "major",
-      hint: "Hmm..that code feels familiar, perhaps it notes what happened all along?",
+      hint: "Read the title again",
       hintTime: 3.25, // in minutes
     },
     104: {
