@@ -962,16 +962,16 @@ router.post(
       );
     }
     
-    // const settings = await Settings.findOne();
+    const settings = await Settings.findOne();
 
-    // if(phaseNo === 2){
-    //   if (
-    //     answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer[settings.phaseValue].toLowerCase()
-    //   ) {
-    //     throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
-    //   }
-    // }
-    if (
+    if(phaseNo === 2){
+      if (
+        answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer[settings.phaseValue].toLowerCase()
+      ) {
+        throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
+      }
+    }
+    else if (
       answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer.toLowerCase()
     ) {
       throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");

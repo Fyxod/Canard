@@ -221,3 +221,7 @@ server.listen(config.server.port, () => {
 // check lowercase user login
 
 // check all stats by opening them once
+
+// make answers case sensitive
+
+// make all three answers

@@ -5,36 +5,36 @@ const taskData = {
       description: "Volleyball Court",
       type: "major",
       hint: "Sometimes what you want in the ahead is hidden aback.",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     102: {
       title: "Contortion Chaos",
       description:
-        "DOME AREA (ambulance area and basketball area ke midway me  elevated area)",
+        "DOME AREA (ambulance area and basketball area ke midway me elevated area)",
       type: "major",
       hint: "No hint",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     103: {
       title: "King's Dead",
       description: "Ambulance Area",
       type: "major",
       hint: "Hmm..that code feels familiar, perhaps it notes what happened all along?",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     104: {
       title: "The Bar",
       description: "Badminton Court",
       type: "major",
       hint: "Everyday or Amaron, I prefer DURA",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     105: {
       title: "Due Date",
-      description: "Boys Hostel Road",
+      description: "Boys Hostel Long Road",
       type: "major",
       hint: "markedDate < monthName.length()",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     106: {
       title: "Card Chaos",
@@ -65,60 +65,58 @@ const taskData = {
       description: "OAT",
       type: "major",
       hint: "Left and Right don't always need to go in sync, they have independent personalities.",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     202: {
       title: "Disappointment Ablaze",
-      description: "OAT Inner rooms",
+      description: "OAT",
       type: "major",
       hint: "I read somewhere the greeks punished those who gave them the torch",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     203: {
       title: "Audio Recording",
-      description: "OAT Inner rooms",
+      description: "OAT",
       type: "major",
       hint: "Is it just me or those verse numbers look like time stamps?",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     204: {
       title: "Fingerprint Analysis ( YOU CANT TAKE MY IDENTITY)",
       description: "OAT",
       type: "major",
       hint: "No Hint",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     205: {
       title: "Football",
-      description: "Right side of OAT",
+      description: "OAT",
       type: "major",
       hint: "No Hint",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     206: {
       title: "Boat Blitz",
-      description: "Left side of OAT",
+      description: "OAT",
       points: 50,
       type: "minor",
       hint: null,
     },
     207: {
       title: "String Symphony",
-      description: "OAT(parking area)",
+      description: "Parking",
       points: 50,
       type: "minor",
       hint: null,
     },
     208: {
       title: "Triple Trouble",
-      description: "OAT(near benches)",
+      description: "OAT Grass Area",
       points: 50,
       type: "minor",
       hint: null,
     },
-    answer: [
-      "BFG-9000"
-    ],
+    answer: ["BFG9000", "BFG6969", "BFG7802"],
   },
   phase3: {
     301: {
@@ -126,35 +124,35 @@ const taskData = {
       description: "Conference Hall A",
       type: "major",
       hint: "The similarities between title and subject, along with strange numbers can't be a coincidence now, can it",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     302: {
       title: "Cube",
       description: "Student Lounge 2",
       type: "major",
       hint: "Just follow the transformation and take a note of what's ahead",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     303: {
       title: "Birdbox",
-      description: "Emergency stairs ke saamne vaala hallway, floor 1/floor 2",
+      description: "First Floor Faculty Cabins",
       type: "major",
       hint: "No Hint",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     304: {
       title: "Tool of Warfronts",
-      description: "Hall",
+      description: "Student Lounge 0",
       type: "major",
       hint: "Damn that's lengthy, I wonder what's common?",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     305: {
       title: "Interlinked",
-      description: "SL0 SZl2",
+      description: "Student Lounge 0",
       type: "major",
       hint: "Have you ever thought of being in two places at once?",
-      hintTime: 0.5, // in minutes
+      hintTime: 3.25, // in minutes
     },
     306: {
       title: "Skipster",
@@ -165,14 +163,14 @@ const taskData = {
     },
     307: {
       title: "Maze in the Box",
-      description: "Floor 1 watercooler(below SL2)",
+      description: "Floor 1 watercooler",
       points: 50,
       type: "minor",
       hint: null,
     },
     308: {
       title: "Gundown",
-      description: "floor 2(s4 ke left hand side wala pathway)",
+      description: "S4 Behind Library",
       points: 50,
       type: "minor",
       hint: null,
