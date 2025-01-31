@@ -73,7 +73,7 @@ app.use((req, res, next) => {
   const secretKeyHeader = req.headers["api-key"];
   const userAgent = req.headers["user-agent"] || "";
   const origin = req.headers.origin;
-  const allowedHostnames = ["localhost", "api.mlsc.tech", "game.mlsc.tech", "https://test-backend-7n6jp.ondigitalocean.app"];
+  const allowedHostnames = ["localhost", "api.mlsc.tech", "game.mlsc.tech", "test-backend-7n6jp.ondigitalocean.app"];
 
   // Check if request is coming from an allowed hostname
   const isAllowedHost =
