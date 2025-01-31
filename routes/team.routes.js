@@ -17,8 +17,16 @@ import powerUpsData from "../data/powerUpsData.js";
 import callingCards from "../data/callingCardData.js";
 import { agenda } from "../app.js";
 import Settings from "../models/settings.model.js";
+import teamsData from "../data/teamsData.js";
 
 const router = express.Router();
+
+router.get(
+  "/leaderboard",
+  safeHandler(async (req, res) => {
+    res.success(200, "Leaderboard fetched successfully", { teamsData });
+  })
+);
 
 router.route("/:teamName/users").get(
   checkAuth("admin"),
@@ -961,19 +969,14 @@ router.post(
         "TASKS_NOT_COMPLETED"
       );
     }
-    
+
     const settings = await Settings.findOne();
 
-    if(phaseNo === 2){
-      if (
-        answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer[settings.phaseValue].toLowerCase()
-      ) {
+    if (phaseNo === 2) {
+      if (!taskData[`phase${phaseNo}`].answer.includes(answer)) {
         throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
       }
-    }
-    else if (
-      answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer.toLowerCase()
-    ) {
+    } else if (answer !== taskData[`phase${phaseNo}`].answer) {
       throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
     }
 
@@ -992,7 +995,6 @@ router.post(
 
     // phase completed now obviously
     phase.completedAt = getIstDate();
-
 
     // time taken is the time between now and the start of the phase
     phase.timeTaken =
