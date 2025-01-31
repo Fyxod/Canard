@@ -10,7 +10,7 @@ const taskData = {
     102: {
       title: "Contortion Chaos",
       description:
-        "DOME AREA (ambulance area and basketball area ke middway me  elevated area)",
+        "DOME AREA (ambulance area and basketball area ke midway me  elevated area)",
       type: "major",
       hint: "No hint",
       hintTime: 0.5, // in minutes
@@ -89,10 +89,10 @@ const taskData = {
       hintTime: 0.5, // in minutes
     },
     205: {
-      title: "Task 5",
+      title: "Football",
       description: "Right side of OAT",
       type: "major",
-      hint: "Hint 5",
+      hint: "No Hint",
       hintTime: 0.5, // in minutes
     },
     206: {
@@ -116,7 +116,9 @@ const taskData = {
       type: "minor",
       hint: null,
     },
-    answer: "answer2",
+    answer: [
+      "BFG-9000"
+    ],
   },
   phase3: {
     301: {
@@ -175,7 +177,7 @@ const taskData = {
       type: "minor",
       hint: null,
     },
-    answer: "answer3",
+    answer: "LEAVEMEALONE",
   },
 };
 

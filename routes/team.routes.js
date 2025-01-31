@@ -188,9 +188,15 @@ router
         });
 
         team[`phase${i}`]["tasks"] = tasks;
-
-
-        // console.log(team.powerups);
+        let powerupsarray = team.powerups;
+        let powerUpsDataTemp = powerupsarray.map((powerup) => {
+          return {
+            title: powerUpsData[powerup].title,
+            description: powerUpsData[powerup].description,
+            credits: powerUpsData[powerup].credits,
+          };
+        });
+        team.powerUpsData = powerUpsDataTemp;
 
         // team.powerups = team.powerups.map((powerup) => {
         //   console.log("printing powerup", powerUpsData[powerup].title);
@@ -200,7 +206,6 @@ router
         //     credits: powerUpsData[powerup].credits,
         //   };
         // });
-
       }
 
       res.success(200, "Team successfully fetched", { team });
@@ -956,7 +961,16 @@ router.post(
         "TASKS_NOT_COMPLETED"
       );
     }
+    
+    // const settings = await Settings.findOne();
 
+    // if(phaseNo === 2){
+    //   if (
+    //     answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer[settings.phaseValue].toLowerCase()
+    //   ) {
+    //     throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
+    //   }
+    // }
     if (
       answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer.toLowerCase()
     ) {
@@ -979,7 +993,6 @@ router.post(
     // phase completed now obviously
     phase.completedAt = getIstDate();
 
-    const settings = await Settings.findOne();
 
     // time taken is the time between now and the start of the phase
     phase.timeTaken =
