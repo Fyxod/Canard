@@ -8,7 +8,6 @@ export const gamesList = [
   { title: "Forza Horizon", key: "forzaHorizon" },
   { title: "CSGO (4v4)", key: "csgoFullTeam" },
   { title: "CSGO(Free for all)", key: "csgoFFA" },
-  { title: "Bomb Diffusal", key: "bombDiffusal" },
   { title: "Super Mario", key: "superMario" },
   { title: "GTA V", key: "gtaSanAndreas" },
   { title: "Fortnite", key: "fortnite" },
@@ -98,10 +97,6 @@ export const schemaTitles = {
       { title: "Wins", key: "wins" },
     ],
   },
-  "Bomb Diffusal": {
-    key: "bombDiffusal",
-    stats: [{ title: "Matches Won", key: "matchesWon" }],
-  },
   "Super Mario": {
     key: "superMario",
     stats: [
@@ -164,10 +159,26 @@ export const schemaTitles = {
   },
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const schemaKeys = {
   tekken3: {
     title: "Tekken 3",
-    credits: 10,
+    credits: 50,
     stats: [
       { title: "Wins", key: "wins" },
       { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
@@ -181,7 +192,7 @@ export const schemaKeys = {
   },
   tekken8: {
     title: "Tekken 8",
-    credits: 10,
+    credits: 50,
     stats: [
       { title: "Wins", key: "wins" },
       { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
@@ -195,7 +206,7 @@ export const schemaKeys = {
   },
   wwe: {
     title: "WWE 2K23",
-    credits: 10,
+    credits: 100,
     stats: [
       { title: "Wins", key: "wins" },
       { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
@@ -209,7 +220,7 @@ export const schemaKeys = {
   },
   brawlHalla: {
     title: "Brawl Halla",
-    credits: 10,
+    credits: 50,
     stats: [
       { title: "Wins", key: "wins" },
       { title: "Longest Win Streak", key: "longestWinStreak", replace: true },
@@ -223,7 +234,7 @@ export const schemaKeys = {
   },
   miniMilitia: {
     title: "Mini Militia",
-    credits: 10,
+    credits: 75,
     stats: [
       { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Kills", key: "kills" },
@@ -233,7 +244,7 @@ export const schemaKeys = {
   },
   clashRoyale: {
     title: "Clash Royale",
-    credits: 10,
+    credits: 100,
     stats: [
       { title: "Wins", key: "wins" },
       { title: "Crowns Earned", key: "crownsEarned" },
@@ -242,7 +253,7 @@ export const schemaKeys = {
   },
   forzaHorizon: {
     title: "Forza Horizon",
-    credits: 10,
+    credits: 75,
     stats: [
       { title: "Races Won", key: "racesWon" },
       { title: "Fastest Lap Time", key: "fastestLapTime" },
@@ -250,7 +261,7 @@ export const schemaKeys = {
   },
   csgoFullTeam: {
     title: "CSGO (4v4)",
-    credits: 10,
+    credits: 75,
     stats: [
       { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Kills", key: "kills" },
@@ -260,7 +271,7 @@ export const schemaKeys = {
   },
   csgoFFA: {
     title: "CSGO(Free for all)",
-    credits: 10,
+    credits: 100,
     stats: [
       { title: "Kill Death Ratio", key: "kdRatio", notShow: true },
       { title: "Kills", key: "kills" },
@@ -268,14 +279,9 @@ export const schemaKeys = {
       { title: "Wins", key: "wins" },
     ],
   },
-  bombDiffusal: {
-    title: "Bomb Diffusal",
-    credits: 10,
-    stats: [{ title: "Matches Won", key: "matchesWon" }],
-  },
   superMario: {
     title: "Super Mario",
-    credits: 10,
+    credits: 100,
     stats: [
       { title: "High Score", key: "highScore" },
       { title: "Levels Completed", key: "levelsCompleted" },
@@ -284,12 +290,12 @@ export const schemaKeys = {
   },
   gtaSanAndreas: {
     title: "GTA V",
-    credits: 10,
+    credits: 100,
     stats: [{ title: "Best Survival Time", key: "bestSurvivalTime" }],
   },
   fortnite: {
     title: "Fortnite",
-    credits: 10,
+    credits: 75,
     stats: [
       { title: "Matches Won", key: "matchesWon" },
       { title: "Total Kills", key: "kills" },
@@ -300,7 +306,7 @@ export const schemaKeys = {
   },
   rocketLeague: {
     title: "Rocket League",
-    credits: 10,
+    credits: 75,
     stats: [
       { title: "Matches Won", key: "matchesWon" },
       { title: "Total Score", key: "totalScore" },
@@ -309,7 +315,7 @@ export const schemaKeys = {
   },
   fifa: {
     title: "Fifa",
-    credits: 10,
+    credits: 100,
     stats: [
       { title: "Matches Won", key: "matchesWon" },
       { title: "Goals Scored", key: "goalsScored" },
@@ -317,7 +323,7 @@ export const schemaKeys = {
   },
   bowling: {
     title: "Bowling",
-    credits: 10,
+    credits: 50,
     stats: [
       { title: "Total Points", key: "totalPoints" },
       { title: "Number of Strikes", key: "numberOfStrikes" },
@@ -326,7 +332,7 @@ export const schemaKeys = {
   },
   shootWithAGun: {
     title: "Nerf Showdown",
-    credits: 10,
+    credits: 50,
     stats: [
       { title: "Score", key: "score" },
       { title: "Accuracy", key: "accuracy" },
@@ -334,7 +340,7 @@ export const schemaKeys = {
   },
   bgmi: {
     title: "BGMI",
-    credits: 10,
+    credits: 100,
     stats: [
       { title: "Matches Won", key: "matchesWon" },
       { title: "Total Kills", key: "kills" },
