@@ -188,15 +188,18 @@ router
         });
 
         team[`phase${i}`]["tasks"] = tasks;
-        
-        team.powerups = team.powerups.map((powerup) => {
-          return {
-            title: powerUpsData[powerup].title,
-            description: powerUpsData[powerup].description,
-            credits: powerUpsData[powerup].credits,
-          };
-        }
-        );
+
+
+        // console.log(team.powerups);
+
+        // team.powerups = team.powerups.map((powerup) => {
+        //   console.log("printing powerup", powerUpsData[powerup].title);
+        //   return {
+        //     title: powerUpsData[powerup].title,
+        //     description: powerUpsData[powerup].description,
+        //     credits: powerUpsData[powerup].credits,
+        //   };
+        // });
 
       }
 
