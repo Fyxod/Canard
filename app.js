@@ -66,6 +66,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://api.mlsc.tech",
   "http://localhost:4140",
+  "https://test-backend-7n6jp.ondigitalocean.app/"
 ];
 
 app.use((req, res, next) => {
