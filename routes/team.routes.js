@@ -484,7 +484,7 @@ router.route("/:teamId/:phaseNo/:taskId").post(
   safeHandler(async (req, res) => {
     let { teamId, phaseNo, taskId } = req.params;
     const { status } = req.body;
-
+    console.log(req.user.taskId)
     if (req.user.role === "admin" && req.user.taskId !== taskId) {
       throw new ApiError(
         401,
