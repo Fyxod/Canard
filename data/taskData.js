@@ -96,7 +96,7 @@ const taskData = {
       hintTime: 3.25, // in minutes
     },
     206: {
-      title: "Boat Blitz",
+      title: "Humpty Dumpty Fall",
       description: "OAT",
       points: 4,
       type: "minor",

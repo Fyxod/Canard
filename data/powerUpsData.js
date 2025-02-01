@@ -47,7 +47,7 @@ const powerUpsData = {
   },
   10: {
     title: "WHITER FLAG",
-    description: "Grants unlimited ammo for 15 seconds",
+    description: "when you have spent some time on a task",
     credits: 4999,
   },
 };
