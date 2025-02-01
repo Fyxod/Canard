@@ -142,7 +142,7 @@ const taskData = {
     },
     304: {
       title: "Tool of Warfronts",
-      description: "Student Lounge 0",
+      description: "Conference Hall A",
       type: "major",
       hint: "Damn that's lengthy, I wonder what's common?",
       hintTime: 3.25, // in minutes
