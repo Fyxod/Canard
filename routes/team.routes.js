@@ -391,86 +391,86 @@ router.patch(
   })
 );
 
-router.route("/:teamId/powerups").patch(
-  checkAuth("user"),
-  safeHandler(async (req, res) => {
-    const { teamId } = req.params;
-    const { powerups, creditCardNo } = req.body;
-    if (!isValidObjectId(teamId)) {
-      throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
-    }
+// router.route("/:teamId/powerups").patch(
+//   checkAuth("user"),
+//   safeHandler(async (req, res) => {
+//     const { teamId } = req.params;
+//     const { powerups, creditCardNo } = req.body;
+//     if (!isValidObjectId(teamId)) {
+//       throw new ApiError(400, "Invalid team id", "INVALID_TEAM_ID");
+//     }
 
-    if (req.user.teamId !== teamId) {
-      throw new ApiError(
-        "401",
-        "You are not a user of this team",
-        "UNAUTHORISED"
-      );
-    }
+//     if (req.user.teamId !== teamId) {
+//       throw new ApiError(
+//         "401",
+//         "You are not a user of this team",
+//         "UNAUTHORISED"
+//       );
+//     }
 
-    if (!Array.isArray(powerups)) {
-      throw new ApiError(400, "Invalid powerups", "INVALID_POWERUPS");
-    }
+//     if (!Array.isArray(powerups)) {
+//       throw new ApiError(400, "Invalid powerups", "INVALID_POWERUPS");
+//     }
 
-    if (powerups.length === 0) {
-      throw new ApiError(400, "No powerups selected", "NO_POWERUPS_SELECTED");
-    }
+//     if (powerups.length === 0) {
+//       throw new ApiError(400, "No powerups selected", "NO_POWERUPS_SELECTED");
+//     }
 
-    if (hasDuplicates(powerups)) {
-      throw new ApiError(
-        400,
-        "Duplicate powerups selected",
-        "DUPLICATE_POWERUPS"
-      );
-    }
+//     if (hasDuplicates(powerups)) {
+//       throw new ApiError(
+//         400,
+//         "Duplicate powerups selected",
+//         "DUPLICATE_POWERUPS"
+//       );
+//     }
 
-    if (!creditCardNo || creditCardNo.trim() === "") {
-      throw new ApiError(
-        400,
-        "Invalid credit card number",
-        "INVALID_CREDIT_CARD_NO"
-      );
-    }
+//     if (!creditCardNo || creditCardNo.trim() === "") {
+//       throw new ApiError(
+//         400,
+//         "Invalid credit card number",
+//         "INVALID_CREDIT_CARD_NO"
+//       );
+//     }
 
-    const team = await Team.findById(teamId);
-    if (!team) {
-      throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
-    }
+//     const team = await Team.findById(teamId);
+//     if (!team) {
+//       throw new ApiError(404, "Team not found", "TEAM_NOT_FOUND");
+//     }
 
-    if (team.creditCardNo.toLowerCase() !== creditCardNo.toLowerCase()) {
-      throw new ApiError(
-        400,
-        "Invalid credit card number",
-        "INVALID_CREDIT_CARD_NO"
-      );
-    }
+//     if (team.creditCardNo.toLowerCase() !== creditCardNo.toLowerCase()) {
+//       throw new ApiError(
+//         400,
+//         "Invalid credit card number",
+//         "INVALID_CREDIT_CARD_NO"
+//       );
+//     }
 
-    // add credit minusing
-    let totalCredits = 0;
-    powerups.forEach((powerup) => {
-      if (!powerUpsData[powerup]) {
-        throw new ApiError(400, "Invalid powerup", "INVALID_POWERUP");
-      }
-      totalCredits += powerUpsData[powerup].credits;
-    });
+//     // add credit minusing
+//     let totalCredits = 0;
+//     powerups.forEach((powerup) => {
+//       if (!powerUpsData[powerup]) {
+//         throw new ApiError(400, "Invalid powerup", "INVALID_POWERUP");
+//       }
+//       totalCredits += powerUpsData[powerup].credits;
+//     });
 
-    if (team.score < totalCredits) {
-      throw new ApiError(400, "Insufficient credits", "INSUFFICIENT_CREDITS");
-    }
+//     if (team.score < totalCredits) {
+//       throw new ApiError(400, "Insufficient credits", "INSUFFICIENT_CREDITS");
+//     }
 
-    powerups.forEach((powerup) => {
-      if (team.powerups.includes(powerup)) {
-        throw new ApiError(400, "Powerup already added", "POWERUP_ADDED");
-      }
-      team.powerups.push(powerup);
+//     powerups.forEach((powerup) => {
+//       if (team.powerups.includes(powerup)) {
+//         throw new ApiError(400, "Powerup already added", "POWERUP_ADDED");
+//       }
+//       team.powerups.push(powerup);
 
-      // decrease the credits of the team by the credits of the powerup
-      team.score = team.score - powerUpsData[powerup].credits;
-    });
-    await team.save();
-    res.success(200, "Powerups updated successfully", { team });
-  })
-);
+//       // decrease the credits of the team by the credits of the powerup
+//       team.score = team.score - powerUpsData[powerup].credits;
+//     });
+//     await team.save();
+//     res.success(200, "Powerups updated successfully", { team });
+//   })
+// );
 
 // SHIT STARTS
 // SHIT STARTS
