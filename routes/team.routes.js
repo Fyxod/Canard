@@ -911,6 +911,8 @@ router.post(
       throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
     }
 
+    answer = answer.toLowerCase();
+
     if (phaseNo < 1 || phaseNo > 3) {
       throw new ApiError(
         400,
@@ -976,7 +978,7 @@ router.post(
       if (!taskData[`phase${phaseNo}`].answer.includes(answer)) {
         throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
       }
-    } else if (answer !== taskData[`phase${phaseNo}`].answer) {
+    } else if (answer.toLowerCase() !== taskData[`phase${phaseNo}`].answer.toLowerCase()) {
       throw new ApiError(400, "Invalid answer", "INVALID_ANSWER");
     }
 

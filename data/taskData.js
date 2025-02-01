@@ -57,7 +57,7 @@ const taskData = {
       type: "minor",
       hint: null,
     },
-    answer: "SCAR 13",
+    answer: "scar 13",
   },
   phase2: {
     201: {
@@ -116,7 +116,7 @@ const taskData = {
       type: "minor",
       hint: null,
     },
-    answer: ["BFG9000", "BFG6969", "BFG7802"],
+    answer: ["bfg9000", "bfg6969", "bfg7802"],
   },
   phase3: {
     301: {
@@ -175,7 +175,7 @@ const taskData = {
       type: "minor",
       hint: null,
     },
-    answer: "LEAVEMEALONE",
+    answer: "leavemealone",
   },
 };
 
