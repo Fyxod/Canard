@@ -52,7 +52,7 @@ const taskData = {
     },
     108: {
       title: "Where in the World?",
-      description: "Full Outdoor Areas",
+      description: "Find Namrata",
       points: 4,
       type: "minor",
       hint: null,
