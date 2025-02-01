@@ -121,7 +121,7 @@ app.set("views", path.join(__dirname, "./public/views"));
 app.use((req, res, next) => {
   // console.log(path.join(__dirname, "./public/adminApp/index.html"));
   // console.log(path.join(__dirname, "./public/userApp/index.html"));
-  console.log("Authorization header", req.headers["authorization"]);
+  // console.log("Authorization header", req.headers["authorization"]);
   console.log("printing body", req.body);
   console.log(req.url, req.method);
   next();
