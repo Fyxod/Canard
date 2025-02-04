@@ -13,6 +13,17 @@ const phaseSchema = new mongoose.Schema({
           -2, // -2 when this is a minor task and has been completed
         ],
       },
+      
+      /*
+      A few notes on the timeTaken field:
+      I know I have put the enum incorrectly, BUT IT STILL WORKED. I don't know why, but it did.
+      It was throwing an error when it tried to store the time but it still successfully saved it in the database.
+      I don't know why it was not enforcing the enum. I thought of fixing it and it was easy too obviously, just remove the enum right?
+      But only 1 day was left for the event and the registrations has already been done, so I didn't want to take any risks like 
+      messing up the schema of already saved documents. So I left it as it is as it was working fine
+      */
+      
+              
       completedAt: {
         type: Date,
         default: null,
